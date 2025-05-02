@@ -26,4 +26,9 @@ public class HelloServlet extends HttpServlet {
     public void destroy() {
     }
 
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        doGet(request,response);
+    }
+
 }
+
