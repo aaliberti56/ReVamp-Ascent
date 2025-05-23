@@ -10,7 +10,7 @@ public class HelloServlet extends HttpServlet {
     private String message;
 
     public void init() {
-        message = "Hello World!";
+        message = "pushhhh";
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -25,4 +25,12 @@ public class HelloServlet extends HttpServlet {
 
     public void destroy() {
     }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        doGet(request,response);
+    }
+
+
+
 }
+
