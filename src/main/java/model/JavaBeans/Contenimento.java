@@ -1,4 +1,4 @@
-package model;
+package model.JavaBeans;
 
 public class Contenimento {
     private int codice;       // chiave esterna verso Articolo

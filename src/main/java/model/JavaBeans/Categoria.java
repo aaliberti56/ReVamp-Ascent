@@ -1,4 +1,4 @@
-package model;
+package model.JavaBeans;
 
 public class Categoria{
     private int id_categoria;

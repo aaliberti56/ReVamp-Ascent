@@ -1,4 +1,4 @@
-package model;
+package model.JavaBeans;
 
 public class Articolo{
     private int codice;

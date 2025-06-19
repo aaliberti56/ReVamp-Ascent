@@ -1,4 +1,4 @@
-package model;
+package model.JavaBeans;
 
 public class Cliente{
     private String nome_utente;
