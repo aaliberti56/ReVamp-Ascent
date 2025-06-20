@@ -1,4 +1,105 @@
 package model.DAO;
 
+
+
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArticoloDAO {
+
+    public Articolo doRetrieveById(int codice){
+        try(Connection con=ConPool.getConnection()){
+            PreparedStatement ps=con.prepareStatement("SELECT * FROM articolo WHERE codice= ?");
+            ps.setInt(1,codice);
+            ResultSet rs=ps.executeQuery();
+            if(rs.next()){
+                Articolo a=new Articolo();
+                a.setCodice(rs.getInt("codice"));
+                a.setNome(rs.getString("nome"));
+                a.setDescrizione(rs.getString("descrizione"));
+                a.setColore(rs.getString("colore"));
+                a.setSconto(rs.getDouble("sconto"));
+                a.setPrezzo(rs.getDouble("prezzo"));
+                a.setPeso(rs.getDouble("peso"));
+                a.setDimensione(rs.getString("dimensione"));
+                return a;
+            }
+            return null;
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Articolo> doRetriveByAll(){
+        List<Articolo> articoli=new ArrayList<>();
+        try(Connection con=ConPool.getConnection()){
+            PreparedStatement ps=con.prepareStatement("SELECT * FROM articolo");
+            ResultSet rs= ps.executeQuery();
+            while(rs.next()){
+                Articolo a = new Articolo();
+                a.setCodice(rs.getInt("codice"));
+                a.setNome(rs.getString("nome"));
+                a.setDescrizione(rs.getString("descrizione"));
+                a.setColore(rs.getString("colore"));
+                a.setSconto(rs.getDouble("sconto"));
+                a.setPrezzo(rs.getDouble("prezzo"));
+                a.setPeso(rs.getDouble("peso"));
+                a.setDimensione(rs.getString("dimensione"));
+                articoli.add(a);
+            }
+            return articoli;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void doSave(Articolo a){
+        try(Connection con=ConPool.getConnection()){
+            PreparedStatement ps=con.prepareStatement("INSERT INTO articolo (codice, nome, descrizione, colore, sconto, prezzo, peso, dimensione) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setInt(1,a.getCodice());
+            ps.setString(2, a.getNome());
+            ps.setString(3, a.getDescrizione());
+            ps.setString(4, a.getColore());
+            ps.setDouble(5, a.getSconto());
+            ps.setDouble(6, a.getPrezzo());
+            ps.setDouble(7, a.getPeso());
+            ps.setString(8, a.getDimensione());
+            ps.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void doUpdate(Articolo a) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE articolo SET nome=?, descrizione=?, colore=?, sconto=?, prezzo=?, peso=?, dimensione=? WHERE codice=?");
+            ps.setString(1, a.getNome());
+            ps.setString(2, a.getDescrizione());
+            ps.setString(3, a.getColore());
+            ps.setDouble(4, a.getSconto());
+            ps.setDouble(5, a.getPrezzo());
+            ps.setDouble(6, a.getPeso());
+            ps.setString(7, a.getDimensione());
+            ps.setInt(8, a.getCodice());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void doDelete(int codice) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("DELETE FROM articolo WHERE codice = ?");
+            ps.setInt(1, codice);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

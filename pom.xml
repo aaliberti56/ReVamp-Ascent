@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>Martucci-Aliberti-Di_Pasquale_pj</artifactId>
+    <groupId>prog</groupId>
+    <artifactId>ikea-web</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Martucci-Aliberti-Di_Pasquale_pj</name>
+    <name>IKEA Web</name>
     <packaging>war</packaging>
 
     <properties>
@@ -18,12 +18,36 @@
     </properties>
 
     <dependencies>
+        <!-- MySQL JDBC Driver -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.2.0</version>
+        </dependency>
+
+        <!-- Tomcat JDBC Connection Pool -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>11.0.5</version>
+        </dependency>
+
+        <!-- JSTL (for JSP) -->
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
+        <!-- Servlet API -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.1.0</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

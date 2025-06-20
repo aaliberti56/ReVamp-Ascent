@@ -51,6 +51,7 @@ public class Articolo{
         return colore;
     }
 
+
     public void setColore(String colore) {
         this.colore = colore;
     }
