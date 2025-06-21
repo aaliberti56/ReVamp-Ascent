@@ -1,5 +1,8 @@
 package model.JavaBeans;
 
+import java.util.*;
+import java.lang.*;
+
 public class Categoria{
     private int id_categoria;
     private String tipologia;

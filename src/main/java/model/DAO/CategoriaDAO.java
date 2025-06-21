@@ -1,6 +1,11 @@
 package model.DAO;
 
+import model.ConPool;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import model.JavaBeans.*;
 import java.sql.*;
+import java.util.*;
 
 public class CategoriaDAO {
     public Categoria doRetrieveById(int id_categoria){

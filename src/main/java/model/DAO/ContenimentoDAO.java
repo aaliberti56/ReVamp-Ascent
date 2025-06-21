@@ -2,7 +2,8 @@ package model.DAO;
 
 import java.sql.*;
 
-import model.Connessione.ConPool;
+import model.ConPool;
+import model.JavaBeans.Contenimento;
 
 import java.sql.*;
 import java.util.ArrayList;

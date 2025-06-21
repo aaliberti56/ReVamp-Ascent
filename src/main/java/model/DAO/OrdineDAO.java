@@ -1,5 +1,8 @@
 package model.DAO;
 import java.sql.*;
+import model.JavaBeans.*;
+import java.util.*;
+import model.ConPool;
 
 public class OrdineDAO {
     public Ordine doRetrieveById(int id_ordine) {

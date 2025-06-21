@@ -1,6 +1,11 @@
 package model.DAO;
 
 import java.sql.*;
+import model.JavaBeans.*;
+import model.ConPool;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.ArrayList;
 
 public class ClienteDAO{
 
@@ -19,7 +24,7 @@ public class ClienteDAO{
                         rs.getString("email"),
                         rs.getString("sesso"),
                         rs.getInt("eta"),
-                        rs.getString("numTelefono")
+                        rs.getString("num_telefono")
                 );
             }
             return null;
@@ -32,7 +37,8 @@ public class ClienteDAO{
     public List<Cliente> doRetrieveAll(){
         List<Cliente> clienti=new ArrayList<>();
         try(Connection con=ConPool.getConnection()){
-            Statement st=con.createConnection();
+            Statement st = con.createStatement(); //
+
             ResultSet rs=st.executeQuery("select * from cliente");
             while(rs.next()){
                 Cliente c = new Cliente(

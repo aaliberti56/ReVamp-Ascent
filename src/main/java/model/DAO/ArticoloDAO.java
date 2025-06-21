@@ -6,6 +6,8 @@ package model.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.JavaBeans.*;
+import model.ConPool;
 
 public class ArticoloDAO {
 
@@ -15,16 +17,16 @@ public class ArticoloDAO {
             ps.setInt(1,codice);
             ResultSet rs=ps.executeQuery();
             if(rs.next()){
-                Articolo a=new Articolo();
-                a.setCodice(rs.getInt("codice"));
-                a.setNome(rs.getString("nome"));
-                a.setDescrizione(rs.getString("descrizione"));
-                a.setColore(rs.getString("colore"));
-                a.setSconto(rs.getDouble("sconto"));
-                a.setPrezzo(rs.getDouble("prezzo"));
-                a.setPeso(rs.getDouble("peso"));
-                a.setDimensione(rs.getString("dimensione"));
-                return a;
+                Articolo a = new Articolo(
+                        rs.getInt("codice"),
+                        rs.getString("nome"),
+                        rs.getString("descrizione"),
+                        rs.getString("colore"),
+                        rs.getDouble("sconto"),
+                        rs.getDouble("prezzo"),
+                        rs.getDouble("peso"),
+                        rs.getString("dimensione")
+                );
             }
             return null;
         } catch (SQLException e){
@@ -38,15 +40,16 @@ public class ArticoloDAO {
             PreparedStatement ps=con.prepareStatement("SELECT * FROM articolo");
             ResultSet rs= ps.executeQuery();
             while(rs.next()){
-                Articolo a = new Articolo();
-                a.setCodice(rs.getInt("codice"));
-                a.setNome(rs.getString("nome"));
-                a.setDescrizione(rs.getString("descrizione"));
-                a.setColore(rs.getString("colore"));
-                a.setSconto(rs.getDouble("sconto"));
-                a.setPrezzo(rs.getDouble("prezzo"));
-                a.setPeso(rs.getDouble("peso"));
-                a.setDimensione(rs.getString("dimensione"));
+                Articolo a = new Articolo(
+                        rs.getInt("codice"),
+                        rs.getString("nome"),
+                        rs.getString("descrizione"),
+                        rs.getString("colore"),
+                        rs.getDouble("sconto"),
+                        rs.getDouble("prezzo"),
+                        rs.getDouble("peso"),
+                        rs.getString("dimensione")
+                );
                 articoli.add(a);
             }
             return articoli;

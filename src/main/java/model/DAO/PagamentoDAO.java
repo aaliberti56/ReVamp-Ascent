@@ -1,7 +1,7 @@
 package model.DAO;
 
-import model.JavaBeans.Pagamento;
-import utils.ConPool;
+import model.JavaBeans.*;
+import model.ConPool;
 
 import java.sql.*;
 import java.util.GregorianCalendar;

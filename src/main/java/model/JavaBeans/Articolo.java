@@ -10,6 +10,8 @@ public class Articolo{
     private double peso;
     private String dimensione;
 
+
+
     public Articolo(int codice,String nome,String descrizione,String colore,double sconto,double prezzo,double peso,String dimensione) {
         this.codice = codice;
         this.nome = nome;
