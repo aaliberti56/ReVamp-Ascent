@@ -1,8 +1,8 @@
 package model.JavaBeans;
 
 public class Contenimento {
-    private int codice;       // chiave esterna verso Articolo
-    private int id_ordine;    // chiave esterna verso Ordine
+    private int codice;
+    private int id_ordine;
     private int quantita;
 
     // Costruttore pieno
