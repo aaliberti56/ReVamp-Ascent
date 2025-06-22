@@ -1,0 +1,98 @@
+body{
+    font-family: 'Segoe UI',Tahoma, Geneva,sans-serif;
+    background: #f9f9f9;
+    margin:0;
+    padding:0;
+}
+
+.logo{
+    width:100px;
+    display:block;
+    margin:30px auto;
+}
+
+#contenitoreForm{
+    background:white;
+    max-width:400px;
+    margin:auto;
+    padding: 40px;
+    border-radius:12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1) ;
+}
+
+#contenitoreForm h2{
+    text-align: center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+.dati{
+    width: 100%;
+    padding:12px;
+    margin-top:10px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.bottone{
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #0066cc;
+    color:white;
+    border: none;
+    border-radius: 6px;
+    font-size:16px;
+    cursor:pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.bottone:hover {
+    background-color: #004d99;
+}
+
+.formError {
+    color: red;
+    font-size: 12px;
+    display: none;
+}
+
+
+.tipPassword {
+    font-size: 11px;
+    color: #777;
+}
+
+#account {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.containerMessaggio {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#messaggioConferma {
+    background-color: #ffe6e6;
+    border: 1px solid #ff4d4d;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: #cc0000;
+    position: relative;
+    max-width: 400px;
+    text-align: center;
+}
+
+.chiudiMessaggio {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    cursor: pointer;
+}

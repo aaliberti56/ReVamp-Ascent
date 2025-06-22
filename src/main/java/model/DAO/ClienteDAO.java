@@ -62,7 +62,7 @@ public class ClienteDAO{
 
     public boolean doSave(Cliente cliente){
         try(Connection con=ConPool.getConnection()){
-            PreparedStatement ps=con.prepareStatement("INSERT INTO cliente(nome_utente, pass, nome, cognome, saldo, email, sesso, eta, numTelefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps=con.prepareStatement("INSERT INTO cliente(nome_utente, pass, nome, cognome, saldo, email, sesso, eta, num_telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, cliente.getNomeUtente());
             ps.setString(2, cliente.getPass());
             ps.setString(3, cliente.getNome());
