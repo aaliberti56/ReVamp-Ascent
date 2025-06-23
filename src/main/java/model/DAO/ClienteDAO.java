@@ -128,6 +128,19 @@ public class ClienteDAO{
         }
     }
 
+    public void doUpdate(Cliente cliente) throws SQLException {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE cliente SET email = ?, pass = ? WHERE nome_utente = ?"
+            );
+            ps.setString(1, cliente.getEmail());
+            ps.setString(2, cliente.getPass());
+            ps.setString(3, cliente.getNomeUtente());
+
+            ps.executeUpdate();
+        }
+    }
+
 }
 
 
