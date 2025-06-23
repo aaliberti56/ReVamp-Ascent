@@ -1,16 +1,46 @@
-function validate() {
-    const email = document.getElementById("email").value;
-    const pass = document.getElementById("password").value;
-    const pass2 = document.getElementById("password2").value;
+// Validazione form login
+document.addEventListener("DOMContentLoaded", inizializzaLoginForm);
 
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const passOk = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{3,}$/.test(pass);
+function inizializzaLoginForm() {
+    const form = document.getElementById('formLogin');
 
-    document.getElementById("errorMail").style.display = emailOk ? "none" : "inline";
-    document.getElementById("errorPass").style.display = passOk ? "none" : "inline";
-    document.getElementById("errorPass2").style.display = pass === pass2 ? "none" : "inline";
-
-    if (emailOk && passOk && pass === pass2) {
-        document.getElementById("form").submit();
+    if (form) {
+        form.addEventListener("submit", function (event) {
+            if (!validazioneCampiLogin()) {
+                event.preventDefault(); // Blocca l'invio del form
+                mostraErroreLogin();
+            } else {
+                nascondiErroreLogin();
+            }
+        });
     }
 }
+
+function validazioneCampiLogin() {
+    const username = document.getElementById('username')?.value.trim();
+    const password = document.getElementById('password')?.value.trim();
+    return username !== "" && password !== "";
+}
+
+function mostraErroreLogin() {
+    const errore = document.getElementById('errorLogin');
+    if (errore) {
+        errore.style.display = "inline";
+    }
+}
+
+function nascondiErroreLogin() {
+    const errore = document.getElementById('errorLogin');
+    if (errore) {
+        errore.style.display = "none";
+    }
+}
+
+// Chiudi messaggio di errore lato server
+function nascondiMessaggio() {
+    const container = document.querySelector('.containerMessaggio');
+    if (container) {
+        container.style.display = 'none';
+    }
+}
+

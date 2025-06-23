@@ -1,30 +1,42 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Login Admin</title>
+    <link rel="stylesheet" href="css/stileRegistrazione.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.webp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h2>Area Riservata</h2>
 
-    <form action="AdminLoginServlet" method="post">
-        <label for="username">Username</label><br>
-        <input type="text" id="username" name="username" required><br>
+<%
+    String errore = (String) request.getAttribute("erroreLogin");
+    if (errore != null) {
+%>
+<div class="containerMessaggio">
+    <div id="messaggioConferma">
+        <img src="img/error.png" class="erroreMessaggio">
+        <input type="image" src="img/close.png" class="chiudiMessaggio" onclick="nascondiMessaggio()">
+        <span><%= errore %></span>
+    </div>
+</div>
+<%
+    }
+%>
 
-        <label for="password">Password</label><br>
-        <input type="password" id="password" name="password" required><br>
+<img src="img/logo.webp" class="logo">
 
-        <input type="submit" value="Login">
+<div id="contenitoreForm">
+    <h2 class="titoloLogin">Area Riservata</h2>
+    <form action="AdminLoginServlet" method="post" id="formLogin">
+        <input type="text" name="username" placeholder="Username" class="dati" id="username" required><br><br>
+        <input type="password" name="password" placeholder="Password" class="dati" id="password" required><br><br>
+        <span id="errorLogin" class="formError" style="display:none; color:red;">Inserisci correttamente le credenziali</span><br>
+        <input type="submit" value="Login" class="bottone">
     </form>
+</div>
 
-    <%
-        String errore=request.getParameter("errore");
-        if("true".equals(errore)){
-     %>
-    <p style="color:red;">Credenziali non valide</p>
-    <%
-        }
-    %>
+<script src="js/script.js"></script>
 
 </body>
 </html>
