@@ -42,7 +42,7 @@
             <p>Indirizzi</p>
         </div>
     </a>
-    <a href="impostazioni.jsp" class="boxAreaUtenteLink">
+    <a href="modificaCredenziali.jsp" class="boxAreaUtenteLink">
         <div class="boxAreaUtente">
             <img src="img/impostazioni.png" alt="Impostazioni" class="imgBoxAreaUtente" />
             <p>Impostazioni</p>

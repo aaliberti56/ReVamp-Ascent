@@ -1,56 +1,89 @@
 package controller;
+
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import java.io.IOException;
-import model.DAO.*;
+import model.DAO.ClienteDAO;
 import model.JavaBeans.*;
-import java.sql.*;
+import java.sql.SQLException;
 
 @WebServlet(name = "ModificaCredenzialiServlet", value = "/ModificaCredenzialiServlet")
 public class ModificaCredenzialiServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request,response);
+        doPost(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Cliente utente=(Cliente) request.getSession().getAttribute("utenteLoggato");
-        if(utente==null){
+        Cliente utente = (Cliente) request.getSession().getAttribute("utenteLoggato");
+        if (utente == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        String email=request.getParameter("email").trim();
-        String oldPassword = request.getParameter("oldPassword").trim();
-        String newPassword = request.getParameter("newPassword").trim();
-        String confirmPassword = request.getParameter("confirmPassword").trim();
+        String username = request.getParameter("username");
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
 
-        if(!newPassword.equals(confirmPassword)){
-            request.setAttribute("msg","le nuove password non corrispondono");
+        if (username == null || oldPassword == null || newPassword == null || confirmPassword == null) {
+            request.setAttribute("msg", "Tutti i campi sono obbligatori.");
             request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
             return;
         }
 
-        if(!utente.getPass().equals(oldPassword)){
-            request.setAttribute("msg","la vecchia password non è corretta");
+        username = username.trim();
+        oldPassword = oldPassword.trim();
+        newPassword = newPassword.trim();
+        confirmPassword = confirmPassword.trim();
+
+        if (!newPassword.equals(confirmPassword)) {
+            request.setAttribute("msg", "Le nuove password non corrispondono.");
             request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
             return;
         }
 
-        utente.setEmail(email);
-        utente.setPass(newPassword);
+        if (!utente.getPass().equals(oldPassword)) {
+            request.setAttribute("msg", "La vecchia password non è corretta.");
+            request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
+            return;
+        }
 
-        ClienteDAO clienteDAO=new ClienteDAO();
-        try{
-            clienteDAO.doUpdate(utente);
-            request.getSession().setAttribute("utente",utente);
-            request.setAttribute("msg","Credenziali modificate con successo");
-        } catch (SQLException e){
+        ClienteDAO clienteDAO = new ClienteDAO();
+
+        try {
+            String vecchioUsername = utente.getNomeUtente();
+
+            // Se cambia username, controllo disponibilità
+            if (!vecchioUsername.equals(username)) {
+                Cliente altroUsername = clienteDAO.doRetrieveByUsername(username);
+                if (altroUsername != null) {
+                    request.setAttribute("msg", "Username già in uso.");
+                    request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
+                    return;
+                }
+            }
+
+            // Aggiorna dati utente
+            utente.setNomeUtente(username);
+            utente.setPass(newPassword);
+            // Se vuoi aggiornare anche altri campi, aggiungili qui (es. utente.setEmail(...))
+
+            // Aggiorna nel DB passando il vecchio username
+            clienteDAO.doUpdate(utente, vecchioUsername);
+
+            // Aggiorna sessione con dati modificati
+            request.getSession().setAttribute("utenteLoggato", utente);
+
+            request.setAttribute("msg", "Credenziali modificate con successo.");
+        } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("msg", "Errore durante l'aggiornamento dati.");
         }
+
         request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
     }
 }
+

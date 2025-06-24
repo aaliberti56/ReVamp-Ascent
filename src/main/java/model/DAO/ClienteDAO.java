@@ -128,18 +128,20 @@ public class ClienteDAO{
         }
     }
 
-    public void doUpdate(Cliente cliente) throws SQLException {
+    public void doUpdate(Cliente cliente, String vecchioNomeUtente) throws SQLException {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "UPDATE cliente SET email = ?, pass = ? WHERE nome_utente = ?"
+                    "UPDATE cliente SET nome_utente = ?, email = ?, pass = ? WHERE nome_utente = ?"
             );
-            ps.setString(1, cliente.getEmail());
-            ps.setString(2, cliente.getPass());
-            ps.setString(3, cliente.getNomeUtente());
+            ps.setString(1, cliente.getNomeUtente());  // nuovo username
+            ps.setString(2, cliente.getEmail());
+            ps.setString(3, cliente.getPass());
+            ps.setString(4, vecchioNomeUtente);       // vecchio username per la WHERE
 
             ps.executeUpdate();
         }
     }
+
 
 }
 
