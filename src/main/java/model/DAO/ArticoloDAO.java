@@ -25,7 +25,8 @@ public class ArticoloDAO {
                         rs.getDouble("sconto"),
                         rs.getDouble("prezzo"),
                         rs.getDouble("peso"),
-                        rs.getString("dimensione")
+                        rs.getString("dimensione"),
+                        rs.getInt("id_categoria")
                 );
             }
             return null;
@@ -48,7 +49,8 @@ public class ArticoloDAO {
                         rs.getDouble("sconto"),
                         rs.getDouble("prezzo"),
                         rs.getDouble("peso"),
-                        rs.getString("dimensione")
+                        rs.getString("dimensione"),
+                        rs.getInt("id_categoria")
                 );
                 articoli.add(a);
             }
@@ -61,7 +63,7 @@ public class ArticoloDAO {
 
     public void doSave(Articolo a){
         try(Connection con=ConPool.getConnection()){
-            PreparedStatement ps=con.prepareStatement("INSERT INTO articolo (codice, nome, descrizione, colore, sconto, prezzo, peso, dimensione) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO articolo (codice, nome, descrizione, colore, sconto, prezzo, peso, dimensione, id_categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1,a.getCodice());
             ps.setString(2, a.getNome());
             ps.setString(3, a.getDescrizione());
@@ -70,6 +72,7 @@ public class ArticoloDAO {
             ps.setDouble(6, a.getPrezzo());
             ps.setDouble(7, a.getPeso());
             ps.setString(8, a.getDimensione());
+            ps.setInt(9, a.getId_categoria());
             ps.executeUpdate();
         }
         catch (SQLException e) {
@@ -80,8 +83,7 @@ public class ArticoloDAO {
 
     public void doUpdate(Articolo a) {
         try (Connection con = ConPool.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "UPDATE articolo SET nome=?, descrizione=?, colore=?, sconto=?, prezzo=?, peso=?, dimensione=? WHERE codice=?");
+            PreparedStatement ps = con.prepareStatement("UPDATE articolo SET nome=?, descrizione=?, colore=?, sconto=?, prezzo=?, peso=?, dimensione=?, id_categoria=? WHERE codice=?");
             ps.setString(1, a.getNome());
             ps.setString(2, a.getDescrizione());
             ps.setString(3, a.getColore());
@@ -90,6 +92,7 @@ public class ArticoloDAO {
             ps.setDouble(6, a.getPeso());
             ps.setString(7, a.getDimensione());
             ps.setInt(8, a.getCodice());
+            ps.setInt(9, a.getId_categoria());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

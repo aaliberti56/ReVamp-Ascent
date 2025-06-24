@@ -26,9 +26,11 @@ public class AggiungiArticoloServlet extends HttpServlet {
             double prezzo = Double.parseDouble(request.getParameter("prezzo"));
             double peso = Double.parseDouble(request.getParameter("peso"));
             String dimensione = request.getParameter("dimensione");
+            int id_categoria = Integer.parseInt(request.getParameter("id_categoria"));
+
 
             // Uso del costruttore completo di Articolo
-            Articolo articolo = new Articolo(codice, nome, descrizione, colore, sconto, prezzo, peso, dimensione);
+            Articolo articolo = new Articolo(codice, nome, descrizione, colore, sconto, prezzo, peso,dimensione,id_categoria);
 
             ArticoloDAO articoloDAO = new ArticoloDAO();
             articoloDAO.doSave(articolo);

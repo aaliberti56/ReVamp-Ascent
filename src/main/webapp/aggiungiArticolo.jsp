@@ -1,10 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="model.JavaBeans.Categoria" %>
+<%@ page import="java.util.List" %>
+
 <%
   if (session.getAttribute("admin") == null) {
     response.sendRedirect("loginAdmin.jsp");
     return;
   }
+
+  List<Categoria> categorie = (List<Categoria>) request.getAttribute("categorie");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,9 +36,18 @@
     <input type="number" name="peso" step="0.001" placeholder="Peso (kg)" class="dati"><br>
     <input type="text" name="dimensione" placeholder="Dimensione" class="dati"><br>
 
+    <select name="id_categoria" class="dati" required>
+      <option value="" disabled selected>Seleziona Categoria</option>
+      <% for (Categoria c : categorie) { %>
+      <option value="<%= c.getId_categoria() %>"><%= c.getTipologia() %></option>
+      <% } %>
+    </select><br>
+
     <input type="submit" value="Aggiungi Articolo" class="bottone">
   </form>
 </div>
 
 </body>
 </html>
+
+

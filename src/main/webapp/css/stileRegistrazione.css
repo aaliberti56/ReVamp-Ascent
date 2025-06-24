@@ -1,54 +1,53 @@
-body{
-    font-family: 'Segoe UI',Tahoma, Geneva,sans-serif;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
     background: #f9f9f9;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
-.logo{
-    width:100px;
-    display:block;
-    margin:30px auto;
+.logo {
+    width: 100px;
+    display: block;
+    margin: 30px auto;
 }
 
-#contenitoreForm{
-    background:white;
-    max-width:400px;
-    margin:auto;
+#contenitoreForm {
+    background: white;
+    max-width: 400px;
+    margin: auto;
     padding: 40px;
-    border-radius:12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1) ;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-#contenitoreForm h2{
+#contenitoreForm h2 {
     text-align: center;
-    margin-bottom:20px;
-    color:#333;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.dati{
+.dati {
     width: 100%;
-    padding:12px;
-    margin-top:10px;
+    padding: 12px;
+    margin-top: 10px;
     margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
 }
 
-.bottone{
+.bottone {
     width: 100%;
     padding: 12px;
     margin-top: 20px;
     background-color: #0066cc;
-    color:white;
+    color: white;
     border: none;
     border-radius: 6px;
-    font-size:16px;
-    cursor:pointer;
+    font-size: 16px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 
 .bottone:hover {
     background-color: #004d99;
@@ -59,7 +58,6 @@ body{
     font-size: 12px;
     display: none;
 }
-
 
 .tipPassword {
     font-size: 11px;
@@ -87,6 +85,17 @@ body{
     position: relative;
     max-width: 400px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.erroreMessaggio {
+    max-width: 100px;  /* dimensione massima larghezza */
+    max-height: 100px; /* dimensione massima altezza */
+    width: auto;
+    height: auto;
+    display: inline-block;
 }
 
 .chiudiMessaggio {
@@ -103,3 +112,95 @@ body{
     font-size: 24px;
     color: #333;
 }
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+#contenitoreForm p {
+    font-size: 15px;
+    color: #555;
+}
+
+#contenitoreForm small {
+    color: #888;
+}
+
+.contenitoreAreaUtente {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.contenitoreProdotto {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.impostazioni {
+    margin: 30px;
+}
+
+.boxareautentelink {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    color: #333;
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+}
+
+.boxareautentelink:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    color: #000;
+}
+
+.bott1 {
+    border-radius: 12px;
+    padding: 10px 20px;
+    background-color: #d04a4a;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.bott1:hover {
+    background-color: #a93a3a;
+}
+
+.imgBoxAreaUtente {
+    width: 80%;
+}
+
+.bott {
+    margin-top: 30%;
+}
+
+.boxAreaUtente {
+    width: 200px;
+    height: 200px;
+    -webkit-box-shadow: 0px 1px 7px -1px #E6E6E6;
+    -moz-box-shadow: 0px 1px 7px -1px #E6E6E6;
+    -o-box-shadow: 0px 1px 7px -1px #E6E6E6;
+    box-shadow: 0px 1px 7px -1px #E6E6E6;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+}
+

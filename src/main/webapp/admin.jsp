@@ -7,30 +7,36 @@
         return;
     }
 %>
-
+<!DOCTYPE html>
 <html>
 <head>
     <title>Area Admin</title>
-    <link rel="stylesheet" href="css/stileRegistrazione.css"> <!-- Se vuoi mantenere lo stile -->
+    <link rel="stylesheet" href="css/stileRegistrazione.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.webp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-<h2>Benvenuto, <%= admin.getNome() %> <%= admin.getCognome() %>!</h2>
-<p>Username: <%= admin.getUsername() %></p>
+<img src="img/logo.webp" alt="Logo" class="logo">
 
-<hr>
+<div id="contenitoreForm">
+    <h2 class="titoloLogin">Area Amministratore</h2>
 
-<!-- Bottone per aggiungere articoli -->
-<div style="margin-bottom: 20px;">
-    <a href="aggiungiArticolo.jsp" class="bottone" style="text-decoration:none; padding:12px 24px; display:inline-block;">
-        Aggiungi Articoli
+    <p style="text-align:center; margin-bottom: 10px;">
+        Benvenuto, <strong><%= admin.getNome() %> <%= admin.getCognome() %></strong><br>
+        <small>Username: <%= admin.getUsername() %></small>
+    </p>
+
+    <hr style="margin: 20px 0; border: none; border-top: 1px solid #ccc;">
+
+    <a href="FormAggiungiArticoloServlet" class="bottone">
+        ➕ Aggiungi Articoli
+    </a>
+
+    <a href="../LogoutServlet" class="bottone" style="background-color: #999;">
+        ⛔ Logout
     </a>
 </div>
-
-<a href="../LogoutServlet" class="bottone" style="background-color:#999; text-decoration:none; padding:12px 24px; display:inline-block;">
-    Logout
-</a>
 
 </body>
 </html>

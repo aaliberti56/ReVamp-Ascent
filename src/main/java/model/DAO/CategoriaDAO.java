@@ -16,8 +16,7 @@ public class CategoriaDAO {
             if(rs.next()){
                 return new Categoria(
                         rs.getInt("id_categoria"),
-                        rs.getString("tipologia"),
-                        rs.getInt("codice")
+                        rs.getString("tipologia")
                 );
             }
             return null;
@@ -34,9 +33,7 @@ public List<Categoria> doRetrieveAll(){
         while(rs.next()){
             Categoria c = new Categoria(
                     rs.getInt("id_categoria"),
-                    rs.getString("tipologia"),
-                    rs.getInt("codice")
-            );
+                    rs.getString("tipologia"));
             categorie.add(c);
         }
         return categorie;
@@ -45,23 +42,26 @@ public List<Categoria> doRetrieveAll(){
     }
 }
 
-public void doSave(Categoria categoria){
-    try(Connection con=ConPool.getConnection()){
-        PreparedStatement ps=con.prepareStatement("INSERT INTO categoria (tipologia, codice) VALUES (?, ?)",
-                Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, categoria.getTipologia());
-        ps.setInt(2, categoria.getCodice());
+    public void doSave(Categoria categoria){
+        try(Connection con = ConPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement(
+                    "INSERT INTO categoria (id_categoria, tipologia) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
+            ps.setInt(1, categoria.getId_categoria()); // Corretto!
+            ps.setString(2, categoria.getTipologia());
 
-        ps.executeUpdate();
+            ps.executeUpdate();
 
-        ResultSet rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            categoria.setId_categoria(rs.getInt(1));
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                categoria.setId_categoria(rs.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-    }catch (SQLException e) {
-        throw new RuntimeException(e);
     }
-}
+
 
 
 public boolean doDelete(int id_categoria){
@@ -76,14 +76,13 @@ public boolean doDelete(int id_categoria){
 
 public Categoria doRetrieveByCodice(int codice) {
     try (Connection con = ConPool.getConnection()) {
-        PreparedStatement ps = con.prepareStatement("SELECT * FROM categoria WHERE codice = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM categoria WHERE id_categoria = ?");
         ps.setInt(1, codice);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return new Categoria(
                     rs.getInt("id_categoria"),
-                    rs.getString("tipologia"),
-                    rs.getInt("codice")
+                    rs.getString("tipologia")
             );
         }
         return null;

@@ -9,10 +9,11 @@ public class Articolo{
     private double prezzo;
     private double peso;
     private String dimensione;
+    private int id_categoria;
 
 
 
-    public Articolo(int codice,String nome,String descrizione,String colore,double sconto,double prezzo,double peso,String dimensione) {
+    public Articolo(int codice,String nome,String descrizione,String colore,double sconto,double prezzo,double peso,String dimensione,int id_categoria) {
         this.codice = codice;
         this.nome = nome;
         this.descrizione = descrizione;
@@ -21,6 +22,7 @@ public class Articolo{
         this.prezzo = prezzo;
         this.peso = peso;
         this.dimensione = dimensione;
+        this.id_categoria=id_categoria;
     }
 
     public int getCodice() {
@@ -88,6 +90,14 @@ public class Articolo{
 
     public void setDimensione(String dimensione) {
         this.dimensione = dimensione;
+    }
+
+    public int getId_categoria(){
+        return id_categoria;
+    }
+
+    public void setId_categoria(int id_categoria){
+        this.id_categoria = id_categoria;
     }
 
 }
