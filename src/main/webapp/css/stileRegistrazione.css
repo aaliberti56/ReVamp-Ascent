@@ -203,4 +203,17 @@ hr {
     align-items: center;
     transition: 0.2s;
 }
+.errore{
+    display:flex;
+    justify-content: center;
 
+
+}
+
+.errore1{
+    display:flex;
+    justify-content: center;
+    flex-direction : column;
+    align-items: center;
+
+}

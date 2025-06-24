@@ -33,7 +33,7 @@
     <div class="linksFooter">
         <a href="contattaci.jsp" class="linkFooter">Contattaci</a>
         <a href="chisiamo.jsp" class="linkFooter">Chi siamo</a>
-        <a href="infoconsegna.jsp" class="linkFooter">Informazioni sulla consegna</a>
+        <a href="infoConsegna.jsp" class="linkFooter">Informazioni sulla consegna</a>
         <span class="linkFooter">Recensioni</span>
         <div class="pagamentiFooter">
             <p>Metodi di pagamento</p><br>
