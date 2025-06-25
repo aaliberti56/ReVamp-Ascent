@@ -141,6 +141,33 @@ public class ClienteDAO{
             ps.executeUpdate();
         }
     }
+    public List<Cliente> doRetrieveByName(String nome) {
+        List<Cliente> clienti = new ArrayList<>();
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM cliente WHERE nome LIKE ?"
+            );
+            ps.setString(1, "%" + nome + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Cliente c = new Cliente(
+                        rs.getString("nome_utente"),
+                        rs.getString("pass"),
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getDouble("saldo"),
+                        rs.getString("email"),
+                        rs.getString("sesso"),
+                        rs.getInt("eta"),
+                        rs.getString("numTelefono")
+                );
+                clienti.add(c);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return clienti;
+    }
 
 
 }

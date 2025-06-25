@@ -1,22 +1,22 @@
 package model.JavaBeans;
 
 import java.sql.Time;
-import java.sql.Date;
 import java.util.GregorianCalendar;
 
-public class Ordine{
-    public int id_ordine;
-    public int num_articoli;
+public class Ordine {
+    private int id_ordine;
+    private int num_articoli;
     private String fattura;
     private GregorianCalendar data;
     private double importo_totale;
     private Time orario_ritiro;
     private String punto_ritiro;
     private String info_corriere;
-    private String indirizzo_consegna;
+    private int id_indirizzo; // CAMPO MODIFICATO
     private String nome_utente;
 
-    public Ordine(int id_ordine, int num_articoli, String fattura, GregorianCalendar data, double importo_totale, Time orario_ritiro, String punto_ritiro, String info_corriere, String indirizzo_consegna, String nome_utente) {
+    public Ordine(int id_ordine, int num_articoli, String fattura, GregorianCalendar data, double importo_totale,
+                  Time orario_ritiro, String punto_ritiro, String info_corriere, int id_indirizzo, String nome_utente) {
         this.id_ordine = id_ordine;
         this.num_articoli = num_articoli;
         this.fattura = fattura;
@@ -25,10 +25,11 @@ public class Ordine{
         this.orario_ritiro = orario_ritiro;
         this.punto_ritiro = punto_ritiro;
         this.info_corriere = info_corriere;
-        this.indirizzo_consegna = indirizzo_consegna;
+        this.id_indirizzo = id_indirizzo;
         this.nome_utente = nome_utente;
     }
 
+    // Getter e setter
     public int getId_ordine() {
         return id_ordine;
     }
@@ -48,6 +49,7 @@ public class Ordine{
     public String getFattura() {
         return fattura;
     }
+
     public void setFattura(String fattura) {
         this.fattura = fattura;
     }
@@ -55,6 +57,7 @@ public class Ordine{
     public GregorianCalendar getData() {
         return data;
     }
+
     public void setData(GregorianCalendar data) {
         this.data = data;
     }
@@ -62,6 +65,7 @@ public class Ordine{
     public double getImporto_totale() {
         return importo_totale;
     }
+
     public void setImporto_totale(double importo_totale) {
         this.importo_totale = importo_totale;
     }
@@ -69,6 +73,7 @@ public class Ordine{
     public Time getOrario_ritiro() {
         return orario_ritiro;
     }
+
     public void setOrario_ritiro(Time orario_ritiro) {
         this.orario_ritiro = orario_ritiro;
     }
@@ -84,24 +89,24 @@ public class Ordine{
     public String getInfo_corriere() {
         return info_corriere;
     }
+
     public void setInfo_corriere(String info_corriere) {
         this.info_corriere = info_corriere;
     }
 
-    public String getIndirizzo_consegna() {
-        return indirizzo_consegna;
+    public int getId_indirizzo() {
+        return id_indirizzo;
     }
 
-    public void setIndirizzo_consegna(String indirizzo_consegna) {
-        this.indirizzo_consegna = indirizzo_consegna;
+    public void setId_indirizzo(int id_indirizzo) {
+        this.id_indirizzo = id_indirizzo;
     }
 
     public String getNome_utente() {
         return nome_utente;
     }
+
     public void setNome_utente(String nome_utente) {
         this.nome_utente = nome_utente;
     }
-
-
 }

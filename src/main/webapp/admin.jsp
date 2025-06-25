@@ -33,9 +33,15 @@
         ➕ Aggiungi Articoli
     </a>
 
-    <a href="../LogoutServlet" class="bottone" style="background-color: #999;">
+    <a href="LogoutServlet" class="bottone" style="background-color: #999;">
         ⛔ Logout
     </a>
+
+    <a href="listaUtentiAdmin.jsp" class="bottone" style="background-color: #999;">
+        Lista Utenti
+    </a>
+
+
 </div>
 
 </body>

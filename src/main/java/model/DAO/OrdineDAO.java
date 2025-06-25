@@ -1,10 +1,13 @@
 package model.DAO;
-import java.sql.*;
-import model.JavaBeans.*;
-import java.util.*;
+
 import model.ConPool;
+import model.JavaBeans.Ordine;
+
+import java.sql.*;
+import java.util.*;
 
 public class OrdineDAO {
+
     public Ordine doRetrieveById(int id_ordine) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM ordine WHERE id_ordine = ?");
@@ -22,7 +25,7 @@ public class OrdineDAO {
                         rs.getTime("orario_ritiro"),
                         rs.getString("punto_ritiro"),
                         rs.getString("info_corriere"),
-                        rs.getString("indirizzo_consegna"),
+                        rs.getInt("id_indirizzo"),
                         rs.getString("nome_utente")
                 );
             }
@@ -31,7 +34,6 @@ public class OrdineDAO {
             throw new RuntimeException(e);
         }
     }
-
 
     public List<Ordine> doRetrieveAll() {
         List<Ordine> lista = new ArrayList<>();
@@ -50,7 +52,7 @@ public class OrdineDAO {
                         rs.getTime("orario_ritiro"),
                         rs.getString("punto_ritiro"),
                         rs.getString("info_corriere"),
-                        rs.getString("indirizzo_consegna"),
+                        rs.getInt("id_indirizzo"),
                         rs.getString("nome_utente")
                 );
                 lista.add(o);
@@ -64,7 +66,7 @@ public class OrdineDAO {
     public void doSave(Ordine ordine) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO ordine (num_articoli, fattura, data, importo_totale, orario_ritiro, punto_ritiro, info_corriere, indirizzo_consegna, nome_utente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO ordine (num_articoli, fattura, data, importo_totale, orario_ritiro, punto_ritiro, info_corriere, id_indirizzo, nome_utente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
             ps.setInt(1, ordine.getNum_articoli());
@@ -74,7 +76,7 @@ public class OrdineDAO {
             ps.setTime(5, ordine.getOrario_ritiro());
             ps.setString(6, ordine.getPunto_ritiro());
             ps.setString(7, ordine.getInfo_corriere());
-            ps.setString(8, ordine.getIndirizzo_consegna());
+            ps.setInt(8, ordine.getId_indirizzo());
             ps.setString(9, ordine.getNome_utente());
 
             ps.executeUpdate();
@@ -96,5 +98,4 @@ public class OrdineDAO {
             throw new RuntimeException(e);
         }
     }
-
 }

@@ -95,4 +95,10 @@ function controlloCampiCredenziali() {
 }
 
 
+function confermaCambioPreferito() {
+    return confirm("Sei sicuro di voler cambiare l'indirizzo preferito?");
+}
+
+
+
 

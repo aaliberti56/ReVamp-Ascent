@@ -36,7 +36,7 @@
             <p>Metodi di Pagamento</p>
         </div>
     </a>
-    <a href="indirizzi.jsp" class="boxAreaUtenteLink">
+    <a href="VisualizzaIndirizziServlet" class="boxAreaUtenteLink">
         <div class="boxAreaUtente">
             <img src="img/indrizzi.png" alt="Indirizzi" class="imgBoxAreaUtente" />
             <p>Indirizzi</p>

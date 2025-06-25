@@ -30,22 +30,27 @@
         </div>
     </div>
 
-    <div class="linksFooter">
-        <a href="contattaci.jsp" class="linkFooter">Contattaci</a>
-        <a href="chisiamo.jsp" class="linkFooter">Chi siamo</a>
-        <a href="infoConsegna.jsp" class="linkFooter">Informazioni sulla consegna</a>
-        <span class="linkFooter">Recensioni</span>
-        <div class="pagamentiFooter">
-            <p>Metodi di pagamento</p><br>
-            <img src="img/visa.jpg" alt="Visa" class="fotoPag" />
-            <img src="img/mastercard.jpg" alt="Mastercard" class="fotoPag" />
-            <img src="img/paypal.jpg" alt="Paypal" class="fotoPag" />
+    <div class="underFooter">
+        <br><br>
+        <div class="info">
+            <a href="contattaci.jsp" class="link"><span class="voceFooter">Contattaci</span></a><br><br>
+            <a href="chisiamo.jsp" class="link"><span class="voceFooter">Chi siamo</span></a><br><br>
+            <a href="infoConsegna.jsp" class="link"><span class="voceFooter">Informazioni sulla consegna</span></a><br><br>
+            <span class="voceFooter">Recensioni</span><br><br>
+            Metodi di pagamento: <br><br>
+            <div class="fotopagamento">
+                <img src="img/visa.jpg" class="fotopag">
+                <img src="img/mastercard.jpg" class="fotopag">
+                <img src="img/paypal.jpg" class="fotopag">
         </div>
     </div>
-    <div class="socialFooter">
-        <img src="img/social.png" alt="Social" class="socialLogo" />
+        <div class="info2">
+            <img src="img/social.png" class="socialLogo">
+        </div>
     </div>
+
 </footer>
+
 </body>
 <script src="js/footer.js"></script>
 </html>
