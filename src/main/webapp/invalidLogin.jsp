@@ -13,6 +13,6 @@
 </head>
 <body>
 Non sei un admin.
-<a href="LoginPageAdmin.jsp">Torna al login</a>
+<a href="loginAdmin.jsp">Torna al login</a>
 </body>
 </html>
