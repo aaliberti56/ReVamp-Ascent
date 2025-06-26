@@ -30,7 +30,7 @@
             <p>Ordini</p>
         </div>
     </a>
-    <a href="metodipagamento.jsp" class="boxAreaUtenteLink">
+    <a href="metodiPagamento.jsp" class="boxAreaUtenteLink">
         <div class="boxAreaUtente">
             <img src="img/credit-card.png" alt="Metodi di Pagamento" class="imgBoxAreaUtente" />
             <p>Metodi di Pagamento</p>

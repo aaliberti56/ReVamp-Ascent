@@ -2,9 +2,12 @@ package model.DAO;
 
 import model.ConPool;
 import model.JavaBeans.Ordine;
-
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+
 
 public class OrdineDAO {
 
@@ -98,4 +101,40 @@ public class OrdineDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Ordine> doRetrieveByDate(GregorianCalendar data1, GregorianCalendar data2) {
+        List<Ordine> lista = new ArrayList<>();
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM ordine WHERE data BETWEEN ? AND ? ORDER BY data DESC"
+            );
+            ps.setDate(1, new java.sql.Date(data1.getTimeInMillis()));
+            ps.setDate(2, new java.sql.Date(data2.getTimeInMillis()));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                GregorianCalendar data = new GregorianCalendar();
+                data.setTime(rs.getDate("data"));
+
+                Ordine o = new Ordine(
+                        rs.getInt("id_ordine"),
+                        rs.getInt("num_articoli"),
+                        rs.getString("fattura"),
+                        data,
+                        rs.getDouble("importo_totale"),
+                        rs.getTime("orario_ritiro"),
+                        rs.getString("punto_ritiro"),
+                        rs.getString("info_corriere"),
+                        rs.getInt("id_indirizzo"),
+                        rs.getString("nome_utente")
+                );
+                lista.add(o);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return lista;
+    }
+
+
 }

@@ -102,7 +102,7 @@
         <a href="Products.jsp">
             <button class="admin-button">MODIFICA/ELIMINA ARTICOLO</button>
         </a>
-        <a href="Ordini.jsp">
+        <a href="ordini.jsp">
             <button class="admin-button">VISUALIZZA LISTA ORDINI</button>
         </a>
         <a href="listaUtentiAdmin.jsp">

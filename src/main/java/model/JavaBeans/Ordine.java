@@ -12,7 +12,7 @@ public class Ordine {
     private Time orario_ritiro;
     private String punto_ritiro;
     private String info_corriere;
-    private int id_indirizzo; // CAMPO MODIFICATO
+    private int id_indirizzo;
     private String nome_utente;
 
     public Ordine(int id_ordine, int num_articoli, String fattura, GregorianCalendar data, double importo_totale,

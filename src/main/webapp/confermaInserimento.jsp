@@ -22,7 +22,7 @@
 
     <div style="text-align: center; margin-top: 20px">
         <a href="aggiungiArticolo.jsp" class="bottone" style="text-decoration: none; display: inline-block; width: auto; padding: 10px 20px;">Aggiungi un altro</a>
-        <a href="loginAdmin.jsp" class="bottone" style="text-decoration: none; display: inline-block; width: auto; padding: 10px 20px; background-color: #999;">Torna al pannello</a>    </div>
+        <a href="admin.jsp" class="bottone" style="text-decoration: none; display: inline-block; width: auto; padding: 10px 20px; background-color: #999;">Torna al pannello</a>    </div>
 </div>
 
 </body>
