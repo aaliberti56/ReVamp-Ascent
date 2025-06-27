@@ -41,8 +41,7 @@
     }
 %>
 
-<!--jsp:include page="header.jsp" -->
-
+<jsp:include page="header.jsp" />
 <div id="messaggio" class="messaggio" style="display:none;"></div>
 
 <div id="listaMetodiPagamento">

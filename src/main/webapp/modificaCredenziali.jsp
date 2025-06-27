@@ -18,6 +18,9 @@
 </head>
 <body>
 
+<jsp:include page="header.jsp" />
+
+
 <img src="img/logo.webp" class="logo">
 
 <div id="contenitoreForm">
@@ -49,6 +52,7 @@
         <input class="bottone" type="button" value="Modifica" onclick="controlloCampiCredenziali()">
     </form>
 </div>
+<jsp:include page="footerAreaUtente.jsp" />
 
 <script src="js/script.js"></script>  <!-- percorso corretto JS -->
 </body>

@@ -21,6 +21,9 @@
      <img src="img/info.png" class="imgerrore">
 </div>
 
+<jsp:include page="header.jsp"></jsp:include>
+
+
 <div class="errore1">
     <h2>La nostra Storia</h2>
     <p>
