@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import model.JavaBeans.*;
 import model.ConPool;
+import java.sql.ResultSet;
 
 public class MetodiPagamentoDAO {
 
@@ -20,7 +21,7 @@ public class MetodiPagamentoDAO {
                 if (sqlDate != null) {
                     dataScadenza.setTime(sqlDate);
                 }
-                return new MetodiPagamentoBean(
+                return new MetodiPagamento(
                         rs.getString("num_carta"),
                         rs.getString("intestatario"),
                         dataScadenza,
@@ -34,8 +35,8 @@ public class MetodiPagamentoDAO {
         }
     }
 
-    public List<MetodiPagamentoBean> doRetrieveAll() {
-        List<MetodiPagamentoBean> lista = new ArrayList<>();
+    public List<MetodiPagamento> doRetrieveAll() {
+        List<MetodiPagamento> lista = new ArrayList<>();
         try (Connection con = ConPool.getConnection()) {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM Metodi_pagamento");
@@ -45,7 +46,7 @@ public class MetodiPagamentoDAO {
                 if (sqlDate != null) {
                     dataScadenza.setTime(sqlDate);
                 }
-                MetodiPagamentoBean metodo = new MetodiPagamentoBean(
+                MetodiPagamento metodo = new MetodiPagamento(
                         rs.getString("num_carta"),
                         rs.getString("intestatario"),
                         dataScadenza,
@@ -60,7 +61,7 @@ public class MetodiPagamentoDAO {
         }
     }
 
-    public void doSave(MetodiPagamentoBean metodo) {
+    public boolean doSave(MetodiPagamento metodo) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO Metodi_pagamento (num_carta, intestatario, data_scadenza, cvv, nome_utente) VALUES (?, ?, ?, ?, ?)"
@@ -70,23 +71,29 @@ public class MetodiPagamentoDAO {
             ps.setDate(3, new java.sql.Date(metodo.getDataScadenza().getTimeInMillis()));
             ps.setInt(4, metodo.getCvv());
             ps.setString(5, metodo.getNomeUtente());
-            ps.executeUpdate();
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;  // Se almeno una riga è stata inserita, ritorna true
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean doDelete(String numCarta) {
+
+    public boolean doDelete(String numCarta, String nomeUtente) {
         try (Connection con = ConPool.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("DELETE FROM Metodi_pagamento WHERE num_carta = ?");
+            PreparedStatement ps = con.prepareStatement(
+                    "DELETE FROM Metodi_pagamento WHERE num_carta = ? AND nome_utente = ?"
+            );
             ps.setString(1, numCarta);
+            ps.setString(2, nomeUtente);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean doUpdate(MetodiPagamentoBean metodo) {
+    public boolean doUpdate(MetodiPagamento metodo) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
                     "UPDATE Metodi_pagamento SET intestatario = ?, data_scadenza = ?, cvv = ?, nome_utente = ? WHERE num_carta = ?"
@@ -101,8 +108,33 @@ public class MetodiPagamentoDAO {
             throw new RuntimeException(e);
         }
     }
-}
 
+    public List<MetodiPagamento> doRetrieveByUser(String nome_utente){
+        List<MetodiPagamento> lista=new ArrayList<>();
+        try(Connection con=ConPool.getConnection()){
+            PreparedStatement ps=con.prepareStatement("SELECT * FROM Metodi_pagamento WHERE nome_utente= ?");
+            ps.setString(1, nome_utente);
+            ResultSet rs=ps.executeQuery();
+            while(rs.next()){
+                GregorianCalendar dataScadenza = new GregorianCalendar();
+                Date sqlDate=rs.getDate("data_scadenza");
+                if (sqlDate != null) {
+                    dataScadenza.setTime(sqlDate);
+                }
+                MetodiPagamento carta = new MetodiPagamento(
+                        rs.getString("num_carta"),
+                        rs.getString("intestatario"),
+                        dataScadenza,
+                        rs.getInt("cvv"),
+                        rs.getString("nome_utente")
+                );
+                lista.add(carta);
+            }
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return lista;
+    }
 
 
 }

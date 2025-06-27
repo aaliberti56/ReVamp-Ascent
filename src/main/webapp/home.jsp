@@ -20,35 +20,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
-<!--  jsp:include page="header.jsp"   -->    <!-- da fare successivamente -->
-<h2>Ciao, <%=utente.getNome() %>!</h2>
-<p>Saldo disponibile: € <%= String.format("%.2f", utente.getSaldo()) %></p>
-<div class="contenitoreAreaUtente">
-    <a href="ordini.jsp" class="boxAreaUtenteLink">
-        <div class="boxAreaUtente">
-            <img src="img/ordini.png" alt="Ordini" class="imgBoxAreaUtente" />
+<jsp:include page="header.jsp" />
+
+<div class="user-dashboard">
+
+    <div class="user-header">
+        <h2>Ciao, <%=utente.getNome()%>!</h2>
+        <p class="user-balance">Saldo disponibile: € <%= String.format("%.2f", utente.getSaldo()) %></p>
+    </div>
+
+    <!-- Griglia dei menu -->
+    <div class="menu-grid">
+        <a href="ordini.jsp" class="menu-card">
+            <img src="img/ordini.png" alt="Ordini" class="menu-icon" />
             <p>Ordini</p>
-        </div>
-    </a>
-    <a href="metodiPagamento.jsp" class="boxAreaUtenteLink">
-        <div class="boxAreaUtente">
-            <img src="img/credit-card.png" alt="Metodi di Pagamento" class="imgBoxAreaUtente" />
+        </a>
+
+        <a href="metodiPagamento.jsp" class="menu-card">
+            <img src="img/credit-card.png" alt="Metodi di Pagamento" class="menu-icon" />
             <p>Metodi di Pagamento</p>
-        </div>
-    </a>
-    <a href="VisualizzaIndirizziServlet" class="boxAreaUtenteLink">
-        <div class="boxAreaUtente">
-            <img src="img/indrizzi.png" alt="Indirizzi" class="imgBoxAreaUtente" />
+        </a>
+
+        <a href="VisualizzaIndirizziServlet" class="menu-card">
+            <img src="img/indrizzi.png" alt="Indirizzi" class="menu-icon" />
             <p>Indirizzi</p>
-        </div>
-    </a>
-    <a href="modificaCredenziali.jsp" class="boxAreaUtenteLink">
-        <div class="boxAreaUtente">
-            <img src="img/impostazioni.png" alt="Impostazioni" class="imgBoxAreaUtente" />
+        </a>
+
+        <a href="modificaCredenziali.jsp" class="menu-card">
+            <img src="img/impostazioni.png" alt="Impostazioni" class="menu-icon" />
             <p>Impostazioni</p>
-        </div>
-    </a>
-</div>
+        </a>
+    </div>
 <%
     // Se l'utente è loggato mostra il bottone logout
     if (session.getAttribute("utenteLoggato") != null) {
