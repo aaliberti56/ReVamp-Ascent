@@ -175,6 +175,51 @@ h2 {
     font-size: 1rem;
 }
 
+.contenitoreProdotto {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.articolo {
+    width: 220px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.articolo:hover {
+    transform: scale(1.03);
+}
+
+.fotoArticolo {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.nomeArticolo {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.prezzo {
+    color: #007B00;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+
 /* Newsletter Section */
 .newsletter-section {
     max-width: 500px;

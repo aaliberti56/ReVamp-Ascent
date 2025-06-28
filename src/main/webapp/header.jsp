@@ -130,6 +130,7 @@
   </style>
 </head>
 <body>
+
 <div class="menu-container">
   <a href="catalogo.jsp">
     <img src='img/logo.webp' class='logo' alt="Logo">

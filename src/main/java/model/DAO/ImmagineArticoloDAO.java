@@ -3,6 +3,7 @@ package model.DAO;
 import model.JavaBeans.*;
 import model.ConPool;
 import java.sql.*;
+import java.util.*;
 
 public class ImmagineArticoloDAO {
 
@@ -49,7 +50,7 @@ public class ImmagineArticoloDAO {
     public void doDeleteByArticolo(int codiceArticolo) throws SQLException {
         String sql = "DELETE FROM ImmagineArticolo WHERE codice_articolo = ?";
 
-        try (Connection con = ConnessioneDB.getConnection();
+        try (Connection con = ConPool.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, codiceArticolo);
@@ -60,11 +61,35 @@ public class ImmagineArticoloDAO {
     public void doDelete(int idImmagine) throws SQLException {
         String sql = "DELETE FROM ImmagineArticolo WHERE id_immagine = ?";
 
-        try (Connection con = ConnessioneDB.getConnection();
+        try (Connection con = ConPool.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idImmagine);
             ps.executeUpdate();
         }
     }
+
+    public ImmagineArticolo findMainImage(int codiceArticolo) {
+        String sql = "SELECT * FROM ImmagineArticolo WHERE codice_articolo = ? AND is_principale = true LIMIT 1";
+        try (Connection con = ConPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, codiceArticolo);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new ImmagineArticolo(
+                        rs.getInt("id_immagine"),
+                        rs.getInt("codice_articolo"),
+                        rs.getString("url"),
+                        rs.getBoolean("is_principale"),
+                        rs.getString("descrizione")
+                );
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
