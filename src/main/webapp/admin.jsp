@@ -8,109 +8,45 @@
     }
 %>
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <title>Area Admin</title>
-    <link rel="icon" type="image/x-icon" href="img/logo.webp">
+    <meta charset="UTF-8">
+    <title>Area Admin - Benvenuto <%= admin.getNome() %></title>
+    <link rel="icon" href="img/logo.webp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            font-family: 'Segoe UI', sans-serif;
-            color: #333;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            text-align: center;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo {
-            width: 120px;
-            height: auto;
-            display: block;
-            margin: 0 auto 20px auto;
-        }
-
-        h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        h4 {
-            margin-top: 5px;
-            font-weight: normal;
-            color: #666;
-        }
-
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .button-container a {
-            text-decoration: none;
-        }
-
-        .admin-button {
-            width: 260px;
-            height: 120px;
-            background-color: #007bff;
-            border: none;
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .admin-button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 600px) {
-            .admin-button {
-                width: 90%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/stileRegistrazione.css">
 </head>
 <body>
 
-<div class="container">
-    <img src="img/logo.webp" alt="Logo" class="logo">
+<div class="user-dashboard">
+    <div class="user-header">
+        <h2>Benvenuto, <%= admin.getNome() %> <%= admin.getCognome() %>!</h2>
+        <h4>Area riservata amministratore</h4>
+    </div>
 
-    <h2>Benvenuto, <%= admin.getNome() %> <%= admin.getCognome() %>!</h2>
-    <h4>Area riservata amministratore</h4>
-
-    <div class="button-container">
-        <a href="FormAggiungiArticoloServlet">
-            <button class="admin-button">AGGIUNGI ARTICOLO</button>
+    <div class="menu-grid">
+        <a href="FormAggiungiArticoloServlet" class="menu-card">
+            <img src="img/ad1.jpeg" alt="Aggiungi Articolo" class="menu-icon">
+            <p>Aggiungi Articolo</p>
         </a>
-        <a href="listaArticoli.jsp">
-            <button class="admin-button">MODIFICA/ELIMINA ARTICOLO</button>
+        <a href="listaArticoli.jsp" class="menu-card">
+            <img src="img/ad1.jpeg" alt="Modifica Articolo" class="menu-icon">
+            <p>Modifica Articolo</p>
         </a>
-        <a href="ordini.jsp">
-            <button class="admin-button">VISUALIZZA LISTA ORDINI</button>
+        <a href="ordini.jsp" class="menu-card">
+            <img src="img/ad1.jpeg" alt="Visualizza Ordini" class="menu-icon">
+            <p>Visualizza Lista Ordini</p>
         </a>
-        <a href="listaUtentiAdmin.jsp">
-            <button class="admin-button">VISUALIZZA LISTA UTENTI</button>
+        <a href="listaUtentiAdmin.jsp" class="menu-card">
+            <img src="img/ad1.jpeg" alt="Visualizza utenti" class="menu-icon">
+            <p>Visualizza Lista Utenti</p>
         </a>
     </div>
+
+    <form action="AdminLogoutServlet" method="get" style="text-align:center; margin-top:30px;">
+        <input type="submit" value="Logout" class="bott1">
+    </form>
 </div>
 
 </body>
 </html>
-

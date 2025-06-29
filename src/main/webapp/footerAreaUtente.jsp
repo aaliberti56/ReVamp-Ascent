@@ -36,7 +36,6 @@
             <a href="contattaci.jsp" class="link"><span class="voceFooter">Contattaci</span></a><br><br>
             <a href="chisiamo.jsp" class="link"><span class="voceFooter">Chi siamo</span></a><br><br>
             <a href="infoConsegna.jsp" class="link"><span class="voceFooter">Informazioni sulla consegna</span></a><br><br>
-            <span class="voceFooter">Recensioni</span><br><br>
             Metodi di pagamento: <br><br>
             <div class="fotopagamento">
                 <img src="img/visa.jpg" class="fotopag">
