@@ -28,6 +28,7 @@ public class ArticoloDAO {
                         rs.getString("dimensione"),
                         rs.getInt("id_categoria")
                 );
+                return a;
             }
             return null;
         } catch (SQLException e){
@@ -91,8 +92,9 @@ public class ArticoloDAO {
             ps.setDouble(5, a.getPrezzo());
             ps.setDouble(6, a.getPeso());
             ps.setString(7, a.getDimensione());
-            ps.setInt(8, a.getCodice());
-            ps.setInt(9, a.getId_categoria());
+            ps.setInt(8, a.getId_categoria());
+            ps.setInt(9, a.getCodice());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

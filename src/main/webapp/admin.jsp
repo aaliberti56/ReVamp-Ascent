@@ -99,7 +99,7 @@
         <a href="FormAggiungiArticoloServlet">
             <button class="admin-button">AGGIUNGI ARTICOLO</button>
         </a>
-        <a href="Products.jsp">
+        <a href="listaArticoli.jsp">
             <button class="admin-button">MODIFICA/ELIMINA ARTICOLO</button>
         </a>
         <a href="ordini.jsp">

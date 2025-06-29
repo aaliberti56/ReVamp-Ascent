@@ -12,8 +12,7 @@ public class Articolo{
     private int id_categoria;
 
 
-
-    public Articolo(int codice,String nome,String descrizione,String colore,double sconto,double prezzo,double peso,String dimensione,int id_categoria) {
+    public Articolo(int codice, String nome, String descrizione, String colore, double sconto, double prezzo, double peso, String dimensione, int id_categoria) {
         this.codice = codice;
         this.nome = nome;
         this.descrizione = descrizione;
