@@ -664,7 +664,7 @@ hr {
     color: #2c3e50;
 }
 
-.scrivi-recensione form {
+.scrivi-recensione form{
     display: flex;
     flex-direction: column;
     gap: 15px;

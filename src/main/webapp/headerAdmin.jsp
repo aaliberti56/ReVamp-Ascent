@@ -11,58 +11,65 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ReVamp Ascent</title>
+  <title>ReVamp Ascent - Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
+    body {
+      margin: 0;
+      font-family: 'Raleway', sans-serif;
+    }
+
     .header-admin {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 25px;
-      background-color: #2c3e50;
+      padding: 20px 40px;
+      background: linear-gradient(to right, #2c3e50, #34495e);
       color: white;
-      font-family: 'Raleway', sans-serif;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
     .header-admin .left {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 20px;
     }
 
     .header-admin .left img {
-      height: 50px;
+      height: 60px;
     }
 
-    .header-admin .left h2 {
+    .header-admin .left h1 {
+      font-size: 1.8em;
       margin: 0;
-      font-size: 1.5em;
       font-weight: 700;
     }
 
     .header-admin .right {
       display: flex;
-      align-items: center;
       gap: 15px;
     }
 
-    .header-admin .right span {
-      font-weight: 500;
-    }
-
     .admin-button {
-      padding: 8px 16px;
       background-color: #3498db;
       color: white;
       border: none;
-      border-radius: 6px;
+      padding: 10px 18px;
+      border-radius: 8px;
       text-decoration: none;
       font-weight: bold;
-      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .admin-button i {
+      font-size: 1rem;
     }
 
     .admin-button:hover {
@@ -78,11 +85,17 @@
 
       .header-admin .right {
         flex-direction: column;
-        align-items: flex-start;
+        width: 100%;
+      }
+
+      .admin-button {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
 </head>
+
 <body>
 
 <div class="header-admin">
@@ -90,16 +103,14 @@
     <a href="admin.jsp">
       <img src="img/logo.webp" alt="Logo Admin">
     </a>
-    <h2>Pannello Amministratore</h2>
+    <h1>ReVamp Admin</h1>
   </div>
 
   <div class="right">
-    <a href="admin.jsp" class="admin-button">Home Admin</a>
-    <a href="ordini.jsp" class="admin-button">Visualizza Ordini</a>
-    <a href="AdminLogoutServlet" class="admin-button">Logout</a>
+    <a href="admin.jsp" class="admin-button"><i class="fa fa-home"></i> Home</a>
+    <a href="AdminLogoutServlet" class="admin-button"><i class="fa fa-sign-out-alt"></i> Logout</a>
   </div>
 </div>
-
 
 </body>
 </html>
