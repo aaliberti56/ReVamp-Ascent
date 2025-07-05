@@ -16,117 +16,51 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;500;700&display=swap" rel="stylesheet">
   <style>
-    /* Stili generali */
-    body {
-      font-family: 'Raleway', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+    body { font-family: 'Raleway', sans-serif; margin: 0; padding: 0; }
+    .logo { height: 60px; margin: 10px 20px; }
+    .iconaMenu { height: 30px; margin: 0 10px; cursor: pointer; vertical-align: middle; }
 
-    .logo {
-      height: 60px;
-      margin: 10px 20px;
-    }
-
-    .iconaMenu {
-      height: 30px;
-      margin: 0 10px;
-      cursor: pointer;
-      vertical-align: middle;
-    }
-
-    /* Menu principale */
     .menu-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: #f8f9fa;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px; background-color: #f8f9fa; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    .menuricerca {
-      display: flex;
-      align-items: center;
-    }
+    .menuricerca { display: flex; align-items: center; margin-left: auto; }
+    .ricerca { padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; margin-right: 10px; width: 200px; }
 
-    .ricerca {
-      padding: 8px 15px;
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      margin-right: 10px;
-      width: 200px;
-    }
+    .menu { display: flex; background-color: #2c3e50; padding: 10px 20px; }
+    .menu a { color: white; padding: 10px 15px; text-decoration: none; font-weight: 500; }
+    .menu a:hover { background-color: #3d566e; }
 
-    .menu {
-      display: flex;
-      background-color: #2c3e50;
-      padding: 10px 20px;
-    }
+    #menuTelefono { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: white; z-index: 1000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+    .closeBtn { position: absolute; top: 20px; right: 20px; }
+    .vociMenuTelefono { margin-top: 40px; }
+    .vociMenuTelefono a { color: #2c3e50; font-weight: 700; font-size: 1.2em; display: block; margin: 15px 0; text-decoration: none; }
+    #hamburgerMenu { display: none; }
 
-    .menu a {
-      color: white;
-      padding: 10px 15px;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .menu a:hover {
-      background-color: #3d566e;
-    }
-
-    /* Menu mobile (per dispositivi piccoli) */
-    #menuTelefono {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: white;
-      z-index: 1000;
-      overflow-y: auto;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .closeBtn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-
-    .vociMenuTelefono {
-      margin-top: 40px;
-    }
-
-    .vociMenuTelefono a {
-      color: #2c3e50;
-      font-weight: 700;
-      font-size: 1.2em;
-      display: block;
-      margin: 15px 0;
-      text-decoration: none;
-    }
-
-    #hamburgerMenu {
-      display: none;
-    }
-
-    /* Responsive - quando lo schermo è piccolo */
     @media (max-width: 768px) {
-      .menu {
-        display: none;
-      }
-
-      #hamburgerMenu {
-        display: inline-block;
-      }
-
-      .menuricerca {
-        margin-left: auto;
-      }
+      .menu { display: none; }
+      #hamburgerMenu { display: inline-block; }
     }
+
+    .iconaMenuBtn { background: none; border: none; padding: 0; cursor: pointer; }
+
+    .modal-ricerca {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content-ricerca {
+      background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px;
+      width: 80%; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); position: relative;
+    }
+
+    .close-ricerca { position: absolute; top: 10px; right: 15px; font-size: 24px; font-weight: bold; color: #333; cursor: pointer; }
+
+    .modal-content-ricerca ul { list-style: none; padding: 0; }
+    .modal-content-ricerca li { margin-bottom: 10px; }
+    .modal-content-ricerca a { text-decoration: none; color: #2c3e50; font-weight: 500; }
+    .modal-content-ricerca a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -137,24 +71,35 @@
   </a>
 
   <div class="menuricerca">
-    <form action="RicercaCatalogo" method="GET">
-      <input type="text" id="textboxRicerca" name="ricerca" placeholder=" Ricerca..." class="ricerca">
-      <input type="image" src="img/magnifier.png" alt="Cerca" class="iconaMenu">
+    <form id="formRicerca" onsubmit="eseguiRicerca(event)">
+      <input type="text" id="textboxRicerca" name="ricerca" placeholder="Cerca..." class="ricerca" required>
+      <button type="submit" class="iconaMenuBtn">
+        <img src="img/magnifier.png" alt="Cerca" class="iconaMenu">
+      </button>
     </form>
-
-    <a href="carrello.jsp" style="text-decoration: none;">
-      <img src="img/cart.png" class="iconaMenu" alt="Carrello">
-    </a>
-
-    <a href="home.jsp">
-      <img src="img/user.png" class="iconaMenu" alt="Area Utente">
-    </a>
   </div>
 
-  <img src="img/menu.png" class="iconaMenu" onclick="mostraMenu()" id="hamburgerMenu" alt="Menu">
+  <a href="carrello.jsp" style="text-decoration: none;">
+    <img src="img/cart.png" class="iconaMenu" alt="Carrello">
+  </a>
+
+  <a href="home.jsp">
+    <img src="img/user.png" class="iconaMenu" alt="Area Utente">
+  </a>
 </div>
 
-<!-- Menu mobile - appare solo su dispositivi piccoli -->
+<img src="img/menu.png" class="iconaMenu" onclick="mostraMenu()" id="hamburgerMenu" alt="Menu">
+
+<!-- Modale risultati ricerca -->
+<div id="modalRisultati" class="modal-ricerca">
+  <div class="modal-content-ricerca">
+    <span class="close-ricerca" onclick="chiudiModal()">&times;</span>
+    <h3>Risultati della ricerca</h3>
+    <ul id="listaProdottiModale"></ul>
+  </div>
+</div>
+
+<!-- Menu mobile -->
 <div id="menuTelefono">
   <img class="iconaMenu closeBtn" src="img/close.png" onclick="nascondiMenu()" alt="Chiudi">
   <h1 style='text-align: center;'>Categorie</h1>
@@ -164,7 +109,7 @@
       CategoriaDAO catdao = new CategoriaDAO();
       List<Categoria> categorie = catdao.doRetrieveAll();
 
-      for(Categoria categoria : categorie) {
+      for (Categoria categoria : categorie) {
     %>
     <a href="catalogo.jsp?categ=<%= categoria.getTipologia() %>">
       <%= categoria.getTipologia() %>
@@ -185,10 +130,10 @@
   </div>
 </div>
 
-<!-- Menu desktop - appare su schermi grandi -->
+<!-- Menu desktop -->
 <nav class='menu'>
   <%
-    for(Categoria categoria : categorie) {
+    for (Categoria categoria : categorie) {
   %>
   <a href="catalogo.jsp?categ=<%= categoria.getTipologia() %>">
     <%= categoria.getTipologia() %>
@@ -199,7 +144,6 @@
 </nav>
 
 <script>
-  // Funzioni per mostrare/nascondere il menu mobile
   function mostraMenu() {
     document.getElementById('menuTelefono').style.display = 'block';
   }
@@ -208,14 +152,52 @@
     document.getElementById('menuTelefono').style.display = 'none';
   }
 
-  // Ricerca dinamica (opzionale)
-  document.getElementById('textboxRicerca').addEventListener('input', function() {
-    var testoRicerca = this.value;
-    if(testoRicerca.length > 2) {
-      // Puoi implementare qui la ricerca dinamica
-      // usando fetch() o XMLHttpRequest
-    }
-  });
+  function eseguiRicerca(event) {
+    event.preventDefault();
+
+    const query = document.getElementById("textboxRicerca").value.trim();
+    if (query === "") return;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "RicercaCatalogoJson?ricerca=" + encodeURIComponent(query), true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        try {
+          const prodotti = JSON.parse(xhr.responseText);
+          const ul = document.getElementById("listaProdottiModale");
+          ul.innerHTML = "";
+
+          if (prodotti.length === 0) {
+            const li = document.createElement("li");
+            li.textContent = "Nessun prodotto trovato.";
+            ul.appendChild(li);
+          } else {
+            prodotti.forEach(p => {
+              const li = document.createElement("li");
+              li.innerHTML =
+                      '<a href="DettaglioArticoloServlet?codice=' + p.codice + '">' +
+                      '<strong>' + p.nome + '</strong>' +
+                      '</a> - €' + parseFloat(p.prezzo).toFixed(2);
+
+
+
+              ul.appendChild(li);
+            });
+          }
+
+          document.getElementById("modalRisultati").style.display = "block";
+        } catch (e) {
+          console.error("Errore JSON:", e);
+        }
+      }
+    };
+    xhr.send();
+  }
+
+  function chiudiModal() {
+    document.getElementById("modalRisultati").style.display = "none";
+  }
 </script>
 </body>
 </html>
+

@@ -110,4 +110,31 @@ public class ArticoloDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Articolo> cercaArticoloPerNome(String nome){
+        List<Articolo> articoli=new ArrayList<>();
+        try(Connection con=ConPool.getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM articolo WHERE LOWER(nome) LIKE ?");
+            ps.setString(1, "%" + nome.toLowerCase() + "%");
+
+            ResultSet rs=ps.executeQuery();
+            while(rs.next()){
+                Articolo a = new Articolo(
+                        rs.getInt("codice"),
+                        rs.getString("nome"),
+                        rs.getString("descrizione"),
+                        rs.getString("colore"),
+                        rs.getDouble("sconto"),
+                        rs.getDouble("prezzo"),
+                        rs.getDouble("peso"),
+                        rs.getString("dimensione"),
+                        rs.getInt("id_categoria")
+                );
+            articoli.add(a);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return articoli;
+    }
 }
