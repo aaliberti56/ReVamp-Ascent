@@ -522,3 +522,251 @@ hr {
         flex-wrap: wrap; font-size: 15px; justify-content: unset; flex-direction: column;
     }
 }
+
+.admin-header {
+    background-color: #2C3E50;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-header .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-header .logo {
+    height: 45px;
+    border-radius: 5px;
+}
+
+.admin-header .site-title {
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+.admin-header .menu-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.admin-header .menu-area span {
+    font-size: 1em;
+}
+
+.admin-header a.button {
+    padding: 8px 15px;
+    background-color: #3498DB;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.admin-header a.button:hover {
+    background-color: #2980B9;
+}
+
+@media screen and (max-width: 600px) {
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .admin-header .menu-area {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+.stelle {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-size: 2.2rem;
+    direction: rtl;
+    unicode-bidi: bidi-override;
+}
+
+.stelle input {
+    display: none;
+}
+
+.stelle label {
+    cursor: pointer;
+    color: #ccc;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.stelle label:hover,
+.stelle label:hover ~ label {
+    color: #ffc107;
+    transform: scale(1.2);
+}
+
+.stelle input:checked ~ label {
+    color: #ffc107;
+}
+
+
+.immagine-articolo {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.info-articolo {
+    max-width: 600px;
+    flex: 1;
+}
+
+.info-articolo h2 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+.info-articolo p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.prezzo-articolo {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #007B00;
+    margin-top: 15px;
+}
+
+.scrivi-recensione {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    max-width: 700px;
+    margin: 40px auto;
+}
+
+.scrivi-recensione h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #2c3e50;
+}
+
+.scrivi-recensione form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.scrivi-recensione input[type="text"],
+.scrivi-recensione textarea {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #fdfdfd;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scrivi-recensione input[type="text"]:focus,
+.scrivi-recensione textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+
+.scrivi-recensione .btn {
+    align-self: center;
+    background: linear-gradient(to right, #007bff, #0056b3);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.scrivi-recensione .btn:hover {
+    transform: translateY(-2px);
+}
+
+
+.immagini-articolo {
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+}
+.immagine-principale {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.immagine-principale img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+}
+.immagine-principale img:hover {
+    transform: scale(1.05);
+}
+.galleria {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.galleria img.miniatura {
+    width: 100px;
+    height: auto;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+.galleria img.miniatura:hover,
+.galleria img.miniatura.attiva {
+    border-color: #007bff;
+}
+
+.altre-immagini {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.img-default {
+    max-width: 300px;
+    opacity: 0.7;
+}
+
+/* Modifica per affiancare immagine e descrizione */
+.contenitore-principale {
+    display: flex;
+    gap: 30px;
+    max-width: 1000px;
+    margin: 40px auto 0 auto;
+    align-items: flex-start;
+}
+.contenitore-principale .immagini-articolo {
+    flex: 1;
+    max-width: 450px;
+}
+.contenitore-principale .info-articolo {
+    flex: 1;
+    max-width: 500px;
+}

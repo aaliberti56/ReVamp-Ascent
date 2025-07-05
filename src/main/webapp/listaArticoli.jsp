@@ -16,6 +16,9 @@
   ImmagineArticoloDAO imgDao = new ImmagineArticoloDAO();
   List<Articolo> articoli = dao.doRetriveByAll();
 %>
+
+<%@ include file="headerAdmin.jsp" %>
+
 <html>
 <head>
     <title>Lista Articoli - Admin</title>

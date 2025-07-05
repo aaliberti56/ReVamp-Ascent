@@ -4,6 +4,9 @@
          import="java.util.ArrayList"
          import="java.util.List"
 %>
+
+<%@ include file="headerAdmin.jsp" %>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>

@@ -10,6 +10,7 @@
 
   List<Categoria> categorie = (List<Categoria>) request.getAttribute("categorie");
 %>
+<%@ include file="headerAdmin.jsp" %>
 
 <!DOCTYPE html>
 <html>

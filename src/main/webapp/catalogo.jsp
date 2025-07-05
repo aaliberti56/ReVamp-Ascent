@@ -73,16 +73,15 @@
               }
             }
       %>
-  <div class="articolo">
-    <a href="dettaglioArticolo.jsp?codice=<%=a.getCodice()%>">
-      <img class="fotoArticolo" src="<%= imgURL %>" alt="<%= a.getNome() %>">
-    </a>
-    <span class="nomeArticolo">
-            <a href="dettaglioArticolo.jsp?codice=<%=a.getCodice()%>"><%= a.getNome() %></a>
-        </span><br>
-    <span class="prezzo"><%= a.getPrezzo() %> €</span>
-  </div>
-  <%
+      <div class="articolo">
+        <a href="DettaglioArticoloServlet?codice=<%=a.getCodice()%>">
+          <img class="fotoArticolo" src="<%= imgURL %>" alt="<%= a.getNome() %>">
+          <span class="nomeArticolo"><%= a.getNome() %></span>
+        </a><br>
+        <span class="prezzo"><%= a.getPrezzo() %> €</span>
+      </div>
+
+      <%
     }
     }
   %>

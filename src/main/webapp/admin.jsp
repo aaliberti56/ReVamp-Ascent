@@ -7,6 +7,9 @@
         return;
     }
 %>
+
+<%@ include file="headerAdmin.jsp" %>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
