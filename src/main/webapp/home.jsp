@@ -69,6 +69,8 @@
 <%
     }
 %>
+</div>
+
 <jsp:include page="footerAreaUtente.jsp" />
 
 </body>

@@ -1,5 +1,7 @@
+let modal;
 document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById("modalIscrizione");
+    modal = document.getElementById("modalIscrizione");
+    window.modal = modal; // ora è accessibile anche da console
     const btn = document.getElementById("btnIscriviti");
     const span = modal.querySelector(".close");
     const emailInput = document.getElementById("newsletterEmail");
@@ -23,3 +25,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 });
+

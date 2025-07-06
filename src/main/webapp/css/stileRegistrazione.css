@@ -618,17 +618,64 @@ hr {
 
 
 .immagine-articolo {
-    max-width: 400px;
+    max-width: 600px;
     width: 100%;
     border-radius: 12px;
     object-fit: cover;
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
-
-.info-articolo {
-    max-width: 600px;
-    flex: 1;
+.img-prodotto-principale {
+    width: 100%;
+    max-height: 550px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
+
+.info-prodotto {
+    flex: 0.8;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'Poppins', sans-serif;
+    color: #2c3e50;
+}
+
+
+
+.info-prodotto > p {
+    margin: 0; /* 👈 azzera spazio verticale aggiunto dai <p> */
+    padding: 0;
+    line-height: 1.3;
+}
+
+.info-prodotto h1 {
+    font-size: 3em;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #2c3e50;
+    position: relative;
+    display: inline-block;
+    cursor: default;
+    transition: transform 0.3s ease;
+}
+
+.info-prodotto h1::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background: #3498db;
+    transition: width 0.4s ease;
+}
+
+.info-prodotto h1:hover::after {
+    width: 100%;
+}
+
 
 .info-articolo h2 {
     font-size: 2rem;
@@ -638,7 +685,20 @@ hr {
 .info-articolo p {
     font-size: 1.1rem;
     color: #555;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.prezzo {
+    font-size: 1.8em;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.prezzo del {
+    font-size: 1em;
+    color: gray;
+    margin-left: 10px;
 }
 
 .prezzo-articolo {
@@ -647,6 +707,57 @@ hr {
     color: #007B00;
     margin-top: 15px;
 }
+
+.quantita-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.quantita-container input {
+    width: 50px;
+    text-align: center;
+    font-size: 1.1em;
+    padding: 4px;
+}
+
+.quantita-container button {
+    padding: 5px 10px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+.pulsante-carrello {
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.pulsante-carrello:hover {
+    background-color: #2980b9;
+}
+
+.dettagli-extra {
+    margin-top: 10px;
+    color: #333;
+}
+
+.banner-info-servizi {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.banner-info-servizi img {
+    max-width: 100%;
+    height: auto;
+}
+
 
 .scrivi-recensione {
     background-color: #fff;
@@ -715,12 +826,15 @@ hr {
     margin-bottom: 20px;
 }
 .immagine-principale img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
+    max-height: 550px;
+    object-fit: cover;
     border-radius: 8px;
     transition: transform 0.3s ease;
     cursor: zoom-in;
 }
+
 .immagine-principale img:hover {
     transform: scale(1.05);
 }
@@ -754,19 +868,34 @@ hr {
     opacity: 0.7;
 }
 
-/* Modifica per affiancare immagine e descrizione */
 .contenitore-principale {
     display: flex;
-    gap: 30px;
-    max-width: 1000px;
+    gap: 40px;
+    max-width: 1400px;
+    width: 100%;
+    padding: 20px 60px; /* 👈 aumenta il padding orizzontale per spostare tutto a destra */
     margin: 40px auto 0 auto;
     align-items: flex-start;
 }
+
+
 .contenitore-principale .immagini-articolo {
-    flex: 1;
-    max-width: 450px;
+    flex: 1.2;
+    max-width: 100%;
 }
+
 .contenitore-principale .info-articolo {
-    flex: 1;
-    max-width: 500px;
+    flex: 0.8;
+    max-width: 480px;
+}
+
+@media (max-width: 768px) {
+    .contenitore-principale {
+        flex-direction: column;
+    }
+
+    .contenitore-principale .immagini-articolo,
+    .contenitore-principale .info-articolo {
+        max-width: 100%;
+    }
 }

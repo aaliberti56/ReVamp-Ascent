@@ -14,6 +14,7 @@
     <title>Catalogo Articoli</title>
     <link rel="stylesheet" href="css/stileRegistrazione.css">
     <link rel="icon" type="image/x-icon" href="img/logo.webp">
+
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>

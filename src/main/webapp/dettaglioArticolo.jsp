@@ -26,6 +26,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Dettaglio Articolo - <%= articolo.getNome() %></title>
+    <link rel="icon" type="image/x-icon" href="img/logo.webp">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/stileRegistrazione.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -106,47 +108,62 @@
 %>
 
 <div class="contenitore-principale">
-    <div class="immagini-articolo">
-        <div class="immagine-principale zoom-container" onclick="apriZoom()">
-            <img id="imgPrincipale" class="immagine-articolo" src="<%= imgPrincipale %>" alt="Immagine principale articolo" />
+    <div class="immagine-articolo">
+        <div class="zoom-container" onclick="apriZoom()">
+            <img id="imgPrincipale" class="img-prodotto-principale" src="<%= imgPrincipale %>" alt="Immagine prodotto" />
         </div>
+
         <div class="galleria">
             <img src="<%= imgPrincipale %>" class="miniatura attiva" alt="Miniatura" onclick="cambiaImmaginePrincipale(this)" />
-            <%
-                for (String url : altreImmagini) {
-                    if (url != null && !url.trim().isEmpty()) {
-            %>
-            <img src="<%= url %>" class="miniatura" alt="Miniatura" onclick="cambiaImmaginePrincipale(this)" />
-            <%
-                    }
-                }
-            %>
+            <% for (String url : altreImmagini) {
+                if (url != null && !url.trim().isEmpty()) { %>
+            <img src="<%= url %>" class="miniatura" onclick="cambiaImmaginePrincipale(this)" />
+            <% }} %>
         </div>
     </div>
 
-    <div class="info-articolo">
-        <h2><%= articolo.getNome() %></h2>
+
+    <div class="info-prodotto">
+        <h1><%= articolo.getNome() %></h1>
         <p><%= articolo.getDescrizione() %></p>
-        <p><strong>Colore:</strong> <%= articolo.getColore() %></p>
-        <p class="prezzo-articolo">Prezzo: € <%= String.format(Locale.ITALY, "%.2f", prezzoScontato) %>
+
+        <p class="prezzo">
+            € <%= String.format(Locale.ITALY, "%.2f", prezzoScontato) %>
             <% if (articolo.getSconto() > 0) { %>
             <del>€ <%= String.format(Locale.ITALY, "%.2f", articolo.getPrezzo()) %></del>
             <% } %>
         </p>
-        <p><strong>Peso:</strong> <%= articolo.getPeso() %> kg</p>
-        <p><strong>Dimensione:</strong> <%= articolo.getDimensione() %> cm</p>
+
+        <p><strong>Colore:</strong> <%= articolo.getColore() %></p>
+
+
+        <div class="dettagli-extra">
+            <p><strong>Spedizione:</strong> € 8,40</p>
+            <p><strong>Disponibilità:</strong> In pronta consegna</p>
+            <p><strong>Peso:</strong> <%= articolo.getPeso() %> kg</p>
+            <p><strong>Dimensioni:</strong> <%= articolo.getDimensione() %> cm</p>
+        </div>
+
+        <form action="CarrelloServlet" method="post">
+            <input type="hidden" name="idArticolo" value="<%= articolo.getCodice() %>" />
+            <div class="quantita-container">
+                <label for="quantita">Quantità:</label>
+                <button type="button" onclick="modificaQuantita(-1)">−</button>
+                <input type="number" id="quantita" name="quantita" value="1" min="1" />
+                <button type="button" onclick="modificaQuantita(1)">+</button>
+            </div>
+            <button type="submit" class="pulsante-carrello">AGGIUNGI AL CARRELLO</button>
+        </form>
+
+        <div class="banner-info-servizi">
+            <img src="img/no-iva-2022.png" alt="Servizi informativi" />
+        </div>
     </div>
+
 </div>
 
-<div class="add-to-cart-container">
-    <p>Clicca sull'icona per aggiungere al carrello</p>
-    <form action="CarrelloServlet" method="post">
-        <input type="hidden" name="idArticolo" value="<%= articolo.getCodice() %>" />
-        <button type="submit" style="background: none; border: none; cursor: pointer;">
-            <img src="img/cart.png" alt="Aggiungi al carrello" style="width: 48px; height: 48px;" />
-        </button>
-    </form>
-</div>
+
+
 
 <div class="recensioni">
     <h2>Recensioni</h2>
@@ -217,6 +234,17 @@
 
     function chiudiZoom() {
         document.getElementById("modalZoom").style.display = "none";
+    }
+
+
+    function modificaQuantita(delta) {
+        const input = document.getElementById("quantita");
+        let val = parseInt(input.value);
+        if (!isNaN(val)) {
+            val += delta;
+            if (val < 1) val = 1;
+            input.value = val;
+        }
     }
 </script>
 

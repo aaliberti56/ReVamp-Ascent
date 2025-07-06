@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body { font-family: 'Raleway', sans-serif; margin: 0; padding: 0; }
     .logo { height: 60px; margin: 10px 20px; }
@@ -57,18 +58,48 @@
 
     .close-ricerca { position: absolute; top: 10px; right: 15px; font-size: 24px; font-weight: bold; color: #333; cursor: pointer; }
 
-    .modal-content-ricerca ul { list-style: none; padding: 0; }
+    .modal-content-ricerca ul {
+        list-style: none;
+        padding: 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
     .modal-content-ricerca li { margin-bottom: 10px; }
     .modal-content-ricerca a { text-decoration: none; color: #2c3e50; font-weight: 500; }
     .modal-content-ricerca a:hover { text-decoration: underline; }
+    .btn-catalogo {
+      background-color: #3498db;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-catalogo:hover {
+      background-color: #2980b9;
+    }
+
   </style>
 </head>
 <body>
 
 <div class="menu-container">
-  <a href="catalogo.jsp">
+  <a href="homePage.jsp">
     <img src='img/logo.webp' class='logo' alt="Logo">
   </a>
+
+
+  <a href="catalogo.jsp" class="btn-catalogo">
+    <i class="fa-solid fa-list"></i> Catalogo
+  </a>
+
 
   <div class="menuricerca">
     <form id="formRicerca" onsubmit="eseguiRicerca(event)">
@@ -77,7 +108,9 @@
         <img src="img/magnifier.png" alt="Cerca" class="iconaMenu">
       </button>
     </form>
+
   </div>
+
 
   <a href="carrello.jsp" style="text-decoration: none;">
     <img src="img/cart.png" class="iconaMenu" alt="Carrello">
@@ -87,6 +120,7 @@
     <img src="img/user.png" class="iconaMenu" alt="Area Utente">
   </a>
 </div>
+
 
 <img src="img/menu.png" class="iconaMenu" onclick="mostraMenu()" id="hamburgerMenu" alt="Menu">
 
@@ -174,14 +208,13 @@
           } else {
             prodotti.forEach(p => {
               const li = document.createElement("li");
-              li.innerHTML =
-                      '<a href="DettaglioArticoloServlet?codice=' + p.codice + '">' +
-                      '<strong>' + p.nome + '</strong>' +
-                      '</a> - €' + parseFloat(p.prezzo).toFixed(2);
+                li.innerHTML =
+                    '<a href="DettaglioArticoloServlet?codice=' + p.codice + '" style="display: flex; align-items: center; gap: 10px;">' +
+                    '<img src="' + p.immagine + '" alt="' + p.nome + '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">' +
+                    '<strong>' + p.nome + '</strong>' +
+                    '</a> - €' + parseFloat(p.prezzo).toFixed(2);
+                ul.appendChild(li);
 
-
-
-              ul.appendChild(li);
             });
           }
 

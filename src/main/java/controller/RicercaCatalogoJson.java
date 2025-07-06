@@ -26,18 +26,26 @@ public class RicercaCatalogoJson extends HttpServlet {
             return;
         }
 
+        ImmagineArticoloDAO imgDao=new ImmagineArticoloDAO();
+
         StringBuilder jsonOutput = new StringBuilder();
         jsonOutput.append("[");
 
         for (int i = 0; i < articoli.size(); i++) {
             Articolo a = articoli.get(i);
-
-            jsonOutput.append(String.format(
-                    Locale.US,
-                    "{\"codice\":%d,\"nome\":\"%s\",\"prezzo\":%.2f}",
+            ImmagineArticolo img=imgDao.findMainImage(a.getCodice());
+            String url;
+            if(img!=null && img.getUrl() !=null && !img.getUrl().isEmpty()){
+                url=img.getUrl();
+            }else{
+                url="img/default.jpg";
+            }
+            jsonOutput.append(String.format(Locale.US,
+                    "{\"codice\":%d,\"nome\":\"%s\",\"prezzo\":%.2f,\"immagine\":\"%s\"}",
                     a.getCodice(),
                     a.getNome().replace("\"", "\\\""),
-                    a.getPrezzo()
+                    a.getPrezzo(),
+                    url.replace("\"", "\\\"")
             ));
 
             if (i < articoli.size() - 1)
