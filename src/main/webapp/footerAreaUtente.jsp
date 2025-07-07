@@ -18,7 +18,7 @@
     }
 
     #testoModal {
-        display: block !important;
+        display: none !important;
         color: black !important;
         font-size: 20px !important;
         opacity: 1 !important;
@@ -46,6 +46,17 @@
         font-size: 16px;
         margin-bottom: 20px;
     }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
 
 </style>
 <footer class="footer">
@@ -83,19 +94,22 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const modal = document.getElementById("modalIscrizione");
+        modal = document.getElementById("modalIscrizione");
+        window.modal = modal; // ora è accessibile anche da console
         const btn = document.getElementById("btnIscriviti");
         const span = modal.querySelector(".close");
         const emailInput = document.getElementById("newsletterEmail");
-        const testoModal = document.getElementById("testoModal");
+
 
         btn.onclick = () => {
-            if (emailInput.value.trim() === "") {
+            const email = emailInput.value.trim();
+            const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+            if (email === "" || !emailRegex.test(email)) {
                 alert("Inserisci una email valida!");
                 return;
             }
 
-            testoModal.textContent = "Iscrizione avvenuta con successo!";
             modal.style.display = "block";
             emailInput.value = "";
         };
@@ -105,7 +119,7 @@
         };
 
         window.onclick = (event) => {
-            if (event.target === modal) {
+            if (event.target == modal) {
                 modal.style.display = "none";
             }
         };

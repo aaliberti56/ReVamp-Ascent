@@ -6,11 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const span = modal.querySelector(".close");
     const emailInput = document.getElementById("newsletterEmail");
 
+
     btn.onclick = () => {
-        if (emailInput.value.trim() === "") {
+        const email = emailInput.value.trim();
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+        if (email === "" || !emailRegex.test(email)) {
             alert("Inserisci una email valida!");
             return;
         }
+
         modal.style.display = "block";
         emailInput.value = "";
     };

@@ -120,7 +120,7 @@ tbody tr:hover {
 input[type="date"] {
     padding: 10px 12px;
     font-size: 16px;
-    background-color: #2a293a;
+    background-color: white;
     color: #ffffff;
     border: 2px solid #555;
     border-radius: 8px;
