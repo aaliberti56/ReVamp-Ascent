@@ -25,9 +25,9 @@ public class login extends HttpServlet {
         String password=request.getParameter("password");
 
         ClienteDAO clienteDAO=new ClienteDAO();
-        Cliente cliente=clienteDAO.doRetrieveByUsername(username);
+        Cliente cliente = clienteDAO.checkLogin(username, password);
 
-        if(cliente!=null && cliente.getPass().equals(password)){
+        if(cliente!=null){
             HttpSession session=request.getSession();
             session.setAttribute("utenteLoggato",cliente);
             response.sendRedirect("home.jsp");

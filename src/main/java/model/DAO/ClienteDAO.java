@@ -5,8 +5,29 @@ import model.JavaBeans.*;
 import model.ConPool;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 public class ClienteDAO {
+
+
+    private String hashPassword(String password){
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] hashedBytes=md.digest(password.getBytes());
+
+            StringBuilder sb=new StringBuilder();
+            for(byte b:hashedBytes){
+                sb.append(String.format("%02x",b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Errore nell'hashing della password", e);
+        }
+    }
+
 
     public Cliente doRetrieveByUsername(String nome_utente) {
         try (Connection con = ConPool.getConnection()) {
@@ -93,8 +114,8 @@ public class ClienteDAO {
     public boolean doSave(Cliente cliente) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO cliente(nome_utente, pass, nome, cognome, saldo, email, sesso, eta, num_telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, cliente.getNomeUtente());
-            ps.setString(2, cliente.getPass());
+            ps.setString(1,cliente.getNomeUtente());
+            ps.setString(2,hashPassword(cliente.getPass()));
             ps.setString(3, cliente.getNome());
             ps.setString(4, cliente.getCognome());
             ps.setDouble(5, cliente.getSaldo());
@@ -121,11 +142,17 @@ public class ClienteDAO {
 
     public Cliente checkLogin(String nome_utente, String pass) {
         try (Connection con = ConPool.getConnection()) {
+
+            String hashedPass = hashPassword(pass);
+            System.out.println("HASH INSERITO: " + hashedPass);
+
             PreparedStatement ps = con.prepareStatement("SELECT * FROM cliente WHERE nome_utente = ? AND pass = ?");
             ps.setString(1, nome_utente);
-            ps.setString(2, pass);
+            ps.setString(2, hashedPass);
+
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                System.out.println("HASH NEL DB: " + rs.getString("pass"));
                 return new Cliente(
                         rs.getString("nome_utente"),
                         rs.getString("pass"),
@@ -138,11 +165,15 @@ public class ClienteDAO {
                         rs.getString("num_telefono")
                 );
             }
+
             return null;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+
 
     public boolean aggiornaSaldo(String nomeUtente, double nuovoSaldo) {
         try (Connection con = ConPool.getConnection()) {
@@ -160,16 +191,16 @@ public class ClienteDAO {
     public void doUpdate(Cliente cliente, String vecchioNomeUtente) throws SQLException {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "UPDATE cliente SET nome_utente = ?, email = ?, pass = ? WHERE nome_utente = ?"
+                    "UPDATE cliente SET nome_utente = ?, pass = ? WHERE nome_utente = ?"
             );
-            ps.setString(1, cliente.getNomeUtente());
-            ps.setString(2, cliente.getEmail());
-            ps.setString(3, cliente.getPass());
-            ps.setString(4, vecchioNomeUtente);
 
-            ps.executeUpdate();
+            ps.setString(1, cliente.getNomeUtente());
+            ps.setString(2, hashPassword(cliente.getPass()));
+            ps.setString(3, vecchioNomeUtente);
         }
     }
+
+
 
     public List<Cliente> doRetrieveByName(String nome) {
         List<Cliente> clienti = new ArrayList<>();

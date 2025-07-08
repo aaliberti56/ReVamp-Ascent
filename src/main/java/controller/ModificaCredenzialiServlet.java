@@ -29,7 +29,7 @@ public class ModificaCredenzialiServlet extends HttpServlet {
         String confirmPassword = request.getParameter("confirmPassword");
 
         if (username == null || oldPassword == null || newPassword == null || confirmPassword == null) {
-            request.setAttribute("msg", "Tutti i campi sono obbligatori.");
+            request.setAttribute("msg", "Tutti i campi sono obbligatori");
             request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
             return;
         }
@@ -39,24 +39,18 @@ public class ModificaCredenzialiServlet extends HttpServlet {
         newPassword = newPassword.trim();
         confirmPassword = confirmPassword.trim();
 
-        if (!newPassword.equals(confirmPassword)) {
-            request.setAttribute("msg", "Le nuove password non corrispondono.");
-            request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
-            return;
-        }
-
-        if (!utente.getPass().equals(oldPassword)) {
-            request.setAttribute("msg", "La vecchia password non è corretta.");
-            request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
-            return;
-        }
-
         ClienteDAO clienteDAO = new ClienteDAO();
-
         try {
-            String vecchioUsername = utente.getNomeUtente();
+            // verifica vecchia password
+            Cliente autenticato = clienteDAO.checkLogin(utente.getNomeUtente(), oldPassword);
+            if (autenticato == null) {
+                request.setAttribute("msg", "La vecchia password non è corretta.");
+                request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
+                return;
+            }
 
-            // Se cambia username, controllo disponibilità
+            // controllo se username è cambiato e già usato
+            String vecchioUsername = utente.getNomeUtente();
             if (!vecchioUsername.equals(username)) {
                 Cliente altroUsername = clienteDAO.doRetrieveByUsername(username);
                 if (altroUsername != null) {
@@ -64,26 +58,32 @@ public class ModificaCredenzialiServlet extends HttpServlet {
                     request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
                     return;
                 }
+                utente.setNomeUtente(username);
             }
 
-            // Aggiorna dati utente
-            utente.setNomeUtente(username);
-            utente.setPass(newPassword);
-            // Se vuoi aggiornare anche altri campi, aggiungili qui (es. utente.setEmail(...))
+            // gestione password
+            if (!newPassword.isEmpty()) {
+                if (!newPassword.equals(confirmPassword)) {
+                    request.setAttribute("msg", "Le nuove password non corrispondono.");
+                    request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
+                    return;
+                }
+                utente.setPass(newPassword); // nuova password da hashare
+            } else {
+                utente.setPass(autenticato.getPass()); // password già hashata, la manteniamo
+            }
 
-            // Aggiorna nel DB passando il vecchio username
             clienteDAO.doUpdate(utente, vecchioUsername);
-
-            // Aggiorna sessione con dati modificati
             request.getSession().setAttribute("utenteLoggato", utente);
-
             request.setAttribute("msg", "Credenziali modificate con successo.");
+            request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
+
         } catch (SQLException e) {
             e.printStackTrace();
-            request.setAttribute("msg", "Errore durante l'aggiornamento dati.");
+            request.setAttribute("msg", "Errore durante l'aggiornamento dei dati.");
+            request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
         }
-
-        request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
     }
 }
+
 

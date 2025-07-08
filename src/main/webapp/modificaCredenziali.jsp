@@ -35,22 +35,23 @@
     </div>
     <% } %>
 
-    <form method="POST" action="ModificaCredenzialiServlet" id="credenzialiForm">
-        <span class="grassetto">Modifica username:</span><br>
-        <input type="text" class="dati" id="username" name="username" placeholder="Inserisci nuovo username" value="<%= u.getNomeUtente() %>"><br>
+   <form method="POST" action="ModificaCredenzialiServlet" id="formModificaCredenziali">
+    <span class="grassetto">Modifica username:</span><br>
+    <input type="text" class="dati" id="username" name="username" placeholder="Inserisci nuovo username" value="<%= u.getNomeUtente() %>"><br>
 
-        <span class="grassetto">Modifica password:</span><br>
-        <input type="password" class="dati" id="oldpass" name="oldPassword" placeholder="Inserisci password attuale"><br>
-        <span id="errorPass" class="formError">Password non valida</span><br>
+    <span class="grassetto">Modifica password:</span><br>
+    <input type="password" class="dati" id="oldpass" name="oldPassword" placeholder="Inserisci password attuale"><br>
+    <span id="errorPass" class="formError">Password non valida</span><br>
 
-        <input type="password" class="dati" id="newpass" name="newPassword" placeholder="Inserisci nuova password"><br>
-        <span id="indicazionePass" class='tipPassword'>La password deve contenere almeno 3 caratteri (una lettera, un numero)</span><br>
-        <span id="errorPass2" class="formError">Le password non corrispondono</span><br>
+    <input type="password" class="dati" id="newpass" name="newPassword" placeholder="Inserisci nuova password"><br>
+    <span id="indicazionePass" class='tipPassword'>La password deve contenere almeno 3 caratteri (una lettera, un numero)</span><br>
+    <span id="errorPass2" class="formError">Le password non corrispondono</span><br>
 
-        <input type="password" class="dati" id="confpass" name="confirmPassword" placeholder="Conferma nuova password"><br>
+    <input type="password" class="dati" id="confpass" name="confirmPassword" placeholder="Conferma nuova password"><br>
 
-        <input class="bottone" type="button" value="Modifica" onclick="controlloCampiCredenziali()">
-    </form>
+    <input class="bottone" type="submit" value="Modifica">
+</form>
+
 </div>
 <jsp:include page="footerAreaUtente.jsp" />
 

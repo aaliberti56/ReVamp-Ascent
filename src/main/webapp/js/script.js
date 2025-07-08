@@ -51,7 +51,6 @@ function inizializzaFormModificaCredenziali() {
         });
     }
 }
-
 function validazioneModificaCredenziali() {
     const username = document.getElementById('username').value.trim();
     const oldpass = document.getElementById('oldpass').value.trim();
@@ -66,16 +65,23 @@ function validazioneModificaCredenziali() {
         alert('Inserisci la password attuale');
         return false;
     }
-    if (newpass.length < 3 || !(/[a-zA-Z]/.test(newpass)) || !(/\d/.test(newpass))) {
-        alert('La password deve contenere almeno 3 caratteri, inclusa almeno una lettera e un numero');
-        return false;
+
+    // Se l'utente ha inserito una nuova password, allora validiamola
+    if (newpass !== '') {
+        if (newpass.length < 3 || !(/[a-zA-Z]/.test(newpass)) || !(/\d/.test(newpass))) {
+            alert('La password deve contenere almeno 3 caratteri, inclusa almeno una lettera e un numero');
+            return false;
+        }
+        if (newpass !== confpass) {
+            alert('Le password nuove non corrispondono');
+            return false;
+        }
     }
-    if (newpass !== confpass) {
-        alert('Le password nuove non corrispondono');
-        return false;
-    }
+
     return true;
 }
+
+
 
 // === CHIUSURA MESSAGGIO SERVER ===
 function nascondiMessaggio() {
