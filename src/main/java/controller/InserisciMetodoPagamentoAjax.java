@@ -23,21 +23,11 @@ public class InserisciMetodoPagamentoAjax extends HttpServlet {
             String numCarta = request.getParameter("numcarta");
             String scadenza = request.getParameter("scadenza");
             String intestatario = request.getParameter("proprietario");
-            String cvvStr = request.getParameter("CVV");
             String nomeUtente = request.getParameter("nome_utente");
 
-            // Validazione
-            if (numCarta == null || scadenza == null || intestatario == null || cvvStr == null || nomeUtente == null) {
+            // Validazione base
+            if (numCarta == null || scadenza == null || intestatario == null || nomeUtente == null) {
                 out.print("{\"success\":false, \"message\":\"Parametri mancanti\"}");
-                return;
-            }
-
-            // Parsing CVV
-            int cvv;
-            try {
-                cvv = Integer.parseInt(cvvStr);
-            } catch (NumberFormatException e) {
-                out.print("{\"success\":false, \"message\":\"CVV non valido\"}");
                 return;
             }
 
@@ -59,8 +49,8 @@ public class InserisciMetodoPagamentoAjax extends HttpServlet {
 
             GregorianCalendar dataScadenza = new GregorianCalendar(anno, mese, 1);
 
-            // Crea e salva il metodo di pagamento
-            MetodiPagamento metodo = new MetodiPagamento(numCarta, intestatario, dataScadenza, cvv, nomeUtente);
+            // Crea e salva il metodo di pagamento (senza CVV)
+            MetodiPagamento metodo = new MetodiPagamento(numCarta, intestatario, dataScadenza, nomeUtente);
             MetodiPagamentoDAO dao = new MetodiPagamentoDAO();
             boolean success = dao.doSave(metodo);
 

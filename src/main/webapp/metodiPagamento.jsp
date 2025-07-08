@@ -63,7 +63,7 @@
                 <input type="text" name="scadenza" placeholder="MM/YY" class="dat" required id="scadenzacarta"><br>
                 <label>Intestatario</label><br>
                 <input type="text" name="proprietario" placeholder="Intestatario" class="dat" required><br>
-                <label>CVV</label><br>
+                <label>CVV <small>(solo verifica, non verrà salvato)</small></label><br>
                 <input type="password" name="CVV" id="numcvv" placeholder="***" class="dat" required><br>
                 <button type="submit" class="iconaMenu addBtn">Aggiungi</button>
             </div>
@@ -85,9 +85,8 @@
     }
 
     function validaNumeroCarta(numero) {
-        const numeroPulito = numero.replace(/\s+/g, ''); // Rimuove eventuali spazi
-        const soloNumeri = /^\d{16}$/; // 16 cifre esatte
-
+        const numeroPulito = numero.replace(/\s+/g, '');
+        const soloNumeri = /^\d{16}$/;
         return soloNumeri.test(numeroPulito);
     }
 
@@ -95,19 +94,17 @@
         return /^\d{3}$/.test(cvv);
     }
 
-
     function validaScadenza(scadenza) {
         const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
         if (!regex.test(scadenza)) return false;
 
         const [mese, anno] = scadenza.split('/').map(Number);
         const oggi = new Date();
-        const annoCorrente = oggi.getFullYear() % 100; // ultimi 2 numeri
+        const annoCorrente = oggi.getFullYear() % 100;
         const meseCorrente = oggi.getMonth() + 1;
 
         return (anno > annoCorrente) || (anno === annoCorrente && mese >= meseCorrente);
     }
-
 
     function eliminaMetodoPagamento(numCarta) {
         if (!confirm('Sei sicuro di voler eliminare questo metodo di pagamento?')) return;
@@ -117,37 +114,36 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'numcarta=' + encodeURIComponent(numCarta) + '&nome_utente=' + encodeURIComponent(nomeUtente)
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    mostraMessaggio('Metodo di pagamento eliminato!', 'successo');
-                    aggiornaListaMetodiPagamento();
-                } else {
-                    mostraMessaggio('Errore: ' + (data.message || 'Impossibile eliminare il metodo'), 'errore');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                mostraMessaggio('Errore di comunicazione col server', 'errore');
-            });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostraMessaggio('Metodo di pagamento eliminato!', 'successo');
+                aggiornaListaMetodiPagamento();
+            } else {
+                mostraMessaggio('Errore: ' + (data.message || 'Impossibile eliminare il metodo'), 'errore');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostraMessaggio('Errore di comunicazione col server', 'errore');
+        });
     }
 
     function aggiornaListaMetodiPagamento() {
         fetch('ListaMetodiPagamentoAjax?nome_utente=' + encodeURIComponent(nomeUtente))
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('listaMetodiPagamento').innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                mostraMessaggio('Errore nel caricamento dei metodi di pagamento', 'errore');
-            });
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('listaMetodiPagamento').innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostraMessaggio('Errore nel caricamento dei metodi di pagamento', 'errore');
+        });
     }
 
     document.getElementById("formAggiungiPagamento").addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Validazione client-side
         const numCarta = this.numcarta.value.trim();
         const scadenza = this.scadenza.value.trim();
         const cvv = this.CVV.value.trim();
@@ -167,13 +163,10 @@
             return;
         }
 
-
-        // Crea un oggetto con i dati
         const data = {
             numcarta: numCarta,
             scadenza: scadenza,
             proprietario: this.proprietario.value.trim(),
-            CVV: cvv,
             nome_utente: nomeUtente
         };
 
@@ -184,47 +177,39 @@
             },
             body: new URLSearchParams(data).toString()
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Errore nella risposta del server');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    mostraMessaggio('Metodo di pagamento aggiunto con successo!', 'successo');
-                    aggiornaListaMetodiPagamento();
-                    this.reset();
-                } else {
-                    mostraMessaggio('Errore: ' + (data.message || 'Impossibile aggiungere il metodo'), 'errore');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                mostraMessaggio('Errore nel server: ' + error.message, 'errore');
-            });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Errore nella risposta del server');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                mostraMessaggio('Metodo di pagamento aggiunto con successo!', 'successo');
+                aggiornaListaMetodiPagamento();
+                this.reset();
+            } else {
+                mostraMessaggio('Errore: ' + (data.message || 'Impossibile aggiungere il metodo'), 'errore');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostraMessaggio('Errore nel server: ' + error.message, 'errore');
+        });
     });
 
-
-    // Formattazione live e filtro numeri carta
-    const numeroCartaInput = document.getElementById("numcarta");
-    numeroCartaInput.addEventListener("input", function (e) {
+    document.getElementById("numcarta").addEventListener("input", function (e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length > 16) value = value.slice(0, 16);
         let formatted = value.match(/.{1,4}/g);
         e.target.value = formatted ? formatted.join(' ') : '';
     });
 
-    // Solo numeri per CVV
-    const cvvInput = document.getElementById("numcvv");
-    cvvInput.addEventListener("input", function (e) {
+    document.getElementById("numcvv").addEventListener("input", function (e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length > 3) value = value.slice(0, 3);
         e.target.value = value;
     });
-
-
-
 </script>
 </body>
 </html>

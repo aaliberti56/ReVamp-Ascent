@@ -1,12 +1,12 @@
 package model.DAO;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import model.JavaBeans.*;
 import model.ConPool;
-import java.sql.ResultSet;
 
 public class MetodiPagamentoDAO {
 
@@ -25,7 +25,6 @@ public class MetodiPagamentoDAO {
                         rs.getString("num_carta"),
                         rs.getString("intestatario"),
                         dataScadenza,
-                        rs.getInt("cvv"),
                         rs.getString("nome_utente")
                 );
             }
@@ -50,7 +49,6 @@ public class MetodiPagamentoDAO {
                         rs.getString("num_carta"),
                         rs.getString("intestatario"),
                         dataScadenza,
-                        rs.getInt("cvv"),
                         rs.getString("nome_utente")
                 );
                 lista.add(metodo);
@@ -64,21 +62,19 @@ public class MetodiPagamentoDAO {
     public boolean doSave(MetodiPagamento metodo) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO Metodi_pagamento (num_carta, intestatario, data_scadenza, cvv, nome_utente) VALUES (?, ?, ?, ?, ?)"
+                    "INSERT INTO Metodi_pagamento (num_carta, intestatario, data_scadenza, nome_utente) VALUES (?, ?, ?, ?)"
             );
             ps.setString(1, metodo.getNumCarta());
             ps.setString(2, metodo.getIntestatario());
             ps.setDate(3, new java.sql.Date(metodo.getDataScadenza().getTimeInMillis()));
-            ps.setInt(4, metodo.getCvv());
-            ps.setString(5, metodo.getNomeUtente());
+            ps.setString(4, metodo.getNomeUtente());
 
             int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;  // Se almeno una riga è stata inserita, ritorna true
+            return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     public boolean doDelete(String numCarta, String nomeUtente) {
         try (Connection con = ConPool.getConnection()) {
@@ -96,13 +92,12 @@ public class MetodiPagamentoDAO {
     public boolean doUpdate(MetodiPagamento metodo) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "UPDATE Metodi_pagamento SET intestatario = ?, data_scadenza = ?, cvv = ?, nome_utente = ? WHERE num_carta = ?"
+                    "UPDATE Metodi_pagamento SET intestatario = ?, data_scadenza = ?, nome_utente = ? WHERE num_carta = ?"
             );
             ps.setString(1, metodo.getIntestatario());
             ps.setDate(2, new java.sql.Date(metodo.getDataScadenza().getTimeInMillis()));
-            ps.setInt(3, metodo.getCvv());
-            ps.setString(4, metodo.getNomeUtente());
-            ps.setString(5, metodo.getNumCarta());
+            ps.setString(3, metodo.getNomeUtente());
+            ps.setString(4, metodo.getNumCarta());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -125,7 +120,6 @@ public class MetodiPagamentoDAO {
                         rs.getString("num_carta"),
                         rs.getString("intestatario"),
                         dataScadenza,
-                        rs.getInt("cvv"),
                         rs.getString("nome_utente")
                 );
                 lista.add(carta);
@@ -135,6 +129,4 @@ public class MetodiPagamentoDAO {
         }
         return lista;
     }
-
-
 }
