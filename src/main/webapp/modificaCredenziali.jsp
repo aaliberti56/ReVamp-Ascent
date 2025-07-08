@@ -35,7 +35,8 @@
     </div>
     <% } %>
 
-   <form method="POST" action="ModificaCredenzialiServlet" id="formModificaCredenziali">
+
+    <form method="POST" action="ModificaCredenzialiServlet" id="formModificaCredenziali">
     <span class="grassetto">Modifica username:</span><br>
     <input type="text" class="dati" id="username" name="username" placeholder="Inserisci nuovo username" value="<%= u.getNomeUtente() %>"><br>
 

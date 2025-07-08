@@ -10,6 +10,7 @@ import java.sql.SQLException;
 
 @WebServlet(name = "ModificaCredenzialiServlet", value = "/ModificaCredenzialiServlet")
 public class ModificaCredenzialiServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -40,8 +41,8 @@ public class ModificaCredenzialiServlet extends HttpServlet {
         confirmPassword = confirmPassword.trim();
 
         ClienteDAO clienteDAO = new ClienteDAO();
+
         try {
-            // verifica vecchia password
             Cliente autenticato = clienteDAO.checkLogin(utente.getNomeUtente(), oldPassword);
             if (autenticato == null) {
                 request.setAttribute("msg", "La vecchia password non è corretta.");
@@ -49,11 +50,12 @@ public class ModificaCredenzialiServlet extends HttpServlet {
                 return;
             }
 
-            // controllo se username è cambiato e già usato
             String vecchioUsername = utente.getNomeUtente();
+
+            // Verifica se username è cambiato e già esistente
             if (!vecchioUsername.equals(username)) {
-                Cliente altroUsername = clienteDAO.doRetrieveByUsername(username);
-                if (altroUsername != null) {
+                Cliente altro = clienteDAO.doRetrieveByUsername(username);
+                if (altro != null) {
                     request.setAttribute("msg", "Username già in uso.");
                     request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
                     return;
@@ -61,19 +63,18 @@ public class ModificaCredenzialiServlet extends HttpServlet {
                 utente.setNomeUtente(username);
             }
 
-            // gestione password
+            boolean cambiaPassword = false;
             if (!newPassword.isEmpty()) {
                 if (!newPassword.equals(confirmPassword)) {
                     request.setAttribute("msg", "Le nuove password non corrispondono.");
                     request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
                     return;
                 }
-                utente.setPass(newPassword); // nuova password da hashare
-            } else {
-                utente.setPass(autenticato.getPass()); // password già hashata, la manteniamo
+                utente.setPass(newPassword);  // nuova password in chiaro, verrà hashata nel DAO
+                cambiaPassword = true;
             }
 
-            clienteDAO.doUpdate(utente, vecchioUsername);
+            clienteDAO.doUpdate(utente, vecchioUsername, cambiaPassword);
             request.getSession().setAttribute("utenteLoggato", utente);
             request.setAttribute("msg", "Credenziali modificate con successo.");
             request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
@@ -85,5 +86,6 @@ public class ModificaCredenzialiServlet extends HttpServlet {
         }
     }
 }
+
 
 

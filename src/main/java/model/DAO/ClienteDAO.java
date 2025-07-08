@@ -188,17 +188,25 @@ public class ClienteDAO {
         }
     }
 
-    public void doUpdate(Cliente cliente, String vecchioNomeUtente) throws SQLException {
+    public void doUpdate(Cliente cliente, String vecchioNomeUtente, boolean cambiaPassword) throws SQLException {
         try (Connection con = ConPool.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "UPDATE cliente SET nome_utente = ?, pass = ? WHERE nome_utente = ?"
-            );
-
+            String sql = cambiaPassword
+                    ? "UPDATE cliente SET nome_utente = ?, pass = ? WHERE nome_utente = ?"
+                    : "UPDATE cliente SET nome_utente = ? WHERE nome_utente = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, cliente.getNomeUtente());
-            ps.setString(2, hashPassword(cliente.getPass()));
-            ps.setString(3, vecchioNomeUtente);
+
+            if (cambiaPassword) {
+                ps.setString(2, hashPassword(cliente.getPass()));
+                ps.setString(3, vecchioNomeUtente);
+            } else {
+                ps.setString(2, vecchioNomeUtente);
+            }
+
+            ps.executeUpdate();
         }
     }
+
 
 
 

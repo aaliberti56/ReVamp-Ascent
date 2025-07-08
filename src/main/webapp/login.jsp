@@ -9,20 +9,15 @@
 </head>
 <body>
 
-<%
-    String errore = (String) request.getAttribute("erroreLogin");
-    if (errore != null) {
-%>
-<div class="containerMessaggio">
+<% if (request.getAttribute("msg") != null) { %>
+<div class="containerMessaggio" style="justify-content:center; margin-bottom: 15px;">
     <div id="messaggioConferma">
-        <img src="img/error.png" class="erroreMessaggio">
-        <input type="image" src="img/close.png" class="chiudiMessaggio" onclick="nascondiMessaggio()">
-        <span><%= errore %></span>
+        <%= request.getAttribute("msg") %>
+        <span class="chiudiMessaggio" onclick="this.parentElement.parentElement.style.display='none';">×</span>
     </div>
 </div>
-<%
-    }
-%>
+<% } %>
+
 
 <img src="img/logo.webp" class="logo">
 
