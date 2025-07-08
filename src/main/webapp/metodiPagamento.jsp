@@ -64,7 +64,7 @@
                 <label>Intestatario</label><br>
                 <input type="text" name="proprietario" placeholder="Intestatario" class="dat" required><br>
                 <label>CVV</label><br>
-                <input type="text" name="CVV" id="numcvv" placeholder="***" class="dat" required><br>
+                <input type="password" name="CVV" id="numcvv" placeholder="***" class="dat" required><br>
                 <button type="submit" class="iconaMenu addBtn">Aggiungi</button>
             </div>
         </div>
@@ -83,6 +83,31 @@
         messaggio.style.display = 'block';
         setTimeout(() => messaggio.style.display = 'none', 4000);
     }
+
+    function validaNumeroCarta(numero) {
+        const numeroPulito = numero.replace(/\s+/g, ''); // Rimuove eventuali spazi
+        const soloNumeri = /^\d{16}$/; // 16 cifre esatte
+
+        return soloNumeri.test(numeroPulito);
+    }
+
+    function validaCVV(cvv) {
+        return /^\d{3}$/.test(cvv);
+    }
+
+
+    function validaScadenza(scadenza) {
+        const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        if (!regex.test(scadenza)) return false;
+
+        const [mese, anno] = scadenza.split('/').map(Number);
+        const oggi = new Date();
+        const annoCorrente = oggi.getFullYear() % 100; // ultimi 2 numeri
+        const meseCorrente = oggi.getMonth() + 1;
+
+        return (anno > annoCorrente) || (anno === annoCorrente && mese >= meseCorrente);
+    }
+
 
     function eliminaMetodoPagamento(numCarta) {
         if (!confirm('Sei sicuro di voler eliminare questo metodo di pagamento?')) return;
@@ -127,10 +152,21 @@
         const scadenza = this.scadenza.value.trim();
         const cvv = this.CVV.value.trim();
 
-        if (!numCarta || !scadenza || !cvv) {
-            mostraMessaggio('Compila tutti i campi obbligatori', 'errore');
+        if (!validaNumeroCarta(numCarta)) {
+            mostraMessaggio('Numero di carta non valido: devono essere 16 cifre.', 'errore');
             return;
         }
+
+        if (!validaScadenza(scadenza)) {
+            mostraMessaggio('Data di scadenza non valida o già passata.', 'errore');
+            return;
+        }
+
+        if (!validaCVV(cvv)) {
+            mostraMessaggio('Il CVV deve essere composto da 3 cifre.', 'errore');
+            return;
+        }
+
 
         // Crea un oggetto con i dati
         const data = {
@@ -168,6 +204,27 @@
                 mostraMessaggio('Errore nel server: ' + error.message, 'errore');
             });
     });
+
+
+    // Formattazione live e filtro numeri carta
+    const numeroCartaInput = document.getElementById("numcarta");
+    numeroCartaInput.addEventListener("input", function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 16) value = value.slice(0, 16);
+        let formatted = value.match(/.{1,4}/g);
+        e.target.value = formatted ? formatted.join(' ') : '';
+    });
+
+    // Solo numeri per CVV
+    const cvvInput = document.getElementById("numcvv");
+    cvvInput.addEventListener("input", function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 3) value = value.slice(0, 3);
+        e.target.value = value;
+    });
+
+
+
 </script>
 </body>
 </html>

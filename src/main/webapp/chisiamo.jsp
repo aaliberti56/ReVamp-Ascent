@@ -13,6 +13,7 @@
     <meta charset="UTF-8">
     <title>Chi siamo - ReVamp Ascent</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="img/logo.webp">
     <style>
         body, html {
             margin: 0;
