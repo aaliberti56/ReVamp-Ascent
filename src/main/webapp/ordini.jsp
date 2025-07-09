@@ -42,7 +42,7 @@
         }
 %>
 
-<div class="page-container dark-theme">
+<div class="page-container">
     <div class="header-section">
         <img src="<%= request.getContextPath() %>/img/logo.webp" alt="Logo" class="logo">
         <h2>Gestione Ordini</h2>

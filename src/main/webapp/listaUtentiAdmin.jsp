@@ -32,7 +32,7 @@
         }
 %>
 
-<div class="page-container dark-theme">
+<div class="page-container">
     <div class="header-section">
         <img src="<%= request.getContextPath() %>/img/logo.webp" alt="Logo" class="logo">
         <h2>Lista Clienti</h2>
@@ -70,7 +70,7 @@
                 <td><%= c.getCognome() %></td>
                 <td><%= c.getEmail() %></td>
                 <td><%= String.format("%.2f", c.getSaldo()) %> &euro;</td>
-                <td><%= c.getSesso().toUpperCase() %></td>
+                <td data-sesso="<%= c.getSesso().toUpperCase() %>"><%= c.getSesso().toUpperCase() %></td>
                 <td><%= c.getEta() %></td>
                 <td><%= c.getNumTelefono() %></td>
             </tr>

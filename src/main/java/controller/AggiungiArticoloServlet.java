@@ -29,7 +29,6 @@ public class AggiungiArticoloServlet extends HttpServlet {
             int id_categoria = Integer.parseInt(request.getParameter("id_categoria"));
 
 
-            // Uso del costruttore completo di Articolo
             Articolo articolo = new Articolo(codice, nome, descrizione, colore, sconto, prezzo, peso,dimensione,id_categoria);
 
             ArticoloDAO articoloDAO = new ArticoloDAO();

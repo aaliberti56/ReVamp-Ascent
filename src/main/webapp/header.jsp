@@ -103,7 +103,7 @@
 
   <div class="menuricerca">
     <form id="formRicerca" onsubmit="eseguiRicerca(event)">
-      <input type="text" id="textboxRicerca" name="ricerca" placeholder="Cerca..." class="ricerca" required>
+      <input type="text" id="textboxRicerca" name="ricerca" placeholder="Cerca un prodotto..." class="ricerca" required>
       <button type="submit" class="iconaMenuBtn">
         <img src="img/magnifier.png" alt="Cerca" class="iconaMenu">
       </button>
