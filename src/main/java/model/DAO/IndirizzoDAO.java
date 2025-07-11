@@ -137,5 +137,31 @@ public class IndirizzoDAO {
         }
     }
 
+    public Indirizzo getPreferito(String nomeUtente) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM indirizzo WHERE nome_utente = ? AND preferito = true LIMIT 1"
+            );
+            ps.setString(1, nomeUtente);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Indirizzo(
+                        rs.getInt("id_indirizzo"),
+                        rs.getString("via"),
+                        rs.getString("citta"),
+                        rs.getString("provincia"),
+                        rs.getString("cap"),
+                        rs.getString("paese"),
+                        rs.getBoolean("preferito"),
+                        rs.getString("nome_utente")
+                );
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 }

@@ -83,6 +83,27 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .notifica {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
+            font-size: 16px;
+            animation: fadeinout 3s;
+        }
+
+        @keyframes fadeinout {
+            0% {opacity: 0;}
+            10% {opacity: 1;}
+            90% {opacity: 1;}
+            100% {opacity: 0;}
+        }
+
     </style>
 </head>
 <body>
@@ -144,7 +165,7 @@
             <p><strong>Dimensioni:</strong> <%= articolo.getDimensione() %> cm</p>
         </div>
 
-        <form action="CarrelloServlet" method="post">
+        <form id="carrelloForm">
             <input type="hidden" name="idArticolo" value="<%= articolo.getCodice() %>" />
             <div class="quantita-container">
                 <label for="quantita">Quantità:</label>
@@ -154,6 +175,8 @@
             </div>
             <button type="submit" class="pulsante-carrello">AGGIUNGI AL CARRELLO</button>
         </form>
+        <div id="notifica-aggiunta" class="notifica" style="display:none;">Articolo aggiunto al carrello!</div>
+
 
         <div class="banner-info-servizi">
             <img src="img/no-iva-2022.png" alt="Servizi informativi" />
@@ -246,6 +269,50 @@
             input.value = val;
         }
     }
+
+    document.getElementById("carrelloForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const idArticolo = document.querySelector("input[name='idArticolo']").value;
+        const quantita = document.querySelector("input[name='quantita']").value;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "CarrelloServlet", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+        mostraNotifica();         // ✅ Mostra messaggio
+        mostraBadge();  // 🔁 Mostra badge
+    }
+    };
+        console.log("ID:", idArticolo, "Quantità:", quantita);
+        xhr.send("idArticolo=" + encodeURIComponent(idArticolo) + "&quantita=" + encodeURIComponent(quantita));
+    });
+
+        function mostraNotifica() {
+        const notifica = document.getElementById("notifica-aggiunta");
+        notifica.style.display = "block";
+        notifica.style.opacity = "1";
+
+        setTimeout(() => {
+        notifica.style.opacity = "0";
+        setTimeout(() => {
+        notifica.style.display = "none";
+    }, 500);
+    }, 3000);
+    }
+
+
+    function mostraBadge() {
+        const badge = document.getElementById("carrello-badge");
+        if (badge) {
+            badge.textContent = ""; // Nessun numero
+            badge.style.display = "inline-block";
+        }
+    }
+
+
 </script>
 
 <jsp:include page="footerAreaUtente.jsp"></jsp:include>

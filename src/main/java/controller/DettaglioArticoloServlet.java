@@ -12,7 +12,14 @@ import model.DAO.*;
 public class DettaglioArticoloServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int codice=Integer.parseInt(request.getParameter("codice"));
+        String codiceStr = request.getParameter("codice");
+
+        if (codiceStr == null || codiceStr.isEmpty()) {
+            response.sendRedirect("invalidLogin.jsp");
+            return;
+        }
+
+        int codice = Integer.parseInt(codiceStr);
 
         ArticoloDAO artDAO=new ArticoloDAO();
         ImmagineArticoloDAO imDAO=new ImmagineArticoloDAO();

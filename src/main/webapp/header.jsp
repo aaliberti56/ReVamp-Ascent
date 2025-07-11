@@ -86,6 +86,23 @@
       background-color: #2980b9;
     }
 
+    .badge-carrello {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .carrello-link {
+      position: relative;
+      display: inline-block;
+    }
+
+
   </style>
 </head>
 <body>
@@ -112,9 +129,11 @@
   </div>
 
 
-  <a href="carrello.jsp" style="text-decoration: none;">
-    <img src="img/cart.png" class="iconaMenu" alt="Carrello">
+  <a href="carrello.jsp" class="carrello-link">
+    <img src="img/cart.png" alt="Carrello" width="28">
+    <span id="carrello-badge" class="badge-carrello" style="display:none;">0</span>
   </a>
+
 
   <a href="home.jsp">
     <img src="img/user.png" class="iconaMenu" alt="Area Utente">
@@ -154,7 +173,7 @@
 
     <div style="margin-top: 30px; text-align: center;">
       <a href="carrello.jsp" style="text-decoration: none;">
-        <img src="img/cart.png" class="iconaMenu" alt="Carrello">
+        <img src="<%= request.getContextPath() %>/img/cart.png" class="iconaMenu" alt="Carrello">
       </a>
 
       <a href="home.jsp">
