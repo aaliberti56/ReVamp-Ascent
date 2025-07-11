@@ -32,11 +32,9 @@ public class CarrelloServlet extends HttpServlet {
         int quantita = Integer.parseInt(quantitaStr);
 
         if (utente != null) {
-            // ✅ UTENTE LOGGATO → salva nel DB
             CarrelloDAO carrelloDAO = new CarrelloDAO();
             carrelloDAO.aggiungiAlCarrello(utente.getNomeUtente(), codiceArticolo, quantita);
         } else {
-            // ✅ UTENTE NON LOGGATO → salva in sessione
             List<Carrello> carrello = (List<Carrello>) session.getAttribute("carrelloAnonimo");
             if (carrello == null) {
                 carrello = new ArrayList<>();
@@ -58,7 +56,6 @@ public class CarrelloServlet extends HttpServlet {
             session.setAttribute("carrelloAnonimo", carrello);
         }
 
-// 🔄 Risposta JSON per AJAX
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"status\":\"ok\"}");

@@ -56,6 +56,6 @@
 </div>
 <jsp:include page="footerAreaUtente.jsp" />
 
-<script src="js/script.js"></script>  <!-- percorso corretto JS -->
+<script src="js/script.js"></script>
 </body>
 </html>

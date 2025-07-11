@@ -63,7 +63,6 @@
                 <th><i class="fas fa-calendar-alt"></i> Data</th>
                 <th><i class="fas fa-box"></i> Articoli</th>
                 <th><i class="fas fa-euro-sign"></i> Totale</th>
-                <th><i class="fas fa-store"></i> Punto Ritiro</th>
                 <th><i class="fas fa-info-circle"></i> Dettagli</th>
             </tr>
             </thead>
@@ -81,7 +80,6 @@
                 <td><%= String.format("%02d/%02d/%04d", giorno, mese, anno) %></td>
                 <td><%= ordine.getNum_articoli() %></td>
                 <td><%= String.format("€%.2f", ordine.getImporto_totale()) %></td>
-                <td><%= ordine.getPunto_ritiro() %></td>
                 <td>
                     <a href="DettaglioOrdineServlet?id=<%= ordine.getId_ordine() %>" class="detail-link">
                         <i class="fas fa-eye"></i>
@@ -93,7 +91,7 @@
             } else {
             %>
             <tr>
-                <td colspan="7" class="no-results-message">Nessun ordine trovato nel periodo selezionato.</td>
+                <td colspan="6" class="no-results-message">Nessun ordine trovato nel periodo selezionato.</td>
             </tr>
             <%
                 }

@@ -52,7 +52,6 @@ public class ModificaCredenzialiServlet extends HttpServlet {
 
             String vecchioUsername = utente.getNomeUtente();
 
-            // Verifica se username è cambiato e già esistente
             if (!vecchioUsername.equals(username)) {
                 Cliente altro = clienteDAO.doRetrieveByUsername(username);
                 if (altro != null) {
@@ -70,7 +69,7 @@ public class ModificaCredenzialiServlet extends HttpServlet {
                     request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
                     return;
                 }
-                utente.setPass(newPassword);  // nuova password in chiaro, verrà hashata nel DAO
+                utente.setPass(newPassword);
                 cambiaPassword = true;
             }
 

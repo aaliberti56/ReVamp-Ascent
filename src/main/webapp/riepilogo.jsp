@@ -47,7 +47,6 @@
     <p>Il tuo carrello è vuoto.</p>
     <% } else { %>
 
-    <!-- TABELLA ARTICOLI -->
     <table style="width:100%; text-align:center;" cellpadding="10" border="1">
         <tr>
             <th>Immagine</th>
@@ -85,7 +84,6 @@
 
     <hr>
 
-    <!-- INDIRIZZO SPEDIZIONE -->
     <h3>🏠 Indirizzo di Spedizione</h3>
     <% if (indirizzo != null) { %>
     <p>
@@ -102,7 +100,6 @@
 
     <hr>
 
-    <!-- FORM UNICO PER METODO E CONFERMA ORDINE -->
     <form action="ConfermaOrdineServlet" method="post">
         <h3>💳 Seleziona un Metodo di Pagamento</h3>
 

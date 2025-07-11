@@ -1,4 +1,5 @@
 package controller;
+
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -11,98 +12,93 @@ import java.util.*;
 public class ConfermaOrdineServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request,response);
+        doPost(request, response);
     }
 
-        @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            HttpSession session = request.getSession();
-            Cliente utente = (Cliente) session.getAttribute("utenteLoggato");
+        HttpSession session = request.getSession();
+        Cliente utente = (Cliente) session.getAttribute("utenteLoggato");
 
-            if (utente == null) {
-                response.sendRedirect("login.jsp");
-                return;
+        if (utente == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        // Recupera metodo selezionato dal form
+        String numCarta = request.getParameter("metodoSelezionato");
+        if (numCarta == null || numCarta.isEmpty()) {
+            response.sendRedirect("riepilogo.jsp");
+            return;
+        }
+
+        MetodiPagamentoDAO metodoDAO = new MetodiPagamentoDAO();
+        List<MetodiPagamento> metodi = metodoDAO.doRetrieveByUser(utente.getNomeUtente());
+        MetodiPagamento metodoPreferito = null;
+
+        for (MetodiPagamento m : metodi) {
+            if (m.getNumCarta().equals(numCarta)) {
+                metodoPreferito = m;
+                break;
             }
+        }
 
-            // Recupera metodo selezionato dal form
-            String numCarta = request.getParameter("metodoSelezionato");
-            if (numCarta == null || numCarta.isEmpty()) {
-                response.sendRedirect("riepilogo.jsp");
-                return;
+        // Recupera indirizzo preferito dal DB
+        IndirizzoDAO indirizzoDAO = new IndirizzoDAO();
+        Indirizzo indirizzo = indirizzoDAO.getPreferito(utente.getNomeUtente());
+
+        if (metodoPreferito == null || indirizzo == null) {
+            response.sendRedirect("riepilogo.jsp");
+            return;
+        }
+
+        CarrelloDAO carrelloDAO = new CarrelloDAO();
+        ArticoloDAO articoloDAO = new ArticoloDAO();
+        OrdineDAO ordineDAO = new OrdineDAO();
+        ContenimentoDAO contenimentoDAO = new ContenimentoDAO();
+
+        List<Carrello> carrello = carrelloDAO.getCarrelloByUtente(utente.getNomeUtente());
+        int numArticoli = 0;
+        double totale = 0.0;
+
+        for (Carrello item : carrello) {
+            Articolo art = articoloDAO.doRetrieveById(item.getCodiceArticolo());
+            if (art != null) {
+                double prezzoFinale = Math.max(art.getPrezzo() - art.getSconto(), 0);
+                totale += prezzoFinale * item.getQuantita();
+                numArticoli += item.getQuantita();
             }
+        }
 
-            MetodiPagamentoDAO metodoDAO = new MetodiPagamentoDAO();
-            List<MetodiPagamento> metodi = metodoDAO.doRetrieveByUser(utente.getNomeUtente());
-            MetodiPagamento metodoPreferito = null;
+        // CREA ORDINE CON SOLO I CAMPI ESSENZIALI
+        Ordine ordine = new Ordine(
+                0,
+                numArticoli,
+                new GregorianCalendar(),
+                totale,
+                indirizzo.getId_indirizzo(),
+                utente.getNomeUtente()
+        );
+        ordineDAO.doSave(ordine);
+        int idOrdine = ordine.getId_ordine();
 
-            for (MetodiPagamento m : metodi) {
-                if (m.getNumCarta().equals(numCarta)) {
-                    metodoPreferito = m;
-                    break;
-                }
-            }
-
-            // Recupera indirizzo preferito dal DB
-            IndirizzoDAO indirizzoDAO = new IndirizzoDAO();
-            Indirizzo indirizzo = indirizzoDAO.getPreferito(utente.getNomeUtente());
-
-            if (metodoPreferito == null || indirizzo == null) {
-                response.sendRedirect("riepilogo.jsp");
-                return;
-            }
-
-            CarrelloDAO carrelloDAO = new CarrelloDAO();
-            ArticoloDAO articoloDAO = new ArticoloDAO();
-            OrdineDAO ordineDAO = new OrdineDAO();
-            ContenimentoDAO contenimentoDAO = new ContenimentoDAO();
-
-            List<Carrello> carrello = carrelloDAO.getCarrelloByUtente(utente.getNomeUtente());
-            int numArticoli = 0;
-            double totale = 0.0;
-
-            for (Carrello item : carrello) {
-                Articolo art = articoloDAO.doRetrieveById(item.getCodiceArticolo());
-                if (art != null) {
-                    double prezzoFinale = Math.max(art.getPrezzo() - art.getSconto(), 0);
-                    totale += prezzoFinale * item.getQuantita();
-                    numArticoli += item.getQuantita();
-                }
-            }
-
-            Ordine ordine = new Ordine(
-                    0,
-                    numArticoli,
-                    null,
-                    new GregorianCalendar(),
-                    totale,
-                    null,
-                    null,
-                    null,
-                    indirizzo.getId_indirizzo(),
-                    utente.getNomeUtente()
+        for (Carrello item : carrello) {
+            Contenimento contenimento = new Contenimento(
+                    item.getCodiceArticolo(),
+                    idOrdine,
+                    item.getQuantita()
             );
-            ordineDAO.doSave(ordine);
-            int idOrdine = ordine.getId_ordine();
+            contenimentoDAO.doSave(contenimento);
+        }
 
-            for (Carrello item : carrello) {
-                Contenimento contenimento = new Contenimento(
-                        item.getCodiceArticolo(),
-                        idOrdine,
-                        item.getQuantita()
-                );
-                contenimentoDAO.doSave(contenimento);
-            }
+        carrelloDAO.pulisciCarrello(utente.getNomeUtente());
 
-            carrelloDAO.pulisciCarrello(utente.getNomeUtente());
+        // Imposta i dati per la pagina di conferma
+        session.setAttribute("totaleOrdine", totale);
+        session.setAttribute("idUltimoOrdine", idOrdine);
+        session.setAttribute("indirizzoSpedizione", indirizzo);
 
-            // Set per checkout.jsp
-            session.setAttribute("totaleOrdine", totale);
-            session.setAttribute("idUltimoOrdine", idOrdine);
-            session.setAttribute("indirizzoSpedizione", indirizzo);
-
-            response.sendRedirect("checkout.jsp");
+        response.sendRedirect("checkout.jsp");
     }
-
-
 }

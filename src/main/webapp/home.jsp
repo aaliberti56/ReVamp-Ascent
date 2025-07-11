@@ -26,7 +26,7 @@
 
     <div class="user-header">
         <h2>Ciao, <%=utente.getNome()%>!</h2>
-        <p class="user-balance">Saldo disponibile: € <%= String.format("%.2f", utente.getSaldo()) %></p>
+        <p class="user-balance">Benvenuto nella tua area personale</p>
     </div>
 
     <!-- Griglia dei menu -->
@@ -52,7 +52,6 @@
         </a>
     </div>
 <%
-    // Se l'utente è loggato mostra il bottone logout
     if (session.getAttribute("utenteLoggato") != null) {
 %>
     <form action="LogoutServlet" method="get" class="bott" style="text-align:center; margin-top:30px;">

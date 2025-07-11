@@ -282,8 +282,8 @@
 
         xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-        mostraNotifica();         // ✅ Mostra messaggio
-        mostraBadge();  // 🔁 Mostra badge
+        mostraNotifica();
+        mostraBadge();
     }
     };
         console.log("ID:", idArticolo, "Quantità:", quantita);

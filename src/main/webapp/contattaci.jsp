@@ -26,11 +26,11 @@
         .page-contact {
             position: relative;
             background: url("img/showroom1.png") no-repeat center center/cover;
-            min-height: 140vh; /* aumentato da 100vh */
+            min-height: 140vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding-bottom: 200px; /* aggiunto spazio sotto */
+            padding-bottom: 200px;
         }
 
 

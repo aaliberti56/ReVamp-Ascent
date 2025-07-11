@@ -58,7 +58,7 @@
       <tbody>
       <% for (Carrello item : carrello) {
         Articolo art = articoloDAO.doRetrieveById(item.getCodiceArticolo());
-        if (art == null) continue; // salta articoli eliminati
+        if (art == null) continue;
 
         ImmagineArticolo img = imgDAO.findMainImage(item.getCodiceArticolo());
         String urlImg = (img != null && img.getUrl() != null) ? img.getUrl() : "img/default.jpg";

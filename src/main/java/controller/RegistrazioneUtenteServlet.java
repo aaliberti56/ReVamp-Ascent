@@ -28,7 +28,6 @@ public class RegistrazioneUtenteServlet extends HttpServlet {
         String sesso = request.getParameter("sesso");
 
         // Default values
-        double saldo = 0.0;
         int eta = 0;
         String telefono = "N/D";
 
@@ -37,12 +36,12 @@ public class RegistrazioneUtenteServlet extends HttpServlet {
         try {
             // Controlla se username già esistente
             if (dao.doRetrieveByUsername(username) != null) {
-                response.sendRedirect("registrazione.jsp?ar=true");
+                response.sendRedirect("registrazione.jsp?errore=Username già in uso");
                 return;
             }
 
             // Crea Cliente (la password sarà hashata nel metodo dao.doSave)
-            Cliente nuovoCliente = new Cliente(username, password, nome, cognome, saldo, email, sesso, eta, telefono);
+            Cliente nuovoCliente = new Cliente(username, password, nome, cognome, email, sesso, eta, telefono);
             dao.doSave(nuovoCliente);
 
             // Registrazione avvenuta con successo
@@ -50,7 +49,8 @@ public class RegistrazioneUtenteServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("registrazione.jsp?ar=errore");
+            response.sendRedirect("registrazione.jsp?errore=Registrazione fallita");
         }
     }
 }
+

@@ -53,7 +53,6 @@
                 <th><i class="fas fa-id-badge"></i> Nome</th>
                 <th><i class="fas fa-id-badge"></i> Cognome</th>
                 <th><i class="fas fa-envelope"></i> E-Mail</th>
-                <th><i class="fas fa-wallet"></i> Saldo</th>
                 <th><i class="fas fa-venus-mars"></i> Sesso</th>
                 <th><i class="fas fa-birthday-cake"></i> Età</th>
                 <th><i class="fas fa-phone"></i> Telefono</th>
@@ -69,7 +68,6 @@
                 <td><%= c.getNome() %></td>
                 <td><%= c.getCognome() %></td>
                 <td><%= c.getEmail() %></td>
-                <td><%= String.format("%.2f", c.getSaldo()) %> &euro;</td>
                 <td data-sesso="<%= c.getSesso().toUpperCase() %>"><%= c.getSesso().toUpperCase() %></td>
                 <td><%= c.getEta() %></td>
                 <td><%= c.getNumTelefono() %></td>
@@ -79,9 +77,9 @@
             } else {
                 if (!ricercaPrecedente.isEmpty()) {
             %>
-            <tr><td colspan="8" class="no-results-message">Nessun cliente trovato con l'username '<%= ricercaPrecedente %>'</td></tr>
+            <tr><td colspan="7" class="no-results-message">Nessun cliente trovato con l'username '<%= ricercaPrecedente %>'</td></tr>
             <%  } else { %>
-            <tr><td colspan="8" class="no-results-message">Nessun cliente registrato nel sistema.</td></tr>
+            <tr><td colspan="7" class="no-results-message">Nessun cliente registrato nel sistema.</td></tr>
             <%  }
             }
             %>
@@ -97,3 +95,4 @@
 %>
 </body>
 </html>
+

@@ -5,19 +5,17 @@ public class Cliente{
     private String pass;
     private String nome;
     private String cognome;
-    private double saldo;
     private String email;
     private String sesso;
     private int eta;
     private String numTelefono;
 
 
-    public Cliente(String nome_utente, String pass, String nome, String cognome,double saldo, String email, String sesso, int eta, String numTelefono) {
+    public Cliente(String nome_utente, String pass, String nome, String cognome, String email, String sesso, int eta, String numTelefono) {
         this.nome_utente = nome_utente;
         this.pass = pass;
         this.nome = nome;
         this.cognome = cognome;
-        this.saldo = saldo;
         this.email = email;
         this.sesso = sesso;
         this.eta = eta;
@@ -51,13 +49,6 @@ public class Cliente{
     }
     public void setCognome(String cognome) {
         this.cognome = cognome;
-    }
-
-    public double getSaldo() {
-        return saldo;
-    }
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
     }
 
     public String getEmail() {

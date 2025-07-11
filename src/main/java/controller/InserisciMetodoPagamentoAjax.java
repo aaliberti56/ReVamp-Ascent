@@ -49,7 +49,6 @@ public class InserisciMetodoPagamentoAjax extends HttpServlet {
 
             GregorianCalendar dataScadenza = new GregorianCalendar(anno, mese, 1);
 
-            // Crea e salva il metodo di pagamento (senza CVV)
             MetodiPagamento metodo = new MetodiPagamento(numCarta, intestatario, dataScadenza, nomeUtente);
             MetodiPagamentoDAO dao = new MetodiPagamentoDAO();
             boolean success = dao.doSave(metodo);
