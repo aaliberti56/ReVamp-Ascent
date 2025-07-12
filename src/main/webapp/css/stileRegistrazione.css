@@ -744,6 +744,14 @@ hr {
     background-color: #2980b9;
 }
 
+.successoMessaggio {
+    width: 20px;
+    height: auto;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+
 .dettagli-extra {
     margin-top: 10px;
     color: #333;
@@ -900,4 +908,25 @@ hr {
     .contenitore-principale .info-articolo {
         max-width: 100%;
     }
+}
+.prezzo-box {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.prezzo-scontato {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e60000;
+    display: block;
+    margin-top: 8px;
+}
+
+.prezzo-originale {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: gray;
+    text-decoration: line-through;
+    display: block;
+    margin-top: 4px;
 }

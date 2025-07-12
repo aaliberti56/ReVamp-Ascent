@@ -63,14 +63,23 @@
         ImmagineArticolo img = imgDAO.findMainImage(item.getCodiceArticolo());
         String urlImg = (img != null && img.getUrl() != null) ? img.getUrl() : "img/default.jpg";
 
-        double prezzoFinale = Math.max(art.getPrezzo() - art.getSconto(), 0);
+        double prezzoFinale = art.getPrezzo() * (1 - art.getSconto());
         double subTotale = prezzoFinale * item.getQuantita();
         totale += subTotale;
       %>
       <tr>
         <td><img src="<%= urlImg %>" alt="img" width="70"></td>
         <td><%= art.getNome() %></td>
-        <td><%= df.format(prezzoFinale) %> €</td>
+        <td>
+            <span style="color: red; font-size: 1.2em; font-weight: bold;">
+              € <%= df.format(prezzoFinale) %>
+            </span><br>
+            <% if (art.getSconto() > 0) { %>
+            <span style="text-decoration: line-through; color: gray; font-size: 0.95em;">
+            € <%= df.format(art.getPrezzo()) %>
+            </span>
+            <% } %>
+        </td>
         <td><%= item.getQuantita() %></td>
         <td><%= df.format(subTotale) %> €</td>
         <td>

@@ -110,7 +110,7 @@
 <jsp:include page="header.jsp"></jsp:include>
 
 <%
-    double prezzoScontato = articolo.getPrezzo() - (articolo.getPrezzo() * articolo.getSconto() / 100.0);
+    double prezzoScontato = articolo.getPrezzo() * (1 - articolo.getSconto());
     String imgPrincipale = "img/default.jpg";
     List<String> altreImmagini = new ArrayList<>();
     if (immagini != null && !immagini.isEmpty()) {
@@ -159,7 +159,7 @@
 
 
         <div class="dettagli-extra">
-            <p><strong>Spedizione:</strong> € 8,40</p>
+            <p><strong>Spedizione:</strong> Gratis</p>
             <p><strong>Disponibilità:</strong> In pronta consegna</p>
             <p><strong>Peso:</strong> <%= articolo.getPeso() %> kg</p>
             <p><strong>Dimensioni:</strong> <%= articolo.getDimensione() %> cm</p>

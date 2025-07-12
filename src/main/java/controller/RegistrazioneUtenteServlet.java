@@ -7,13 +7,11 @@ import model.JavaBeans.*;
 import model.DAO.*;
 
 import java.io.IOException;
-
 @WebServlet(name = "Registrazione", value = "/RegistrazioneUtenteServlet")
 public class RegistrazioneUtenteServlet extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response); // delega al POST
+        doPost(request, response); // delega tutto al POST
     }
 
     @Override
@@ -24,33 +22,45 @@ public class RegistrazioneUtenteServlet extends HttpServlet {
         String cognome = request.getParameter("cognome");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String confermaPassword = request.getParameter("confermaPassword");
         String username = request.getParameter("username");
         String sesso = request.getParameter("sesso");
 
-        // Default values
         int eta = 0;
         String telefono = "N/D";
 
         ClienteDAO dao = new ClienteDAO();
 
         try {
-            // Controlla se username già esistente
-            if (dao.doRetrieveByUsername(username) != null) {
-                response.sendRedirect("registrazione.jsp?errore=Username già in uso");
+            if (nome == null || cognome == null || email == null || password == null || confermaPassword == null || username == null || sesso == null ||
+                    nome.isBlank() || cognome.isBlank() || email.isBlank() || password.isBlank() || confermaPassword.isBlank() || username.isBlank()) {
+                response.sendRedirect("registrazione.jsp?errore=campi");
                 return;
             }
 
-            // Crea Cliente (la password sarà hashata nel metodo dao.doSave)
+            if (!password.equals(confermaPassword)) {
+                response.sendRedirect("registrazione.jsp?errore=password");
+                return;
+            }
+
+            if (dao.doRetrieveByUsername(username) != null) {
+                response.sendRedirect("registrazione.jsp?errore=username");
+                return;
+            }
+
+            if (dao.doRetrieveByEmail(email) != null) {
+                response.sendRedirect("registrazione.jsp?errore=email");
+                return;
+            }
+
+
             Cliente nuovoCliente = new Cliente(username, password, nome, cognome, email, sesso, eta, telefono);
             dao.doSave(nuovoCliente);
-
-            // Registrazione avvenuta con successo
             response.sendRedirect("login.jsp?success=reg");
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("registrazione.jsp?errore=Registrazione fallita");
+            response.sendRedirect("registrazione.jsp?errore=generico");
         }
     }
 }
-

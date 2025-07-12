@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.*;
 
 public class OrdineDAO {
 
@@ -117,5 +118,59 @@ public class OrdineDAO {
             throw new RuntimeException(e);
         }
         return lista;
+    }
+
+    public Map<Integer, List<Map<String, Object>>> doRetrieveStoricoUtente(String nomeUtente) {
+        Map<Integer, List<Map<String, Object>>> storico = new LinkedHashMap<>();
+
+        String sql = """
+        SELECT o.id_ordine, o.data, a.nome AS nome_articolo, a.codice,
+               c.quantita, a.prezzo, COALESCE(a.sconto, 0) AS sconto,
+               ia.url AS immagine,
+               COUNT(*) OVER (PARTITION BY o.id_ordine) AS num_articoli,
+               SUM((c.quantita * a.prezzo * (1 - COALESCE(a.sconto, 0)))) OVER (PARTITION BY o.id_ordine) AS importo_totale
+        FROM ordine o, Contenimento c
+        LEFT JOIN Articolo a ON a.codice = c.codice
+        LEFT JOIN ImmagineArticolo ia ON ia.codice_articolo = a.codice AND ia.is_principale = TRUE
+        WHERE o.id_ordine = c.id_ordine
+          AND o.nome_utente = ?
+        ORDER BY o.id_ordine DESC, c.codice ASC
+    """;
+
+        try (Connection conn = ConPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nomeUtente);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int idOrdine = rs.getInt("id_ordine");
+                    List<Map<String, Object>> lista = storico.computeIfAbsent(idOrdine, k -> new ArrayList<>());
+
+                    Map<String, Object> mappa = new HashMap<>();
+
+                    String nomeArticolo = rs.getString("nome_articolo");
+                    String immagine = rs.getString("immagine");
+
+                    mappa.put("nome_articolo", nomeArticolo != null ? nomeArticolo : "Articolo non più disponibile");
+                    mappa.put("codice", rs.getInt("codice")); // può restare anche se articolo eliminato
+                    mappa.put("quantita", rs.getInt("quantita"));
+                    mappa.put("prezzo", rs.getDouble("prezzo"));
+                    mappa.put("sconto", rs.getDouble("sconto"));
+                    mappa.put("immagine", immagine != null ? immagine : "assets/img/default.jpg");
+
+                    if (lista.isEmpty()) {
+                        mappa.put("data", rs.getDate("data"));
+                        mappa.put("num_articoli", rs.getInt("num_articoli"));
+                        mappa.put("importo_totale", rs.getDouble("importo_totale"));
+                    }
+
+                    lista.add(mappa);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return storico;
     }
 }

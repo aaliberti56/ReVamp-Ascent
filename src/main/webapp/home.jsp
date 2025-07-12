@@ -31,7 +31,7 @@
 
     <!-- Griglia dei menu -->
     <div class="menu-grid">
-        <a href="ordini.jsp" class="menu-card">
+        <a href="storicoOrdini.jsp" class="menu-card">
             <img src="img/ordini.png" alt="Ordini" class="menu-icon" />
             <p>Ordini</p>
         </a>

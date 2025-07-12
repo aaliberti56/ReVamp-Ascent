@@ -73,20 +73,14 @@ public class ClienteDAO {
         return clienti;
     }
 
-    public List<Cliente> doRetrieveByEmail(String emailRicerca) {
-        List<Cliente> clienti = new ArrayList<>();
+    public Cliente doRetrieveByEmail(String email) {
         try (Connection con = ConPool.getConnection()) {
-            PreparedStatement ps;
-            if (emailRicerca != null && !emailRicerca.trim().isEmpty()) {
-                ps = con.prepareStatement("SELECT * FROM cliente WHERE LOWER(email) LIKE ?");
-                ps.setString(1, "%" + emailRicerca.toLowerCase() + "%");
-            } else {
-                ps = con.prepareStatement("SELECT * FROM cliente");
-            }
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM cliente WHERE LOWER(email) = ?");
+            ps.setString(1, email.toLowerCase());
 
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Cliente c = new Cliente(
+            if (rs.next()) {
+                return new Cliente(
                         rs.getString("nome_utente"),
                         rs.getString("pass"),
                         rs.getString("nome"),
@@ -96,12 +90,11 @@ public class ClienteDAO {
                         rs.getInt("eta"),
                         rs.getString("num_telefono")
                 );
-                clienti.add(c);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return clienti;
+        return null;
     }
 
     public boolean doSave(Cliente cliente) {

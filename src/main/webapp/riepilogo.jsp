@@ -64,7 +64,7 @@
             ImmagineArticolo img = imgDAO.findMainImage(item.getCodiceArticolo());
             String imgUrl = (img != null && img.getUrl() != null) ? img.getUrl() : "img/default.jpg";
 
-            double prezzoFinale = Math.max(art.getPrezzo() - art.getSconto(), 0);
+            double prezzoFinale = art.getPrezzo() * (1 - art.getSconto());
             double subTotale = prezzoFinale * item.getQuantita();
             totale += subTotale;
         %>
@@ -72,7 +72,7 @@
             <td><img src="<%= imgUrl %>" width="60" alt="img" /></td>
             <td><%= art.getNome() %></td>
             <td><%= df.format(art.getPrezzo()) %> €</td>
-            <td><%= df.format(art.getSconto()) %> €</td>
+            <td><%= df.format(art.getPrezzo() * art.getSconto()) %> €</td>
             <td><%= df.format(prezzoFinale) %> €</td>
             <td><%= item.getQuantita() %></td>
             <td><%= df.format(subTotale) %> €</td>
@@ -104,8 +104,13 @@
         <h3>💳 Seleziona un Metodo di Pagamento</h3>
 
         <% if (metodiPagamento.isEmpty()) { %>
-        <p><em>Nessun metodo di pagamento salvato.</em></p>
-        <% } else { %>
+    <p><em>Nessun metodo di pagamento salvato.</em></p>
+</form>
+
+<form action="<%= request.getContextPath() %>/metodiPagamento.jsp" method="get">
+    <input type="submit" value="Gestisci metodi di pagamento" class="bottone">
+</form>
+<% } else { %>
         <div class="contcarte">
             <% for (MetodiPagamento carta : metodiPagamento) {
                 GregorianCalendar dataScad = carta.getDataScadenza();

@@ -79,7 +79,18 @@
           <img class="fotoArticolo" src="<%= imgURL %>" alt="<%= a.getNome() %>">
           <span class="nomeArticolo"><%= a.getNome() %></span>
         </a><br>
-        <span class="prezzo"><%= a.getPrezzo() %> €</span>
+<%
+    double prezzo = a.getPrezzo();
+    double sconto = a.getSconto();
+    double prezzoScontato = prezzo - (prezzo * sconto);
+%>
+<div class="prezzo-box">
+    <span class="prezzo-scontato">€ <%= String.format(Locale.ITALY, "%.2f", prezzoScontato) %></span>
+    <% if (sconto > 0) { %>
+        <span class="prezzo-originale"><del>€ <%= String.format(Locale.ITALY, "%.2f", prezzo) %></del></span>
+    <% } %>
+</div>
+
       </div>
 
       <%

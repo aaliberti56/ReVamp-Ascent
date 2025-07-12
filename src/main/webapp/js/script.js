@@ -2,9 +2,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     inizializzaLoginForm();
     inizializzaFormModificaCredenziali();
+    inizializzaFormRegistrazione();
     aggiornaListaMetodiPagamento();
 });
-
 // === VALIDAZIONE FORM LOGIN ===
 function inizializzaLoginForm() {
     const form = document.getElementById('formLogin');
@@ -97,6 +97,47 @@ function confermaCambioPreferito() {
 
 
 
+function inizialiizaFormRegistrazione(){
+    const form=document.getElementById('formRegistrazione');
+    if(form){
+        form.addEventListener("submit",function (event){
+            if(!validazioneFormRegistrazione()){
+                event.preventDefault();
+            }
+        });
+    }
+}
+
+function validazioneFormRegistrazione() {
+    const email = document.getElementById('email').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const confpass = document.getElementById('confpass').value.trim();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (username === '') {
+        alert('Username obbligatorio');
+        return false;
+    }
+
+    if (!emailRegex.test(email)) {
+        alert('Inserisci un\'email valida');
+        return false;
+    }
+
+    if (password.length < 3 || !(/[a-zA-Z]/.test(password)) || !(/\d/.test(password))) {
+        alert('La password deve contenere almeno 3 caratteri, inclusa una lettera e un numero');
+        return false;
+    }
+
+    if (password !== confpass) {
+        alert('Le password non corrispondono');
+        return false;
+    }
+
+    return true;
+}
 
 
 

@@ -9,6 +9,17 @@
 </head>
 <body>
 
+<!-- serve per far vedere a che si registra il messaggio di successo -->
+<% if ("reg".equals(request.getParameter("success"))) { %>
+<div class="containerMessaggio" style="justify-content:center; margin-bottom: 15px;">
+    <div id="messaggioConferma" style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">
+        <img src="img/success.png" class="successoMessaggio" style="width: 20px; vertical-align: middle; margin-right: 10px;">
+        Registrazione avvenuta con successo! Ora puoi effettuare il login.
+        <span class="chiudiMessaggio" style="float:right; cursor:pointer;" onclick="this.parentElement.parentElement.style.display='none';">×</span>
+    </div>
+</div>
+<% } %>
+
 <% if (request.getAttribute("msg") != null) { %>
 <div class="containerMessaggio" style="justify-content:center; margin-bottom: 15px;">
     <div id="messaggioConferma">
