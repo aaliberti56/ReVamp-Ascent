@@ -1,0 +1,250 @@
+body{
+    margin:0;
+    font-family: Raleway,sans-serif;
+    background: #fefefe;
+}
+
+
+
+.hero-promo::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1;
+}
+
+.hero-promo-content{
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin-left: 50px;
+}
+
+.hero-promo .etichetta{
+    background-color: #f6a77c;
+    display: inline-block;
+    padding: 6px 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+
+.hero-promo .spedizione {
+    background-color: #f0633a;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.hero-promo h1 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.btn-approfitta {
+    background-color: white;
+    color: black;
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.btn-approfitta:hover {
+    background-color: #f0f0f0;
+}
+
+.hero h1{
+    font-size: 1.3rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.presentazione{
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #fff;
+}
+
+.presentazione h2{
+    font-size: 2.2rem;
+    color:#333;
+    margin-bottom: 10px;
+}
+
+.presentazione p{
+    font-size: 1.1rem;
+    color:#555;
+    max-width: 800px;
+    margin: auto;
+}
+
+.sconti-section{
+    padding: 60px 40px;
+    background-color: #f8f9fa;
+}
+
+.sconti-section h2{
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color:#e74c3c;
+}
+
+.prodotti-scontati{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:30px;
+}
+
+.card-prodotto {
+    flex: 0 0 auto;
+    width: 300px;
+    position: relative;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    scroll-snap-align: start;
+    height: auto;
+    transform: scale(1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-prodotto:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.card-prodotto img{
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.card-prodotto h4{
+    margin: 10px 0 5px;
+    font-size: 1.1rem;
+}
+
+.card-prodotto p {
+    margin: 0 0 15px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.categorie-section{
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.categorie-section h2{
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.categorie-grid{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:20px;
+}
+
+.categorie-card{
+    width: 180px;
+    text-align: center;
+    text-decoration: none;
+    color:#333;
+}
+
+.categoria-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.categoria-card span {
+    display: block;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.badge-sconto {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+    overflow: hidden;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-btn {
+    background-color: white;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 10px 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-btn:hover {
+    background-color: #eaeaea;
+}
+
+.carousel-btn.left {
+    position: absolute;
+    left: -10px;
+}
+
+.carousel-btn.right {
+    position: absolute;
+    right: -10px;
+}

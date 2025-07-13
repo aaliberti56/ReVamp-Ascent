@@ -22,14 +22,14 @@
     .iconaMenu { height: 30px; margin: 0 10px; cursor: pointer; vertical-align: middle; }
 
     .menu-container {
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex; justify-content: space-between; align-items: center;  position: relative; z-index: 10;
       padding: 10px 20px; background-color: #f8f9fa; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .menuricerca { display: flex; align-items: center; margin-left: auto; }
     .ricerca { padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; margin-right: 10px; width: 200px; }
 
-    .menu { display: flex; background-color: #2c3e50; padding: 10px 20px; }
+    .menu { display:flex; background-color: #2c3e50; padding: 10px 20px; position:relative; z-index: 100;}
     .menu a { color: white; padding: 10px 15px; text-decoration: none; font-weight: 500; }
     .menu a:hover { background-color: #3d566e; }
 

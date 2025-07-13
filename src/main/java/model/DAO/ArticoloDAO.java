@@ -137,4 +137,31 @@ public class ArticoloDAO {
         }
         return articoli;
     }
+
+
+    public List<Articolo> doRetrieveConSconto() {
+        List<Articolo> articoliScontati = new ArrayList<>();
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM articolo WHERE sconto IS NOT NULL AND sconto > 0");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Articolo a = new Articolo(
+                        rs.getInt("codice"),
+                        rs.getString("nome"),
+                        rs.getString("descrizione"),
+                        rs.getString("colore"),
+                        rs.getDouble("sconto"),
+                        rs.getDouble("prezzo"),
+                        rs.getDouble("peso"),
+                        rs.getString("dimensione"),
+                        rs.getInt("id_categoria")
+                );
+                articoliScontati.add(a);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return articoliScontati;
+    }
+
 }
