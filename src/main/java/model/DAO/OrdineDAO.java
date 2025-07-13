@@ -34,29 +34,55 @@ public class OrdineDAO {
         }
     }
 
+    public double calcolaImportoTotale(int idOrdine){
+        double totale=0.0;
+        try(Connection con=ConPool.getConnection()){
+            PreparedStatement ps=con.prepareStatement("""
+            SELECT SUM(c.quantita * a.prezzo * (1 - COALESCE(a.sconto, 0))) AS totale
+            FROM Contenimento c
+            JOIN Articolo a ON c.codice = a.codice
+            WHERE c.id_ordine = ?
+        """);
+            ps.setInt(1, idOrdine);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                totale = rs.getDouble("totale");
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return totale;
+    }
+
     public List<Ordine> doRetrieveAll() {
         List<Ordine> lista = new ArrayList<>();
         try (Connection con = ConPool.getConnection()) {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM ordine");
+
             while (rs.next()) {
                 GregorianCalendar data = new GregorianCalendar();
                 data.setTime(rs.getDate("data"));
+                int idOrdine = rs.getInt("id_ordine");
+
+                double importoTotale = calcolaImportoTotale(idOrdine);
+
                 Ordine o = new Ordine(
-                        rs.getInt("id_ordine"),
+                        idOrdine,
                         rs.getInt("num_articoli"),
                         data,
-                        rs.getDouble("importo_totale"),
+                        importoTotale,
                         rs.getInt("id_indirizzo"),
                         rs.getString("nome_utente")
                 );
                 lista.add(o);
             }
-            return lista;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return lista;
     }
+
 
     public void doSave(Ordine ordine) {
         try (Connection con = ConPool.getConnection()) {
@@ -93,9 +119,11 @@ public class OrdineDAO {
     public List<Ordine> doRetrieveByDate(GregorianCalendar data1, GregorianCalendar data2) {
         List<Ordine> lista = new ArrayList<>();
         try (Connection con = ConPool.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "SELECT * FROM ordine WHERE data BETWEEN ? AND ? ORDER BY data DESC"
-            );
+            PreparedStatement ps = con.prepareStatement("""
+            SELECT * FROM ordine
+            WHERE data BETWEEN ? AND ?
+            ORDER BY data DESC
+        """);
             ps.setDate(1, new java.sql.Date(data1.getTimeInMillis()));
             ps.setDate(2, new java.sql.Date(data2.getTimeInMillis()));
             ResultSet rs = ps.executeQuery();
@@ -103,12 +131,15 @@ public class OrdineDAO {
             while (rs.next()) {
                 GregorianCalendar data = new GregorianCalendar();
                 data.setTime(rs.getDate("data"));
+                int idOrdine = rs.getInt("id_ordine");
+
+                double importoTotale = calcolaImportoTotale(idOrdine);
 
                 Ordine o = new Ordine(
-                        rs.getInt("id_ordine"),
+                        idOrdine,
                         rs.getInt("num_articoli"),
                         data,
-                        rs.getDouble("importo_totale"),
+                        importoTotale,
                         rs.getInt("id_indirizzo"),
                         rs.getString("nome_utente")
                 );

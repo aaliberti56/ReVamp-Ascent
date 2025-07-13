@@ -10,7 +10,6 @@
 
   List<Categoria> categorie = (List<Categoria>) request.getAttribute("categorie");
 %>
-<%@ include file="headerAdmin.jsp" %>
 
 <!DOCTYPE html>
 <html>
@@ -18,10 +17,12 @@
   <meta charset="UTF-8">
   <title>Aggiungi Articolo</title>
   <link rel="stylesheet" href="css/stileRegistrazione.css">
-  <link rel="icon" href="img/logo.webp" type="image/webp">
+  <link rel="icon" href="img/logo.webp" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<jsp:include page="headerAdmin.jsp"></jsp:include>
+
 
 <img src="img/logo.webp" class="logo">
 <div id="contenitoreForm">

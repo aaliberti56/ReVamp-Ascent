@@ -73,6 +73,9 @@
     </style>
 </head>
 <body>
+
+<jsp:include page="headerAdmin.jsp"></jsp:include>
+
 <%
 
     if(session.getAttribute("admin")!=null){

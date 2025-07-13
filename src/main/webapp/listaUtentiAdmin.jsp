@@ -11,6 +11,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="img/logo.webp">
     <title>Lista Clienti</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">

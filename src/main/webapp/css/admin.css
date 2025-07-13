@@ -209,6 +209,36 @@ form {
     margin-bottom: 30px;
     flex-wrap: wrap;
 }
+.dettagli-riga {
+    background-color: #f9f9f9;
+}
+
+.detail-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 16px;
+}
+
+.riga-articolo {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.riga-articolo img.miniatura {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.dettagli-container {
+    padding: 10px;
+}
 
 
 

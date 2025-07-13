@@ -65,7 +65,7 @@ public class ConfermaOrdineServlet extends HttpServlet {
         for (Carrello item : carrello) {
             Articolo art = articoloDAO.doRetrieveById(item.getCodiceArticolo());
             if (art != null) {
-                double prezzoFinale = Math.max(art.getPrezzo() - art.getSconto(), 0);
+                double prezzoFinale = art.getPrezzo() * (1 - art.getSconto());
                 totale += prezzoFinale * item.getQuantita();
                 numArticoli += item.getQuantita();
             }

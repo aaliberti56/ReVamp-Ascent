@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="image/x-icon" href="img/logo.webp">
 </head>
 <body>
 <%
@@ -41,14 +42,14 @@
             ordini = ordineDAO.doRetrieveAll();
         }
 %>
-
+<jsp:include page="headerAdmin.jsp"></jsp:include>
 <div class="page-container">
     <div class="header-section">
         <img src="<%= request.getContextPath() %>/img/logo.webp" alt="Logo" class="logo">
         <h2>Gestione Ordini</h2>
     </div>
 
-    <form method="get" action="CercaOrdiniPerDataServlet" class="search-form-container">
+    <form method="get" action="ordini.jsp" class="search-form-container">
         <input type="date" name="data1" value="<%= (data1 != null) ? data1 : "" %>">
         <input type="date" name="data2" id="data2" value="<%= (data2 != null) ? data2 : "" %>">
         <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
@@ -81,9 +82,16 @@
                 <td><%= ordine.getNum_articoli() %></td>
                 <td><%= String.format("€%.2f", ordine.getImporto_totale()) %></td>
                 <td>
-                    <a href="DettaglioOrdineServlet?id=<%= ordine.getId_ordine() %>" class="detail-link">
+                    <button class="detail-button" onclick="toggleDettagli(<%= ordine.getId_ordine() %>)">
                         <i class="fas fa-eye"></i>
-                    </a>
+                    </button>
+                </td>
+            </tr>
+            <tr id="dettagli-<%= ordine.getId_ordine() %>" class="dettagli-riga" style="display:none;">
+                <td colspan="6">
+                    <div id="contenuto-dettagli-<%= ordine.getId_ordine() %>">
+                        <i>Caricamento in corso...</i>
+                    </div>
                 </td>
             </tr>
             <%
@@ -103,9 +111,31 @@
 <% } else {
     response.sendRedirect("invalidLogin.jsp");
 } %>
-</body>
 <script>
-    document.getElementById('data2').max = new Date().toISOString().split("T")[0];
-    document.getElementById('data2').value = new Date().toISOString().split("T")[0];
+    const oggi = new Date().toISOString().split("T")[0];
+    document.getElementById('data2').max = oggi;
+
+    function toggleDettagli(idOrdine){
+        const riga=document.getElementById("dettagli-" + idOrdine);
+        const contenuto = document.getElementById("contenuto-dettagli-" + idOrdine);
+
+        if(riga.style.display=="none"){
+            riga.style.display="table-row";
+            if(!contenuto.dataset.caricato){
+                fetch("DettaglioOrdineServlet?id=" +idOrdine)
+                    .then(response=>response.text())
+                    .then(html=>{
+                        contenuto.innerHTML=html;
+                        contenuto.dataset.caricato="true";
+                    })
+                    .catch(() => {
+                        contenuto.innerHTML = "<span style='color:red;'>Errore nel caricamento dei dettagli.</span>";
+                    });
+            }
+        }else{
+            riga.style.display="none";
+        }
+    }
 </script>
+</body>
 </html>
