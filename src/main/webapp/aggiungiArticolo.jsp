@@ -4,7 +4,7 @@
 
 <%
   if (session.getAttribute("admin") == null) {
-    response.sendRedirect("loginAdmin.jsp");
+    response.sendRedirect("login.jsp");
     return;
   }
 

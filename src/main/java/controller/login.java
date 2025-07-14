@@ -7,6 +7,7 @@ import model.JavaBeans.*;
 import model.DAO.*;
 import java.util.*;
 import java.io.IOException;
+import java.sql.*;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ public class login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        AdminDAO adminDAO=new AdminDAO();
         ClienteDAO clienteDAO = new ClienteDAO();
         Cliente cliente = clienteDAO.checkLogin(username, password);
 
@@ -43,9 +44,27 @@ public class login extends HttpServlet {
 
             response.sendRedirect("home.jsp");
         } else {
-            request.setAttribute("erroreLogin", "Nome utente o password errati");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-            dispatcher.forward(request, response);
+            Admin admin=null;
+            try{
+                admin=adminDAO.doLogin(username,password);
+            }catch (SQLException e) {
+                e.printStackTrace(); // o log dell'errore
+                request.setAttribute("erroreLogin", "Errore interno durante il login admin.");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+                dispatcher.forward(request, response);
+                return;
+            }
+            if(admin!=null){
+                HttpSession session = request.getSession();
+                session.setAttribute("admin",admin);
+                response.sendRedirect("admin.jsp");
+            }
+            else{
+                request.setAttribute("erroreLogin", "Nome utente o password errati");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+                dispatcher.forward(request, response);
+            }
+
         }
     }
 

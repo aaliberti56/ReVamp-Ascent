@@ -12,134 +12,50 @@
 <head>
   <meta charset="UTF-8">
   <title>ReVamp Ascent</title>
+  <link rel="stylesheet" href="css/header.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body { font-family: 'Raleway', sans-serif; margin: 0; padding: 0; }
-    .logo { height: 60px; margin: 10px 20px; }
-    .iconaMenu { height: 30px; margin: 0 10px; cursor: pointer; vertical-align: middle; }
-
-    .menu-container {
-      display: flex; justify-content: space-between; align-items: center;  position: relative; z-index: 10;
-      padding: 10px 20px; background-color: #f8f9fa; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .menuricerca { display: flex; align-items: center; margin-left: auto; }
-    .ricerca { padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; margin-right: 10px; width: 200px; }
-
-    .menu { display:flex; background-color: #2c3e50; padding: 10px 20px; position:relative; z-index: 100;}
-    .menu a { color: white; padding: 10px 15px; text-decoration: none; font-weight: 500; }
-    .menu a:hover { background-color: #3d566e; }
-
-    #menuTelefono { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: white; z-index: 1000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-    .closeBtn { position: absolute; top: 20px; right: 20px; }
-    .vociMenuTelefono { margin-top: 40px; }
-    .vociMenuTelefono a { color: #2c3e50; font-weight: 700; font-size: 1.2em; display: block; margin: 15px 0; text-decoration: none; }
-    #hamburgerMenu { display: none; }
-
-    @media (max-width: 768px) {
-      .menu { display: none; }
-      #hamburgerMenu { display: inline-block; }
-    }
-
-    .iconaMenuBtn { background: none; border: none; padding: 0; cursor: pointer; }
-
-    .modal-ricerca {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999;
-      background-color: rgba(0, 0, 0, 0.6);
-    }
-
-    .modal-content-ricerca {
-      background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px;
-      width: 80%; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); position: relative;
-    }
-
-    .close-ricerca { position: absolute; top: 10px; right: 15px; font-size: 24px; font-weight: bold; color: #333; cursor: pointer; }
-
-    .modal-content-ricerca ul {
-        list-style: none;
-        padding: 0;
-        max-height: 300px;
-        overflow-y: auto;
-    }
-    .modal-content-ricerca li { margin-bottom: 10px; }
-    .modal-content-ricerca a { text-decoration: none; color: #2c3e50; font-weight: 500; }
-    .modal-content-ricerca a:hover { text-decoration: underline; }
-    .btn-catalogo {
-      background-color: #3498db;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-weight: 500;
-      margin-left: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.95rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-catalogo:hover {
-      background-color: #2980b9;
-    }
-
-    .badge-carrello {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      width: 10px;
-      height: 10px;
-      background-color: red;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .carrello-link {
-      position: relative;
-      display: inline-block;
-    }
-
-
-  </style>
 </head>
 <body>
-
 <div class="menu-container">
-  <a href="homePage.jsp">
-    <img src='img/logo.webp' class='logo' alt="Logo">
-  </a>
 
+  <!-- BLOCCO SINISTRA -->
+  <div class="blocco-sinistra">
+    <a href="homePage.jsp">
+      <img src='img/logo.webp' class='logo' alt="Logo">
+    </a>
 
-  <a href="catalogo.jsp" class="btn-catalogo">
-    <i class="fa-solid fa-list"></i> Catalogo
-  </a>
+    <a href="catalogo.jsp" class="btn-catalogo">
+      <i class="fa-solid fa-list"></i> Catalogo
+    </a>
 
+    <div class="menuricerca">
+      <form id="formRicerca" class="barra-ricerca" onsubmit="eseguiRicerca(event)">
+        <input type="text" id="textboxRicerca" name="ricerca" placeholder="Cerca un prodotto..." required>
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
+  </div>
 
-  <div class="menuricerca">
-    <form id="formRicerca" onsubmit="eseguiRicerca(event)">
-      <input type="text" id="textboxRicerca" name="ricerca" placeholder="Cerca un prodotto..." class="ricerca" required>
-      <button type="submit" class="iconaMenuBtn">
-        <img src="img/magnifier.png" alt="Cerca" class="iconaMenu">
-      </button>
-    </form>
+  <!-- BLOCCO DESTRA -->
+  <div class="icone-destra">
+    <a href="home.jsp" class="account-link">
+      <img src="img/user.png" class="iconaAccount" alt="Account">
+      <div class="testo-account">
+        Il mio account<br><strong>Accedi</strong>
+      </div>
+    </a>
 
+    <a href="carrello.jsp" class="carrello-link">
+      <img src="img/cart.png" alt="Carrello" width="28">
+      <span id="carrello-badge" class="badge-carrello" style="display:none;">0</span>
+    </a>
   </div>
 
 
-  <a href="carrello.jsp" class="carrello-link">
-    <img src="img/cart.png" alt="Carrello" width="28">
-    <span id="carrello-badge" class="badge-carrello" style="display:none;">0</span>
-  </a>
-
-
-  <a href="home.jsp">
-    <img src="img/user.png" class="iconaMenu" alt="Area Utente">
-  </a>
-</div>
-
+  </div>
 
 <img src="img/menu.png" class="iconaMenu" onclick="mostraMenu()" id="hamburgerMenu" alt="Menu">
 
@@ -176,9 +92,13 @@
         <img src="<%= request.getContextPath() %>/img/cart.png" class="iconaMenu" alt="Carrello">
       </a>
 
-      <a href="home.jsp">
-        <img src="img/user.png" class="iconaMenu" alt="Area Utente">
+      <a href="home.jsp" class="account-link">
+        <img src="img/user.png" class="iconaAccount" alt="Account">
+        <div class="testo-account">
+          Il mio account<br><strong>Accedi</strong>
+        </div>
       </a>
+
     </div>
   </div>
 </div>

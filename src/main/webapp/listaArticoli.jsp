@@ -9,7 +9,7 @@
 <%@ page import="model.DAO.ArticoloDAO, model.DAO.ImmagineArticoloDAO, model.JavaBeans.Articolo, model.JavaBeans.ImmagineArticolo, java.util.List" %>
 <%
     if(session.getAttribute("admin") == null){
-      response.sendRedirect("loginAdmin.jsp");
+      response.sendRedirect("login.jsp");
       return;
     }
   ArticoloDAO dao = new ArticoloDAO();

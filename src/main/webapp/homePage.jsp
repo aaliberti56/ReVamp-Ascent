@@ -33,7 +33,7 @@
 
 <div class="hero-promo">
     <div class="hero-promo-content">
-        <div class="etichetta">Nuova Collezione</div>
+        <div class="spedizione">Nuova Collezione</div>
         <div class="spedizione">Spedizione Gratuita</div>
         <h1>Scopri i nuovi arrivi per ogni ambiente della tua casa</h1>
         <a href="catalogo.jsp" class="btn-approfitta">Scopri ora</a>
@@ -41,13 +41,14 @@
 </div>
 
 
-<section class="spedizione">
-    <h2>Benvenuto su ReVamp Ascent</h2>
+<section class="presentazione">
+    <h2>🏡 Benvenuto su ReVamp Ascent</h2>
     <p>
-        Siamo il tuo punto di riferimento per arredamento moderno e funzionale.
-        Trova mobili di design, illuminazione elegante e soluzioni per ogni stanza, selezionati con cura per dare nuova vita ai tuoi spazi.
+        Scopri il nostro mondo di arredamento moderno e funzionale.
+        <strong>Mobili di design</strong>, <strong>illuminazione elegante</strong> e soluzioni curate per dare nuova vita ai tuoi spazi.
     </p>
 </section>
+
 
 <div class="sconti-section">
     <h2>Approfittane Ora</h2>
@@ -87,47 +88,86 @@
 
 <section class="categorie-section">
 <h2>Esplora per Categoria</h2>
-<div class="categorie-grid">
-    <%
-        CategoriaDAO categoriaDAO=new CategoriaDAO();
-        List<Categoria> categorie=categoriaDAO.doRetrieveAll();
+    <div class="categorie-carousel-container">
+        <button class="carousel-btn left" onclick="scrollCategorie(-1)">&#8592;</button>
+        <div class="categorie-carousel" id="categorieCarousel">
+            <%
+                CategoriaDAO categoriaDAO=new CategoriaDAO();
+                List<Categoria> categorie=categoriaDAO.doRetrieveAll();
 
-        Map<String,String> immaginiCategoria=new HashMap<>();
+                Map<String,String> immaginiCategoria=new HashMap<>();
 
-        immaginiCategoria.put("Mobili", "img/mobili.png");
-        immaginiCategoria.put("Sedie", "img/sedie.png");
-        immaginiCategoria.put("Divani", "img/divani.png");
-        immaginiCategoria.put("Letti", "img/letti.png");
-        immaginiCategoria.put("Illuminazione", "img/illuminazione.png");
-        immaginiCategoria.put("Tavolini", "img/tavolini.png");
-        immaginiCategoria.put("Accessori", "img/accessori.png");
-        immaginiCategoria.put("Esterni", "img/esterni.png");
-        immaginiCategoria.put("Bambini", "img/bambini.png");
+                immaginiCategoria.put("Mobili", "img/mobili.png");
+                immaginiCategoria.put("Sedie", "img/sedie.png");
+                immaginiCategoria.put("Divani", "img/divani.png");
+                immaginiCategoria.put("Letti", "img/letti.png");
+                immaginiCategoria.put("Illuminazione", "img/illuminazione.png");
+                immaginiCategoria.put("Tavolini", "img/tavolini.png");
+                immaginiCategoria.put("Accessori", "img/accessori.png");
+                immaginiCategoria.put("Esterni", "img/esterni.png");
+                immaginiCategoria.put("Bambini", "img/bambini.png");
 
-        for(Categoria categoria: categorie){
-            String tipologia=categoria.getTipologia();
-            String imgCat = immaginiCategoria.getOrDefault(tipologia, "img/default.jpg");
-        %>
+                for(Categoria categoria: categorie){
+                    String tipologia = categoria.getTipologia();
+                    String imgCat = immaginiCategoria.getOrDefault(tipologia, "img/default.jpg");
+            %>
+            <a class="card-prodotto" href="catalogo.jsp?categ=<%=tipologia%>">
+                 <img src="<%= imgCat %>" alt="<%= tipologia %>">
+                <h4><%= tipologia %></h4>
+            </a>
 
-    <a href="catalogo.jsp?categ=<%=tipologia%>">
-        <img src="<%= imgCat %>" alt="<%= tipologia %>">
-        <span><%= tipologia %></span>
-    </a>
-    <%
-        }
-    %>
-</div>
+            <% } %>
+        </div>
+        <button class="carousel-btn right" onclick="scrollCategorie(1)">&#8594;</button>
+    </div>
+
+</section>
+
+
+<section class="inspirazione-section">
+    <h2>Decora, Condividi, Lasciati Ispirare</h2>
+    <div class="inspirazione-grid">
+        <%
+            List<Articolo> tutti=articoloDAO.doRetriveByAll();
+            Collections.shuffle(tutti);
+
+            int max=Math.min(8,tutti.size());
+            for(int i=0; i<max;i++){
+                Articolo articolo=tutti.get(i);
+                List<ImmagineArticolo> immagini=imgDAO.doRetrieveByArticolo(articolo.getCodice());
+                String imgPath="img/default.jpg";
+                if(immagini!=null && !immagini.isEmpty()){
+                    imgPath=immagini.get(0).getUrl();
+                }
+
+                %>
+        <div class="inspirazione-item">
+            <img src="<%=imgPath%>" alt="<%=articolo.getNome()%>">
+           <a class="lo-voglio-btn" href="DettaglioArticoloServlet?codice=<%=articolo.getCodice() %>">LO VOGLIO!</a>
+        </div>
+        <% } %>
+    </div>
 </section>
 
 <jsp:include page="footerAreaUtente.jsp"></jsp:include>
 
 <script>
-    function scrollCarousel(direction){
-        const carousel=document.getElementById('carousel');
-        const scrollAmount=300;
+        function scrollCarousel(direction) {
+        const carousel = document.getElementById('carousel');
+        const scrollAmount = 300;
         carousel.scrollBy({
-            left: scrollAmount * direction, behavior: 'smooth'
-        });
+        left: scrollAmount * direction,
+        behavior: 'smooth'
+    });
+    }
+
+        function scrollCategorie(direction) {
+        const categorieCarousel = document.getElementById('categorieCarousel');
+        const scrollAmount = 300;
+        categorieCarousel.scrollBy({
+        left: scrollAmount * direction,
+        behavior: 'smooth'
+    });
     }
 </script>
 </body>

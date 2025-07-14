@@ -3,7 +3,7 @@
 <%
     Admin admin = (Admin) session.getAttribute("admin");
     if (admin == null) {
-        response.sendRedirect("../loginAdmin.jsp?errore=true");
+        response.sendRedirect("login.jsp");
         return;
     }
 %>
@@ -117,7 +117,7 @@
             <p>Visualizza Lista Utenti</p>
         </a>
     </div>
-    <form action="AdminLogoutServlet" method="get" style="text-align:center;">
+    <form action="LogoutServlet" method="get" style="text-align:center;">
         <input type="submit" value="Logout" class="bott1">
     </form>
 </div>

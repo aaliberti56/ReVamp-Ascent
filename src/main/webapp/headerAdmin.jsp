@@ -107,7 +107,7 @@
 
   <div class="right">
     <a href="admin.jsp" class="admin-button"><i class="fa fa-home"></i> Home</a>
-    <a href="AdminLogoutServlet" class="admin-button"><i class="fa fa-sign-out-alt"></i> Logout</a>
+    <a href="LogoutServlet" class="admin-button"><i class="fa fa-sign-out-alt"></i> Logout</a>
   </div>
 </div>
 

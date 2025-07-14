@@ -16,7 +16,7 @@ public class CercaOrdiniPerDataServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Admin admin = (Admin) request.getSession().getAttribute("admin");
         if (admin == null) {
-            response.sendRedirect("loginAdmin.jsp?errore=true");
+            response.sendRedirect("login.jsp?");
             return;
         }
 

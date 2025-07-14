@@ -18,7 +18,7 @@ public class FormAggiungiArticoloServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("admin") == null) {
-            response.sendRedirect("loginAdmin.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
 
