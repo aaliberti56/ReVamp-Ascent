@@ -57,11 +57,11 @@
                 <td colspan="5" class="no-results-message">Nessun ordine trovato.</td>
             </tr>
             <%
-                } else {
-                    for (Map.Entry<Integer, List<Map<String, Object>>> entry : ordini.entrySet()) {
-                        int id = entry.getKey();
-                        List<Map<String, Object>> articoli = entry.getValue();
-                        Map<String, Object> primo = articoli.get(0);
+            } else {
+                for (Map.Entry<Integer, List<Map<String, Object>>> entry : ordini.entrySet()) {
+                    int id = entry.getKey();
+                    List<Map<String, Object>> articoli = entry.getValue();
+                    Map<String, Object> primo = articoli.get(0);
             %>
             <tr>
                 <td><%= id %></td>
@@ -77,17 +77,26 @@
             <tr id="detail-<%= id %>" class="detail-row">
                 <td colspan="5">
                     <div class="detail-content">
-                        <% for (Map<String, Object> art : articoli) { %>
-                        <a href="DettaglioArticoloServlet?codice=<%= art.get("codice") %>" class="articolo-riga-link">
-                            <div class="articolo-riga">
-                                <img src="<%= art.get("immagine") != null ? art.get("immagine") : "assets/img/default.jpg" %>" alt="Articolo">
-                                <div>
-                                    <strong><%= art.get("nome_articolo") %></strong><br>
-                                    Quantità: <%= art.get("quantita") %><br>
-                                    Prezzo: €<%= String.format("%.2f", art.get("prezzo")) %>
-                                </div>
+                        <% for (Map<String, Object> art : articoli) {
+                            String img = (String) art.get("immagine");
+                            if (img == null || img.isEmpty()) {
+                                img = "assets/img/default.jpg";
+                            }
+                            double prezzo = (Double) art.get("prezzo_unitario");
+                            double sconto = (Double) art.get("sconto");
+                            int quantita = (int) art.get("quantita");
+                            double prezzoFinale = Math.round(prezzo * (1 - sconto) * 100.0) / 100.0;
+                            double totale = Math.round(prezzoFinale * quantita * 100.0) / 100.0;
+                        %>
+                        <div class="articolo-riga">
+                            <img src="<%= img %>" alt="Articolo">
+                            <div>
+                                <strong><%= art.get("nome_articolo") %></strong><br>
+                                Quantità: <%= quantita %><br>
+                                Prezzo unitario: €<%= String.format("%.2f", prezzoFinale) %><br>
+                                Totale: €<%= String.format("%.2f", totale) %>
                             </div>
-                        </a>
+                        </div>
                         <% } %>
                     </div>
                 </td>
@@ -111,4 +120,3 @@
 <jsp:include page="footerAreaUtente.jsp" />
 </body>
 </html>
-

@@ -33,14 +33,12 @@ public class OrdineDAO {
             throw new RuntimeException(e);
         }
     }
-
     public double calcolaImportoTotale(int idOrdine){
-        double totale=0.0;
-        try(Connection con=ConPool.getConnection()){
-            PreparedStatement ps=con.prepareStatement("""
-            SELECT SUM(c.quantita * a.prezzo * (1 - COALESCE(a.sconto, 0))) AS totale
+        double totale = 0.0;
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("""
+            SELECT SUM(c.quantita * c.prezzo_unitario * (1 - COALESCE(c.sconto, 0))) AS totale
             FROM Contenimento c
-            JOIN Articolo a ON c.codice = a.codice
             WHERE c.id_ordine = ?
         """);
             ps.setInt(1, idOrdine);
@@ -48,11 +46,12 @@ public class OrdineDAO {
             if (rs.next()) {
                 totale = rs.getDouble("totale");
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return totale;
     }
+
 
     public List<Ordine> doRetrieveAll() {
         List<Ordine> lista = new ArrayList<>();
@@ -155,16 +154,16 @@ public class OrdineDAO {
         Map<Integer, List<Map<String, Object>>> storico = new LinkedHashMap<>();
 
         String sql = """
-        SELECT o.id_ordine, o.data, a.nome AS nome_articolo, a.codice,
-               c.quantita, a.prezzo, COALESCE(a.sconto, 0) AS sconto,
+        SELECT o.id_ordine, o.data, 
+               c.nome_articolo, c.codice,
+               c.quantita, c.prezzo_unitario, COALESCE(c.sconto, 0) AS sconto,
                ia.url AS immagine,
                COUNT(*) OVER (PARTITION BY o.id_ordine) AS num_articoli,
-               SUM((c.quantita * a.prezzo * (1 - COALESCE(a.sconto, 0)))) OVER (PARTITION BY o.id_ordine) AS importo_totale
-        FROM ordine o, Contenimento c
-        LEFT JOIN Articolo a ON a.codice = c.codice
-        LEFT JOIN ImmagineArticolo ia ON ia.codice_articolo = a.codice AND ia.is_principale = TRUE
-        WHERE o.id_ordine = c.id_ordine
-          AND o.nome_utente = ?
+               SUM((c.prezzo_unitario * (1 - COALESCE(c.sconto, 0))) * c.quantita) OVER (PARTITION BY o.id_ordine) AS importo_totale
+        FROM ordine o
+        JOIN contenimento c ON o.id_ordine = c.id_ordine
+        LEFT JOIN immaginearticolo ia ON ia.codice_articolo = c.codice AND ia.is_principale = TRUE
+        WHERE o.nome_utente = ?
         ORDER BY o.id_ordine DESC, c.codice ASC
     """;
 
@@ -175,19 +174,22 @@ public class OrdineDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int idOrdine = rs.getInt("id_ordine");
-                    List<Map<String, Object>> lista = storico.computeIfAbsent(idOrdine, k -> new ArrayList<>());
+
+                    List<Map<String, Object>> lista;
+                    if (storico.containsKey(idOrdine)) {
+                        lista = storico.get(idOrdine);
+                    } else {
+                        lista = new ArrayList<>();
+                        storico.put(idOrdine, lista);
+                    }
 
                     Map<String, Object> mappa = new HashMap<>();
-
-                    String nomeArticolo = rs.getString("nome_articolo");
-                    String immagine = rs.getString("immagine");
-
-                    mappa.put("nome_articolo", nomeArticolo != null ? nomeArticolo : "Articolo non più disponibile");
-                    mappa.put("codice", rs.getInt("codice")); // può restare anche se articolo eliminato
+                    mappa.put("nome_articolo", rs.getString("nome_articolo"));
+                    mappa.put("codice", rs.getInt("codice"));
                     mappa.put("quantita", rs.getInt("quantita"));
-                    mappa.put("prezzo", rs.getDouble("prezzo"));
+                    mappa.put("prezzo_unitario", rs.getDouble("prezzo_unitario"));
                     mappa.put("sconto", rs.getDouble("sconto"));
-                    mappa.put("immagine", immagine != null ? immagine : "assets/img/default.jpg");
+                    mappa.put("immagine", rs.getString("immagine") != null ? rs.getString("immagine") : "assets/img/default.jpg");
 
                     if (lista.isEmpty()) {
                         mappa.put("data", rs.getDate("data"));
@@ -199,9 +201,10 @@ public class OrdineDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return storico;
     }
+
 }

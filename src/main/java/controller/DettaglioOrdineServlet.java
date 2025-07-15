@@ -21,12 +21,12 @@ public class DettaglioOrdineServlet extends HttpServlet {
             int idOrdine = Integer.parseInt(idParam);
 
             PreparedStatement ps = con.prepareStatement("""
-                SELECT a.nome, a.codice, a.prezzo, COALESCE(a.sconto, 0) AS sconto, c.quantita,
-                       ia.url AS immagine
-                FROM Contenimento c
-                JOIN Articolo a ON c.codice = a.codice
-                LEFT JOIN ImmagineArticolo ia ON ia.codice_articolo = a.codice AND ia.is_principale = TRUE
-                WHERE c.id_ordine = ?
+               SELECT c.nome_articolo AS nome, c.codice, c.prezzo_unitario AS prezzo, COALESCE(c.sconto, 0) AS sconto, c.quantita,
+               ia.url AS immagine
+               FROM Contenimento c
+               LEFT JOIN ImmagineArticolo ia ON ia.codice_articolo = c.codice AND ia.is_principale = TRUE
+               WHERE c.id_ordine = ?
+                                     
             """);
 
             ps.setInt(1, idOrdine);

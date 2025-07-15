@@ -1,31 +1,33 @@
 package model.DAO;
 
 import java.sql.*;
-
+import java.util.ArrayList;
+import java.util.List;
 import model.ConPool;
 import model.JavaBeans.Contenimento;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+public class ContenimentoDAO {
 
-
-public class ContenimentoDAO{
+    // Salva una nuova riga ordine con snapshot
     public boolean doSave(Contenimento contenimento) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO contenimento (codice, id_ordine, quantita) VALUES (?, ?, ?)"
+                    "INSERT INTO contenimento (codice, id_ordine, quantita, nome_articolo, prezzo_unitario, sconto) VALUES (?, ?, ?, ?, ?, ?)"
             );
             ps.setInt(1, contenimento.getCodice());
             ps.setInt(2, contenimento.getId_ordine());
             ps.setInt(3, contenimento.getQuantita());
+            ps.setString(4, contenimento.getNomeArticolo());
+            ps.setDouble(5, contenimento.getPrezzoUnitario());
+            ps.setDouble(6, contenimento.getSconto());
+
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // Restituisce tutti i contenimenti relativi a un ordine
+    // Recupera tutte le righe ordine di un dato ordine
     public List<Contenimento> doRetrieveByOrdine(int id_ordine) {
         List<Contenimento> contenuti = new ArrayList<>();
         try (Connection con = ConPool.getConnection()) {
@@ -35,11 +37,14 @@ public class ContenimentoDAO{
             ps.setInt(1, id_ordine);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                contenuti.add(new Contenimento(
-                        rs.getInt("codice"),
-                        rs.getInt("id_ordine"),
-                        rs.getInt("quantita")
-                ));
+                Contenimento c = new Contenimento();
+                c.setCodice(rs.getInt("codice"));
+                c.setId_ordine(rs.getInt("id_ordine"));
+                c.setQuantita(rs.getInt("quantita"));
+                c.setNomeArticolo(rs.getString("nome_articolo"));
+                c.setPrezzoUnitario(rs.getDouble("prezzo_unitario")); 
+                c.setSconto(rs.getDouble("sconto"));
+                contenuti.add(c);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -47,7 +52,7 @@ public class ContenimentoDAO{
         return contenuti;
     }
 
-    // Elimina una riga di contenimento specifica
+    // Elimina una riga ordine
     public boolean doDelete(int codice, int id_ordine) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -61,6 +66,7 @@ public class ContenimentoDAO{
         }
     }
 
+    // Aggiorna la quantità
     public boolean doUpdateQuantita(int codice, int id_ordine, int nuovaQuantita) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -74,6 +80,4 @@ public class ContenimentoDAO{
             throw new RuntimeException(e);
         }
     }
-
-
 }

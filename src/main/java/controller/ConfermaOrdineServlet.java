@@ -44,7 +44,6 @@ public class ConfermaOrdineServlet extends HttpServlet {
             }
         }
 
-        // Recupera indirizzo preferito dal DB
         IndirizzoDAO indirizzoDAO = new IndirizzoDAO();
         Indirizzo indirizzo = indirizzoDAO.getPreferito(utente.getNomeUtente());
 
@@ -71,7 +70,6 @@ public class ConfermaOrdineServlet extends HttpServlet {
             }
         }
 
-        // CREA ORDINE CON SOLO I CAMPI ESSENZIALI
         Ordine ordine = new Ordine(
                 0,
                 numArticoli,
@@ -83,18 +81,25 @@ public class ConfermaOrdineServlet extends HttpServlet {
         ordineDAO.doSave(ordine);
         int idOrdine = ordine.getId_ordine();
 
+        // Inserimento in tabella Contenimento (snapshot)
         for (Carrello item : carrello) {
-            Contenimento contenimento = new Contenimento(
-                    item.getCodiceArticolo(),
-                    idOrdine,
-                    item.getQuantita()
-            );
-            contenimentoDAO.doSave(contenimento);
+            Articolo art = articoloDAO.doRetrieveById(item.getCodiceArticolo());
+            if (art != null) {
+                Contenimento contenimento = new Contenimento(
+                        item.getCodiceArticolo(),
+                        idOrdine,
+                        item.getQuantita(),
+                        art.getNome(),
+                        art.getPrezzo(),
+                        art.getSconto()
+                );
+                contenimentoDAO.doSave(contenimento);
+            }
         }
 
         carrelloDAO.pulisciCarrello(utente.getNomeUtente());
 
-        // Imposta i dati per la pagina di conferma
+        // Imposta dati per conferma
         session.setAttribute("totaleOrdine", totale);
         session.setAttribute("idUltimoOrdine", idOrdine);
         session.setAttribute("indirizzoSpedizione", indirizzo);
