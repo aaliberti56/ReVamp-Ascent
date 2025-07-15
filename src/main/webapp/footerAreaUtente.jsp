@@ -7,58 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="css/footer.css">
-<style>
-    .modal-content {
-        background-color: white;
-        color: black !important;
-        padding: 30px;
-        border-radius: 10px;
-        font-size: 18px;
-        text-align: center;
-    }
 
-    #testoModal {
-        display: none !important;
-        color: black !important;
-        font-size: 20px !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        z-index: 9999 !important;
-        margin: 0;
-    }
-
-    .news {
-        background: linear-gradient(to right, #ef6848, #ff9966);
-        color: black;
-        text-align: center;
-        padding: 40px 20px;
-    }
-
-
-    .news h2 {
-        color: black;
-        font-size: 28px;
-        margin-bottom: 10px;
-    }
-
-    .news p {
-        color: black;
-        font-size: 16px;
-        margin-bottom: 20px;
-    }
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 9999;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-
-
-</style>
 <footer class="footer">
     <div class="news">
         <h2>Iscriviti alla Newsletter</h2>
@@ -94,12 +43,16 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        modal = document.getElementById("modalIscrizione");
-        window.modal = modal; // ora è accessibile anche da console
+        const modal = document.getElementById("modalIscrizione");
         const btn = document.getElementById("btnIscriviti");
-        const span = modal.querySelector(".close");
+        const span = modal?.querySelector(".close");
         const emailInput = document.getElementById("newsletterEmail");
 
+        // ❗ Forza la chiusura all'avvio
+        if (modal) modal.style.display = "none";
+
+        // ❗ Se non c'è il bottone, esci (evitiamo modale aperto da solo)
+        if (!btn || !emailInput || !span) return;
 
         btn.onclick = () => {
             const email = emailInput.value.trim();
@@ -110,7 +63,7 @@
                 return;
             }
 
-            modal.style.display = "block";
+            modal.style.display = "flex";
             emailInput.value = "";
         };
 
@@ -119,9 +72,10 @@
         };
 
         window.onclick = (event) => {
-            if (event.target == modal) {
+            if (event.target === modal) {
                 modal.style.display = "none";
             }
         };
     });
+
 </script>

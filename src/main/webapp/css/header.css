@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 .logo {
     height: 60px;
     margin: 0 20px;
@@ -31,9 +32,6 @@ body {
 }
 
 
-
-
-
 .barra-ricerca {
     display: flex;
     align-items: center;
@@ -45,6 +43,8 @@ body {
     height: 40px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     overflow: hidden;
+    margin:0;
+    padding:0;
 }
 
 .barra-ricerca input[type="text"] {
