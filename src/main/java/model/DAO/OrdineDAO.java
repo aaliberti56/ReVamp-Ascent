@@ -150,6 +150,21 @@ public class OrdineDAO {
         return lista;
     }
 
+    public int getQuantitaTotaleOrdine(int idOrdine){
+        int totale=0;
+        try(Connection con=ConPool.getConnection()){
+            PreparedStatement ps=con.prepareStatement("SELECT SUM(quantita) FROM contenimento WHERE id_ordine = ?");
+            ps.setInt(1,idOrdine);
+            ResultSet rs=ps.executeQuery();
+            if (rs.next()) {
+                totale = rs.getInt(1);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totale;
+    }
+
     public Map<Integer, List<Map<String, Object>>> doRetrieveStoricoUtente(String nomeUtente) {
         Map<Integer, List<Map<String, Object>>> storico = new LinkedHashMap<>();
 

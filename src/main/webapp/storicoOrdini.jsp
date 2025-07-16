@@ -61,12 +61,17 @@
                 for (Map.Entry<Integer, List<Map<String, Object>>> entry : ordini.entrySet()) {
                     int id = entry.getKey();
                     List<Map<String, Object>> articoli = entry.getValue();
+                    int quantitaTotale = 0;
+                    for (Map<String, Object> art : articoli) {
+                        quantitaTotale += (int) art.get("quantita");
+                    }
+
                     Map<String, Object> primo = articoli.get(0);
             %>
             <tr>
                 <td><%= id %></td>
                 <td><%= primo.get("data") %></td>
-                <td><%= primo.get("num_articoli") %></td>
+                <td><%= quantitaTotale %></td>
                 <td>€<%= String.format("%.2f", primo.get("importo_totale")) %></td>
                 <td>
                     <button class="detail-button" onclick="toggleDetails('<%= id %>')">

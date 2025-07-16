@@ -74,12 +74,13 @@
                         int giorno = ordine.getData().get(Calendar.DAY_OF_MONTH);
                         int mese = ordine.getData().get(Calendar.MONTH) + 1;
                         int anno = ordine.getData().get(Calendar.YEAR);
+                        int quantitaTotale = ordineDAO.getQuantitaTotaleOrdine(ordine.getId_ordine());
             %>
             <tr>
                 <td><%= ordine.getId_ordine() %></td>
                 <td><%= ordine.getNome_utente() %></td>
                 <td><%= String.format("%02d/%02d/%04d", giorno, mese, anno) %></td>
-                <td><%= ordine.getNum_articoli() %></td>
+                <td><%= quantitaTotale %></td>
                 <td><%= String.format("€%.2f", ordine.getImporto_totale()) %></td>
                 <td>
                     <button class="detail-button" onclick="toggleDettagli(<%= ordine.getId_ordine() %>)">
