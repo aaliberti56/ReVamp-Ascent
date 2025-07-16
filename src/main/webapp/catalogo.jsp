@@ -41,7 +41,7 @@
   <% if(filtroCategoria !=null && !filtroCategoria.trim().isEmpty()){ %>
   Catalogo: <%= filtroCategoria %>
   <% } else { %>
-  Catalogo Articoli
+
   <% } %>
 </h1>
 
