@@ -63,7 +63,7 @@
                 <input type="text" name="scadenza" placeholder="MM/YY" class="dat" required id="scadenzacarta"><br>
                 <label>Intestatario</label><br>
                 <input type="text" name="proprietario" placeholder="Intestatario" class="dat" required><br>
-                <label>CVV <small>(solo verifica, non verrà salvato)</small></label><br>
+                <label>CVV <small></small></label><br>
                 <input type="password" name="CVV" id="numcvv" placeholder="***" class="dat" required><br>
                 <button type="submit" class="iconaMenu addBtn">Aggiungi</button>
             </div>
@@ -78,10 +78,10 @@
 
     function mostraMessaggio(msg, tipo) {
         const messaggio = document.getElementById('messaggio');
-        messaggio.innerText = msg;
+        messaggio.innerText = msg;                  //aggiorna il testo
         messaggio.className = 'messaggio ' + tipo;
         messaggio.style.display = 'block';
-        setTimeout(() => messaggio.style.display = 'none', 4000);
+        setTimeout(() => messaggio.style.display = 'none', 4000);  //dopo 4 secondi lo nasconde
     }
 
     function validaNumeroCarta(numero) {
@@ -98,25 +98,26 @@
         const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
         if (!regex.test(scadenza)) return false;
 
-        const [mese, anno] = scadenza.split('/').map(Number);
+        const [mese, anno] = scadenza.split('/').map(Number);  //Divide la stringa scadenza (es. "09/26") in due parti, poi li converte in numeri
         const oggi = new Date();
-        const annoCorrente = oggi.getFullYear() % 100;
-        const meseCorrente = oggi.getMonth() + 1;
+        const annoCorrente = oggi.getFullYear() % 100;   //Ricava l'anno corrente in formato a due cifre.
+        const meseCorrente = oggi.getMonth() + 1;  //getMonth() restituisce un valore da 0 (gennaio) a 11 (dicembre), quindi bisogna sommare +1.
+
 
         return (anno > annoCorrente) || (anno === annoCorrente && mese >= meseCorrente);
     }
 
     function eliminaMetodoPagamento(numCarta) {
-        if (!confirm('Sei sicuro di voler eliminare questo metodo di pagamento?')) return;
+        if (!confirm('Sei sicuro di voler eliminare questo metodo di pagamento?')) return;  //Mostra un popup di conferma all'utente.
+
 
         fetch('RimuoviMetodoPagamentoAjax', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'numcarta=' + encodeURIComponent(numCarta) + '&nome_utente=' + encodeURIComponent(nomeUtente)
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },  //indica come saranno codificati i dati nel body
+            body: 'numcarta=' + encodeURIComponent(numCarta) + '&nome_utente=' + encodeURIComponent(nomeUtente) //Crea il corpo della richiesta POST
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+        .then(response => response.json()) //Quando il server risponde, tenta di convertire la risposta da JSON a oggetto JavaScript.
+                .then(data => { if (data.success) {  //data è l oggetto javascript che rappresenta la risposta del server
                 mostraMessaggio('Metodo di pagamento eliminato!', 'successo');
                 aggiornaListaMetodiPagamento();
             } else {
@@ -133,7 +134,7 @@
         fetch('ListaMetodiPagamentoAjax?nome_utente=' + encodeURIComponent(nomeUtente))
         .then(response => response.text())
         .then(html => {
-            document.getElementById('listaMetodiPagamento').innerHTML = html;
+            document.getElementById('listaMetodiPagamento').innerHTML = html;  //inserisce il codice html ricevuto nel form con quel id. aggiorna i metodi
         })
         .catch(error => {
             console.error('Error:', error);
@@ -175,10 +176,10 @@
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams(data).toString()
+            body: new URLSearchParams(data).toString()  //converte data in formato compatibile
         })
         .then(response => {
-            if (!response.ok) {
+            if (!response.ok) {     //200
                 throw new Error('Errore nella risposta del server');
             }
             return response.json();
@@ -199,16 +200,17 @@
     });
 
     document.getElementById("numcarta").addEventListener("input", function (e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 16) value = value.slice(0, 16);
-        let formatted = value.match(/.{1,4}/g);
-        e.target.value = formatted ? formatted.join(' ') : '';
+        let value = e.target.value.replace(/\D/g, '');  //Rimuove tutti i caratteri non numerici
+        if (value.length > 16) value = value.slice(0, 16); //Limita l'input a massimo 16 cifre
+        let formatted = value.match(/.{1,4}/g);  //Divide le cifre in gruppi di 4
+        e.target.value = formatted ? formatted.join(' ') : ''; //Se formatted non è nul unisce i gruppi con uno spazio tra di loro
     });
 
     document.getElementById("numcvv").addEventListener("input", function (e) {
         let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 3) value = value.slice(0, 3);
-        e.target.value = value;
+        if (value.length > 3) value = value.slice(0, 3);  //Verifica se l’utente ha digitato più di 3 caratteri.Se sì, taglia la stringa per prendere solo i primi 3 caratteri
+        e.target.value = value;  //Aggiorna il contenuto del campo input con il valore eventualmente troncato, così da mostrare all’utente solo le prime 3 cifre.
+
     });
 </script>
 </body>

@@ -16,7 +16,7 @@ public class RegistrazioneUtenteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");  //serve a specificare la codifica dei caratteri per i dati ricevuti dal client
 
         String nome = request.getParameter("nome");
         String cognome = request.getParameter("cognome");

@@ -48,12 +48,12 @@ public class login extends HttpServlet {
             try{
                 admin=adminDAO.doLogin(username,password);
             }catch (SQLException e) {
-                e.printStackTrace(); // o log dell'errore
-                request.setAttribute("erroreLogin", "Errore interno durante il login admin.");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-                dispatcher.forward(request, response);
+                e.printStackTrace();
+                request.setAttribute("erroreLogin", "Errore tecnico durante il login. Riprova più tardi.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
             }
+
             if(admin!=null){
                 HttpSession session = request.getSession();
                 session.setAttribute("admin",admin);

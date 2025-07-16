@@ -1,8 +1,8 @@
-// Inizializzazione validazione login e modifica credenziali
+//serve per eseguire queste funzioni solo dopo che il DOM è stato caricato
 document.addEventListener("DOMContentLoaded", () => {
     inizializzaLoginForm();
     inizializzaFormModificaCredenziali();
-    inizializzaFormRegistrazione();
+    inizialiizaFormRegistrazione();
     aggiornaListaMetodiPagamento();
 });
 // === VALIDAZIONE FORM LOGIN ===
@@ -102,7 +102,7 @@ function inizialiizaFormRegistrazione(){
     if(form){
         form.addEventListener("submit",function (event){
             if(!validazioneFormRegistrazione()){
-                event.preventDefault();
+                event.preventDefault();  //blocca l invio del form
             }
         });
     }

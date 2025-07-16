@@ -57,6 +57,7 @@
 
 
 <div class="page-container">
+
     <div class="header-section">
         <a href="homePage.jsp">
         <img src="<%= request.getContextPath() %>/img/logo.webp" alt="Logo"

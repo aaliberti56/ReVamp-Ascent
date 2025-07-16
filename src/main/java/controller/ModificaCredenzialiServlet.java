@@ -29,12 +29,6 @@ public class ModificaCredenzialiServlet extends HttpServlet {
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        if (username == null || oldPassword == null || newPassword == null || confirmPassword == null) {
-            request.setAttribute("msg", "Tutti i campi sono obbligatori");
-            request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
-            return;
-        }
-
         username = username.trim();
         oldPassword = oldPassword.trim();
         newPassword = newPassword.trim();
@@ -62,7 +56,8 @@ public class ModificaCredenzialiServlet extends HttpServlet {
                 utente.setNomeUtente(username);
             }
 
-            boolean cambiaPassword = false;
+            boolean cambiaPassword = false;    //serve per capire se l utente vuole aggiornare solo il nome utente
+                                               //o anche la password
             if (!newPassword.isEmpty()) {
                 if (!newPassword.equals(confirmPassword)) {
                     request.setAttribute("msg", "Le nuove password non corrispondono.");
@@ -74,7 +69,7 @@ public class ModificaCredenzialiServlet extends HttpServlet {
             }
 
             clienteDAO.doUpdate(utente, vecchioUsername, cambiaPassword);
-            request.getSession().setAttribute("utenteLoggato", utente);
+            request.getSession().setAttribute("utenteLoggato", utente);  //serve per aggiornare i dati dell'utente loggato nella sessione, dopo che ha modificato le sue credenziali
             request.setAttribute("msg", "Credenziali modificate con successo.");
             request.getRequestDispatcher("modificaCredenziali.jsp").forward(request, response);
 
