@@ -32,6 +32,13 @@ public class AggiungiArticoloServlet extends HttpServlet {
             Articolo articolo = new Articolo(codice, nome, descrizione, colore, sconto, prezzo, peso,dimensione,id_categoria);
 
             ArticoloDAO articoloDAO = new ArticoloDAO();
+            if(articoloDAO.doRetrieveById(codice)!=null){
+                request.setAttribute("errore","Esiste gia un articolo con questo codice");
+                RequestDispatcher dispatcher=request.getRequestDispatcher("erroreInserimento.jsp");
+                dispatcher.forward(request, response);
+                return;
+            }
+
             articoloDAO.doSave(articolo);
 
             response.sendRedirect("confermaInserimento.jsp");

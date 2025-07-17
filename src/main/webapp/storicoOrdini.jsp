@@ -58,15 +58,15 @@
             </tr>
             <%
             } else {
-                for (Map.Entry<Integer, List<Map<String, Object>>> entry : ordini.entrySet()) {
-                    int id = entry.getKey();
-                    List<Map<String, Object>> articoli = entry.getValue();
+                for (Map.Entry<Integer, List<Map<String, Object>>> entry : ordini.entrySet()) {  //itera su tutti gli elementi della map
+                    int id = entry.getKey();  // Estrae la chiave della entry, ovvero l'id dell'ordine.
+                    List<Map<String, Object>> articoli = entry.getValue(); // Estrae la lista di articoli relativi a quell’ordine.
                     int quantitaTotale = 0;
                     for (Map<String, Object> art : articoli) {
                         quantitaTotale += (int) art.get("quantita");
                     }
 
-                    Map<String, Object> primo = articoli.get(0);
+                    Map<String, Object> primo = articoli.get(0); //primo articolo, che ha gia informazioni come data e importo_totale
             %>
             <tr>
                 <td><%= id %></td>
@@ -116,11 +116,19 @@
 </div>
 
 <script>
+    // Funzione che mostra o nasconde i dettagli di un ordine specifico
     function toggleDetails(id) {
+        // Seleziona la riga HTML (tr) con ID "detail-<id>" usando il valore dell'ID passato
         const row = document.getElementById('detail-' + id);
+
+        // Controlla se attualmente è visibile (display === 'table-row')
+        // Se sì  nasconde la riga (display = 'none')
+        // Se no  mostra la riga (display = 'table-row')
         row.style.display = (row.style.display === 'table-row') ? 'none' : 'table-row';
     }
+
 </script>
+
 
 <jsp:include page="footerAreaUtente.jsp" />
 </body>

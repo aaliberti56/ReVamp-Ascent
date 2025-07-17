@@ -21,9 +21,8 @@
     <h2 class="titoloLogin">Articolo aggiunto con successo</h2>
 
     <div style="text-align: center; margin-top: 20px">
-        <a href="aggiungiArticolo.jsp" class="bottone" style="text-decoration: none; display: inline-block; width: auto; padding: 10px 20px;">Aggiungi un altro</a>
+        <a href="FormAggiungiArticoloServlet" class="bottone" style="text-decoration: none; display: inline-block; width: auto; padding: 10px 20px;">Aggiungi un altro</a>
         <a href="admin.jsp" class="bottone" style="text-decoration: none; display: inline-block; width: auto; padding: 10px 20px; background-color: #999;">Torna al pannello</a>    </div>
 </div>
-
 </body>
 </html>

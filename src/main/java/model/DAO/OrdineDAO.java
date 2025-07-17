@@ -166,7 +166,7 @@ public class OrdineDAO {
     }
 
     public Map<Integer, List<Map<String, Object>>> doRetrieveStoricoUtente(String nomeUtente) {
-        Map<Integer, List<Map<String, Object>>> storico = new LinkedHashMap<>();
+        Map<Integer, List<Map<String, Object>>> storico = new LinkedHashMap<>();//Usiamo una LinkedHashMap per mantenere l’ordine di inserimento degli ordini
 
         String sql = """
         SELECT o.id_ordine, o.data, 

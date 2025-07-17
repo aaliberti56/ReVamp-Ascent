@@ -22,10 +22,7 @@ public class VisualizzaIndirizziServlet extends HttpServlet {
         IndirizzoDAO indirizzoDAO=new IndirizzoDAO();
 
 
-        System.out.println("Cliente dalla sessione: " + cliente.getNomeUtente());
-
         List<Indirizzo> listaIndirizzi = indirizzoDAO.doRetrieveByUser(cliente.getNomeUtente());
-        System.out.println("Numero indirizzi trovati: " + listaIndirizzi.size());
         for (Indirizzo i : listaIndirizzi) {
             System.out.println(i.getVia() + ", " + i.getCitta() + ", preferito: " + i.isPreferito());
         }

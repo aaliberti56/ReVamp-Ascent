@@ -117,7 +117,7 @@ public class IndirizzoDAO {
 
     public void setIndirizzoPreferito(String nome_utente,int id_indirizzoPreferito){
         try(Connection con=ConPool.getConnection()){
-            //AZZERIAMO PRIMA I PREFERITI
+            //AZZERIAMO PRIMA I PREFERITI perché ogni utente deve avere al massimo un solo indirizzo preferito alla volta.
             PreparedStatement ps1 = con.prepareStatement(
                     "UPDATE indirizzo SET preferito = false WHERE LOWER(nome_utente) = LOWER(?)");
             ps1.setString(1, nome_utente);
@@ -127,7 +127,7 @@ public class IndirizzoDAO {
             //IMPOSTIAMO QUELLO SELEZIONATO COME PREFERITO
 
             PreparedStatement ps2 = con.prepareStatement(
-                    "UPDATE indirizzo SET preferito = true WHERE id_indirizzo = ? AND nome_utente = ?");
+                    "UPDATE indirizzo SET preferito = true WHERE id_indirizzo = ? AND LOWER(nome_utente) = LOWER(?)");
             ps2.setInt(1, id_indirizzoPreferito);
             ps2.setString(2, nome_utente);
             ps2.executeUpdate();
@@ -136,6 +136,8 @@ public class IndirizzoDAO {
             throw new RuntimeException(e);
         }
     }
+
+
 
     public Indirizzo getPreferito(String nomeUtente) {
         try (Connection con = ConPool.getConnection()) {
