@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.*, java.text.SimpleDateFormat, model.JavaBeans.Articolo, model.JavaBeans.ImmagineArticolo, model.JavaBeans.Recensione, model.JavaBeans.Cliente" %>
 <%
-    Articolo articolo = (Articolo) request.getAttribute("articolo");
+    Articolo articolo = (Articolo) request.getAttribute("articolo");  //viene aperta solo se viene passato un articolo
     if (articolo == null) {
         response.sendRedirect("login.jsp");
         return;
@@ -242,9 +242,9 @@
 <script>
     function cambiaImmaginePrincipale(img) {
         const imgPrincipale = document.getElementById('imgPrincipale');
-        imgPrincipale.src = img.src;
-        document.querySelectorAll('.galleria img.miniatura').forEach(el => el.classList.remove('attiva'));
-        img.classList.add('attiva');
+        imgPrincipale.src = img.src; // Cambia la sorgente dell’immagine principale assegnandole la stessa src (URL dell'immagine) della miniatura cliccata.In questo modo la miniatura selezionata diventa l’immagine grande.
+        document.querySelectorAll('.galleria img.miniatura').forEach(el => el.classList.remove('attiva'));// Seleziona tutte le immagini con classe miniatura dentro l'elemento con classe galleria.Rimuove da tutte la classe attiva, che viene usata per evidenziare la miniatura selezionata
+        img.classList.add('attiva'); // Aggiunge la classe attiva alla miniatura cliccata, così è evidenziata visivamente.
     }
 
     function apriZoom() {

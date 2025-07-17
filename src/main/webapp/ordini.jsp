@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="image/x-icon" href="img/logo.webp">
+    <link rel="icon" type="image/x-icon" href="img/logo.webp">
 </head>
 <body>
 <%
@@ -35,7 +35,7 @@
         if (data1 != null && !data1.isEmpty() && data2 != null && !data2.isEmpty()) {
             GregorianCalendar gc1 = new GregorianCalendar();
             GregorianCalendar gc2 = new GregorianCalendar();
-            gc1.setTime(java.sql.Date.valueOf(data1));
+            gc1.setTime(java.sql.Date.valueOf(data1));  //converte la stringa data in un oggetto java.sql.date
             gc2.setTime(java.sql.Date.valueOf(data2));
             ordini = ordineDAO.doRetrieveByDate(gc1, gc2);
         } else {
@@ -50,7 +50,7 @@
     </div>
 
     <form method="get" action="ordini.jsp" class="search-form-container">
-        <input type="date" name="data1" value="<%= (data1 != null) ? data1 : "" %>">
+        <input type="date" name="data1" value="<%= (data1 != null) ? data1 : "" %>">  <!-- se è diverso da null imposta il valore della data, altrimenti ""-->
         <input type="date" name="data2" id="data2" value="<%= (data2 != null) ? data2 : "" %>">
         <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
     </form>
@@ -114,27 +114,27 @@
 } %>
 <script>
     const oggi = new Date().toISOString().split("T")[0];
-    document.getElementById('data2').max = oggi;
+    document.getElementById('data2').max = oggi;  //evita di selezionare una data successiva a oggi
 
     function toggleDettagli(idOrdine){
         const riga=document.getElementById("dettagli-" + idOrdine);
         const contenuto = document.getElementById("contenuto-dettagli-" + idOrdine);
 
         if(riga.style.display=="none"){
-            riga.style.display="table-row";
-            if(!contenuto.dataset.caricato){
+            riga.style.display="table-row";  //mostra la riga
+            if(!contenuto.dataset.caricato){  //se non è ancora stato caricato
                 fetch("DettaglioOrdineServlet?id=" +idOrdine)
                     .then(response=>response.text())
                     .then(html=>{
-                        contenuto.innerHTML=html;
-                        contenuto.dataset.caricato="true";
+                        contenuto.innerHTML=html;  //Inserisce l’HTML ricevuto dentro il contenitore
+                        contenuto.dataset.caricato="true"; //segna che è stato ricevuto
                     })
                     .catch(() => {
                         contenuto.innerHTML = "<span style='color:red;'>Errore nel caricamento dei dettagli.</span>";
                     });
             }
         }else{
-            riga.style.display="none";
+            riga.style.display="none";  //lo nasconde
         }
     }
 </script>

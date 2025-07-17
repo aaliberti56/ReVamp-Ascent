@@ -28,9 +28,9 @@
 
     List<Articolo> articoli = articoloDAO.doRetriveByAll();
     List<Categoria> categorie = categoriaDAO.doRetrieveAll();
-    Map<Integer,Categoria> categoriaMap=new HashMap<>();
+    Map<Integer,Categoria> categoriaMap=new HashMap<>();  //usiamo una map per trovare velocemente una categoria, in base al suo id(Integer)
     for(Categoria c:categorie) {
-      categoriaMap.put(c.getId_categoria(),c);
+      categoriaMap.put(c.getId_categoria(),c);  //popoliamo la mappa con idCategoria e categoria
     }
 
     String filtroNome = request.getParameter("nome");
@@ -56,7 +56,7 @@
             }
           }
 
-          Categoria categoria = categoriaMap.get(a.getId_categoria());
+          Categoria categoria = categoriaMap.get(a.getId_categoria());  //recupera la categoria
           if (filtroCategoria != null && !filtroCategoria.trim().isEmpty()) {
             if (categoria == null || !categoria.getTipologia().equalsIgnoreCase(filtroCategoria)) {
               mostra = false;

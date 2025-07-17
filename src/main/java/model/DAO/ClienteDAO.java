@@ -182,8 +182,8 @@ public class ClienteDAO {
             PreparedStatement ps = con.prepareStatement(
                     "SELECT * FROM cliente WHERE LOWER(nome_utente) LIKE ?"
             );
-            ps.setString(1, "%" + ricerca.toLowerCase() + "%");
-
+            ps.setString(1, "%" + ricerca.toLowerCase() + "%"); //se la ricerca è vuota ricercherà like %%, che indica tutti gli utenti
+                                //se l utente inserisce mario si ricerca like %mario%
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Cliente c = new Cliente(

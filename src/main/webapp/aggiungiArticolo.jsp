@@ -28,13 +28,13 @@
 <div id="contenitoreForm">
   <h2 class="titoloLogin">Inserisci un nuovo articolo</h2>
 
-  <form action="AggiungiArticoloServlet" method="post">
-    <input type="number" name="codice" placeholder="Codice Articolo" class="dati" required><br>
-    <input type="text" name="nome" placeholder="Nome" class="dati" required><br>
+  <form action="AggiungiArticoloServlet" id="formId" method="post">
+    <input type="number" id="codice" name="codice" placeholder="Codice Articolo" class="dati" required><br>
+    <input type="text"  id="nome" name="nome" placeholder="Nome" class="dati" required><br>
     <textarea name="descrizione" placeholder="Descrizione" class="dati" required></textarea><br>
-    <input type="text" name="colore" placeholder="Colore" class="dati"><br>
-    <input type="number" name="sconto" step="0.01" placeholder="Sconto (%)" class="dati"><br>
-    <input type="number" name="prezzo" step="0.01" placeholder="Prezzo (€)" class="dati" required><br>
+    <input type="text" id="colore" name="colore" placeholder="Colore" class="dati"><br>
+    <input type="number"  id="sconto" name="sconto" step="0.01" placeholder="Sconto (%)" class="dati"><br>
+    <input type="number" id="prezzo" name="prezzo" step="0.01" placeholder="Prezzo (€)" class="dati" required><br>
     <input type="number" name="peso" step="0.001" placeholder="Peso (kg)" class="dati"><br>
     <input type="text" name="dimensione" placeholder="Dimensione" class="dati"><br>
 
@@ -49,6 +49,63 @@
   </form>
 </div>
 
+<script>
+  const form=document.getElementById("formId");
+  if(form){
+    form.addEventListener("submit",function(event){
+      if(!validaCampi()){
+        event.preventDefault();
+      }
+    });
+  }
+
+  function validaCampi() {
+    const codice = document.getElementById("codice");
+    const nome = document.getElementById("nome");
+    const sconto = document.getElementById("sconto");
+    const colore = document.getElementById("colore");
+    const prezzo = document.getElementById("prezzo");
+
+    if (!codice || !nome || !prezzo) {
+      alert("Codice, Nome e Prezzo sono obbligatori.");
+      return false;
+    }
+
+    const codiceVal = codice.value.trim();
+    const nomeVal = nome.value.trim();
+    const scontoVal = sconto ? sconto.value.trim() : "";
+    const coloreVal = colore ? colore.value.trim() : "";
+    const prezzoVal = prezzo.value.trim();
+
+    // Controllo codice
+    if (codiceVal === "" || isNaN(codiceVal) || Number(codiceVal) <= 0) {
+      alert("Il codice articolo deve essere un numero positivo.");
+      return false;
+    }
+
+    // Controllo nome
+    if (nomeVal.length < 3) {
+      alert("Il nome deve avere almeno 3 caratteri.");
+      return false;
+    }
+
+    // Controllo prezzo
+    if (prezzoVal === "" || isNaN(prezzoVal) || Number(prezzoVal) <= 0) {
+      alert("Il prezzo deve essere un numero positivo.");
+      return false;
+    }
+
+    // Controllo sconto (se presente)
+    if (scontoVal !== "") {
+      if (isNaN(scontoVal) || Number(scontoVal) < 0 || Number(scontoVal) > 100) {
+        alert("Lo sconto deve essere un numero tra 0 e 100.");
+        return false;
+      }
+    }
+
+    return true; // tutto valido
+  }
+</script>
 </body>
 </html>
 

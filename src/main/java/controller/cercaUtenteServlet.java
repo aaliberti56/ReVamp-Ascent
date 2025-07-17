@@ -25,10 +25,14 @@ public class cercaUtenteServlet extends HttpServlet {
         String ricerca=request.getParameter("nomeUtente");
         ClienteDAO clienteDAO=new ClienteDAO();
         List<Cliente> clienti;
-        clienti=clienteDAO.doRetrieveByUsernamePartial(ricerca);
+        clienti=clienteDAO.doRetrieveByUsernamePartial(ricerca); //vengono restituiti tutti se la ricerca è vuota
 
         request.setAttribute("listaClienti",clienti);
-        request.setAttribute("termineRicerca", (ricerca != null) ? ricerca : "");
+        if (ricerca != null) {
+            request.setAttribute("termineRicerca", ricerca);
+        } else {
+            request.setAttribute("termineRicerca", "");
+        }
 
         RequestDispatcher dispatcher=request.getRequestDispatcher("listaUtentiAdmin.jsp");
         dispatcher.forward(request, response);

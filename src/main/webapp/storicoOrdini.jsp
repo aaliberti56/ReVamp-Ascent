@@ -85,7 +85,7 @@
                         <% for (Map<String, Object> art : articoli) {
                             String img = (String) art.get("immagine");
                             if (img == null || img.isEmpty()) {
-                                img = "assets/img/default.jpg";
+                                img = "img/default.jpg";
                             }
                             double prezzo = (Double) art.get("prezzo_unitario");
                             double sconto = (Double) art.get("sconto");

@@ -25,11 +25,11 @@
         String ricercaPrecedente = (String) request.getAttribute("termineRicerca");
 
         if (ricercaPrecedente == null) {
-            ricercaPrecedente = "";
+            ricercaPrecedente = "";   //controlli per evitare eccezioni
         }
 
         if (clienti == null) {
-            clienti = new ArrayList<>();
+            clienti = new ArrayList<>();  //controlli per evitare eccezioni
         }
 %>
 
