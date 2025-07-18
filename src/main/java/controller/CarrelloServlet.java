@@ -41,7 +41,7 @@ public class CarrelloServlet extends HttpServlet {
             }
 
             boolean trovato = false;
-            for (Carrello item : carrello) {
+            for (Carrello item : carrello) {    //permette di verificare se l articolo aggiunto è gia presente nel carrello, se si aggiorna la quantita
                 if (item.getCodiceArticolo() == codiceArticolo) {
                     item.setQuantita(item.getQuantita() + quantita);
                     trovato = true;
@@ -53,11 +53,11 @@ public class CarrelloServlet extends HttpServlet {
                 carrello.add(new Carrello(0, null, codiceArticolo, quantita));
             }
 
-            session.setAttribute("carrelloAnonimo", carrello);
+            session.setAttribute("carrelloAnonimo", carrello); //salva nella sessione solo quando il contenuto è completo e aggiornato
         }
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"status\":\"ok\"}");
+        response.getWriter().write("{\"status\":\"ok\"}");  //fa sapere che la risposta è stata ricevuta ed è andata a buon fine
     }
 }

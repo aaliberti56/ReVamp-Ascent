@@ -10,6 +10,7 @@ public class CarrelloDAO {
     public void aggiungiAlCarrello(String nome_utente,int codiceArticolo,int quantita) {
         try(Connection con=ConPool.getConnection()){
             PreparedStatement ps=con.prepareStatement("INSERT INTO Carrello (nome_utente, codice_articolo, quantita) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantita = quantita + ?");
+            //Se c'è già una riga con la stessa chiave primaria o univoca, allora incrementa quantita
             ps.setString(1, nome_utente);
             ps.setInt(2, codiceArticolo);
             ps.setInt(3, quantita);

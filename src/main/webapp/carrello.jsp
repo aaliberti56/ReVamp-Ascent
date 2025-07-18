@@ -63,7 +63,7 @@
         ImmagineArticolo img = imgDAO.findMainImage(item.getCodiceArticolo());
         String urlImg = (img != null && img.getUrl() != null) ? img.getUrl() : "img/default.jpg";
 
-        double prezzoFinale = art.getPrezzo() * (1 - art.getSconto());
+        double prezzoFinale = art.getPrezzo() * (1 - art.getSconto()); //si calcola cosi poiche lo sconto è gia espresso in percentuale
         double subTotale = prezzoFinale * item.getQuantita();
         totale += subTotale;
       %>

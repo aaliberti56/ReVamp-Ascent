@@ -33,7 +33,7 @@
       categoriaMap.put(c.getId_categoria(),c);  //popoliamo la mappa con idCategoria e categoria
     }
 
-    String filtroNome = request.getParameter("nome");
+    // String filtroNome = request.getParameter("nome");
     String filtroCategoria = request.getParameter("categ");
     %>
 
@@ -50,16 +50,20 @@
         for (Articolo a : articoli) {
           boolean mostra = true;
 
-          if (filtroNome != null && !filtroNome.trim().isEmpty()) {
+       /*  if (filtroNome != null && !filtroNome.trim().isEmpty()) {
             if (!a.getNome().toLowerCase().contains(filtroNome.toLowerCase())) {
               mostra = false;
             }
           }
+            */
 
+            //qui si entra solo se il parametro categ non è null(quando si preme su una categoria)
           Categoria categoria = categoriaMap.get(a.getId_categoria());  //recupera la categoria
           if (filtroCategoria != null && !filtroCategoria.trim().isEmpty()) {
-            if (categoria == null || !categoria.getTipologia().equalsIgnoreCase(filtroCategoria)) {
-              mostra = false;
+            if (categoria == null || !categoria.getTipologia().equalsIgnoreCase(filtroCategoria)) { //Se l’articolo non ha una categori// a associata oppure se la tipologia della categoria dell’articolo non corrisponde al filtro selezionato
+              //permette di filtrare gli articoli
+
+                mostra = false;
             }
           }
 

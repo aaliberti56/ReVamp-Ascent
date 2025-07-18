@@ -271,36 +271,35 @@
     }
 
     document.getElementById("carrelloForm").addEventListener("submit", function (e) {
-        e.preventDefault();
+        e.preventDefault();  //evita di ricaricare la pagina
 
-        const idArticolo = document.querySelector("input[name='idArticolo']").value;
+        const idArticolo = document.querySelector("input[name='idArticolo']").value;  //legge i dati del form
         const quantita = document.querySelector("input[name='quantita']").value;
 
-        const xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();  //prepara richiesta ajax
         xhr.open("POST", "CarrelloServlet", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //tipo di un contenuto
 
         xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
+        if (xhr.readyState === 4 && xhr.status === 200) { //se la risposta è completamente ricevuta e il server ha risposto con successo
         mostraNotifica();
         mostraBadge();
     }
     };
-        console.log("ID:", idArticolo, "Quantità:", quantita);
-        xhr.send("idArticolo=" + encodeURIComponent(idArticolo) + "&quantita=" + encodeURIComponent(quantita));
+        xhr.send("idArticolo=" + encodeURIComponent(idArticolo) + "&quantita=" + encodeURIComponent(quantita));  //invia i dati al server
     });
 
         function mostraNotifica() {
         const notifica = document.getElementById("notifica-aggiunta");
         notifica.style.display = "block";
-        notifica.style.opacity = "1";
+        notifica.style.opacity = "1";  //lo rende visibile
 
         setTimeout(() => {
         notifica.style.opacity = "0";
         setTimeout(() => {
         notifica.style.display = "none";
-    }, 500);
-    }, 3000);
+    }, 500); //Dopo altri 500 ms, lo nasconde completamente con display: none
+    }, 3000);  //Dopo 3 secondi (3000 ms) imposta opacity: 0 (effetto dissolvenza)
     }
 
 

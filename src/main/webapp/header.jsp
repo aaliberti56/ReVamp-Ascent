@@ -13,9 +13,9 @@
   <meta charset="UTF-8">
   <title>ReVamp Ascent</title>
   <link rel="stylesheet" href="css/header.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">     <!-- stabilisce le connessioni in anticipo, diminuendo i tempi di caricamento -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;500;700&display=swap" rel="stylesheet"> <!-- serve a caricare il font "Raleway" da Google Fonts, specificando i pesi desiderati, migliorando la user experience -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -57,12 +57,12 @@
 
   </div>
 
-<img src="img/menu.png" class="iconaMenu" onclick="mostraMenu()" id="hamburgerMenu" alt="Menu">
+<img src="img/menu.png" class="iconaMenu" onclick="mostraMenu()" id="hamburgerMenu" alt="Menu"> <!-- dispositivi mobili -->
 
 <!-- Modale risultati ricerca -->
 <div id="modalRisultati" class="modal-ricerca">
   <div class="modal-content-ricerca">
-    <span class="close-ricerca" onclick="chiudiModal()">&times;</span>
+    <span class="close-ricerca" onclick="chiudiModal()">&times;</span> <!-- times indica la x nel browser, per chiudere la modale -->
     <h3>Risultati della ricerca</h3>
     <ul id="listaProdottiModale"></ul>
   </div>
@@ -118,34 +118,34 @@
 
 <script>
   function mostraMenu() {
-    document.getElementById('menuTelefono').style.display = 'block';
+    document.getElementById('menuTelefono').style.display = 'block';  //lo rende visibile
   }
 
   function nascondiMenu() {
-    document.getElementById('menuTelefono').style.display = 'none';
+    document.getElementById('menuTelefono').style.display = 'none';  //lo nasconde
   }
 
   function eseguiRicerca(event) {
-    event.preventDefault();
+    event.preventDefault();   //Serve per impedire che cliccando su "Cerca", il form ricarichi la pagina.
 
     const query = document.getElementById("textboxRicerca").value.trim();
     if (query === "") return;
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "RicercaCatalogoJson?ricerca=" + encodeURIComponent(query), true);
+    xhr.open("GET", "RicercaCatalogoJson?ricerca=" + encodeURIComponent(query), true); //crea una richiesta http get asincrona, passando il valore nella barra di ricerca
     xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
+      if (xhr.readyState === 4 && xhr.status === 200) {  //quando la risposta è stata ricevuta ed è andata a buon fine, procede
         try {
-          const prodotti = JSON.parse(xhr.responseText);
+          const prodotti = JSON.parse(xhr.responseText); //traduce la risposta del server da json a javascript
           const ul = document.getElementById("listaProdottiModale");
-          ul.innerHTML = "";
+          ul.innerHTML = "";  //svuota l elemento dove mostrare il risultato
 
           if (prodotti.length === 0) {
             const li = document.createElement("li");
             li.textContent = "Nessun prodotto trovato.";
-            ul.appendChild(li);
+            ul.appendChild(li);  //permette di aggiungere dinamicamente un nuovo elemento <li> a <ul>
           } else {
-            prodotti.forEach(p => {
+            prodotti.forEach(p => {   //per ogni prodotto ricevuto crea un li con un link alla pagina dell articolo, e informazioni
               const li = document.createElement("li");
                 li.innerHTML =
                     '<a href="DettaglioArticoloServlet?codice=' + p.codice + '" style="display: flex; align-items: center; gap: 10px;">' +
@@ -157,7 +157,7 @@
             });
           }
 
-          document.getElementById("modalRisultati").style.display = "block";
+          document.getElementById("modalRisultati").style.display = "block"; //lo mostra
         } catch (e) {
           console.error("Errore JSON:", e);
         }

@@ -42,7 +42,7 @@
 </footer>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => { //attende che tutta la pagina sia caricata
         const modal = document.getElementById("modalIscrizione");
         const btn = document.getElementById("btnIscriviti");
         const span = modal?.querySelector(".close");
@@ -51,10 +51,10 @@
         // ❗ Forza la chiusura all'avvio
         if (modal) modal.style.display = "none";
 
-        // ❗ Se non c'è il bottone, esci (evitiamo modale aperto da solo)
+        // ❗ Se non c'è il bottone, esci
         if (!btn || !emailInput || !span) return;
 
-        btn.onclick = () => {
+        btn.onclick = () => {   //quando clicca su iscriviti, controlla l email
             const email = emailInput.value.trim();
             const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
@@ -63,15 +63,15 @@
                 return;
             }
 
-            modal.style.display = "flex";
+            modal.style.display = "flex";  //se tutto è corretto, mostra la modale e svuota il campo
             emailInput.value = "";
         };
 
-        span.onclick = () => {
+        span.onclick = () => {  //chiude la modale cliccando su x
             modal.style.display = "none";
         };
 
-        window.onclick = (event) => {
+        window.onclick = (event) => {  //chiude la modale anche se si clicca fuori dalla finestra modale
             if (event.target === modal) {
                 modal.style.display = "none";
             }

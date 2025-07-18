@@ -61,7 +61,9 @@ public class ConfermaOrdineServlet extends HttpServlet {
         int numArticoli = 0;
         double totale = 0.0;
 
-        for (Carrello item : carrello) {
+        for (Carrello item : carrello) {  //Per ogni articolo nel carrello: Recupera il prezzo scontato
+                                        //Somma il totale (con quantità)
+                                        //Conta il numero di articoli totali
             Articolo art = articoloDAO.doRetrieveById(item.getCodiceArticolo());
             if (art != null) {
                 double prezzoFinale = art.getPrezzo() * (1 - art.getSconto());
@@ -82,6 +84,7 @@ public class ConfermaOrdineServlet extends HttpServlet {
         int idOrdine = ordine.getId_ordine();
 
         // Inserimento in tabella Contenimento (snapshot)
+        //Salva i dettagli di ogni articolo dell’ordine in Contenimento, anche se il prodotto cambia in futuro.
         for (Carrello item : carrello) {
             Articolo art = articoloDAO.doRetrieveById(item.getCodiceArticolo());
             if (art != null) {
@@ -100,9 +103,9 @@ public class ConfermaOrdineServlet extends HttpServlet {
         carrelloDAO.pulisciCarrello(utente.getNomeUtente());
 
         // Imposta dati per conferma
-        session.setAttribute("totaleOrdine", totale);
-        session.setAttribute("idUltimoOrdine", idOrdine);
-        session.setAttribute("indirizzoSpedizione", indirizzo);
+       // session.setAttribute("totaleOrdine", totale);
+        //session.setAttribute("idUltimoOrdine", idOrdine);
+        //session.setAttribute("indirizzoSpedizione", indirizzo);
 
         response.sendRedirect("checkout.jsp");
     }
