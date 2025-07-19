@@ -10,7 +10,7 @@
 <html lang="it">
 <head>
   <link rel="stylesheet" href="css/faq.css">
-
+  <link rel="icon" type="image/x-icon" href="img/logo.webp">
   <meta charset="UTF-8">
   <title>FAQ - ReVamp Ascent</title>
 </head>
@@ -24,7 +24,7 @@
     <h2>Spedizione e Tempi di Consegna</h2>
     <div class="faq-item">
       <h3>In quanto tempo arrivano i mobili?</h3>
-      <p>Il tempo di consegna standard è di 5-10 giorni lavorativi dall'evadimento dell'ordine. Riceverai un'email di conferma con il numero di tracking non appena il pacco sarà affidato al corriere.</p>
+      <p>Il tempo di consegna standard è di 2-5 giorni lavorativi dall'evadimento dell'ordine. Riceverai un'email di conferma con il numero di tracking non appena il pacco sarà affidato al corriere.</p>
     </div>
     <div class="faq-item">
       <h3>La spedizione è inclusa nell'acquisto del mobile?</h3>
@@ -36,7 +36,7 @@
     <h2>Pagamenti e Resi</h2>
     <div class="faq-item">
       <h3>Quali metodi di pagamento accettate?</h3>
-      <p>Accettiamo carte di credito (Visa, Mastercard, American Express), PayPal e bonifico bancario.</p>
+      <p>Accettiamo carte di credito (Visa, Mastercard, American Express) bo enifico bancario.</p>
     </div>
     <div class="faq-item">
       <h3>Posso restituire un mobile se non mi soddisfa?</h3>
@@ -73,8 +73,8 @@
     <h2>Contatti</h2>
     <p>Per ulteriori domande, puoi contattarci:</p>
     <ul>
-      <li><strong>Email:</strong> support@revampascent.it</li>
-      <li><strong>Telefono:</strong> +39 02 1234 5678 (lun-ven 9:00-18:00)</li>
+      <li><strong>Email:</strong> info@revampascent.it</li>
+      <li><strong>Telefono:</strong> +39 081 123 4567 (lun-ven 9:00-18:00)</li>
     </ul>
   </section>
 </div>

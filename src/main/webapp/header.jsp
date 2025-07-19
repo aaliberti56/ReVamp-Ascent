@@ -13,56 +13,65 @@
   <meta charset="UTF-8">
   <title>ReVamp Ascent</title>
   <link rel="stylesheet" href="css/header.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">     <!-- stabilisce le connessioni in anticipo, diminuendo i tempi di caricamento -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;500;700&display=swap" rel="stylesheet"> <!-- serve a caricare il font "Raleway" da Google Fonts, specificando i pesi desiderati, migliorando la user experience -->
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+
+<!-- HEADER FISSO -->
 <div class="menu-container">
+  <div class="header-wrapper">
+    <!-- BLOCCO SINISTRA -->
+    <div class="blocco-sinistra">
+      <a href="homePage.jsp">
+        <img src='img/logo.webp' class='logo' alt="Logo">
+      </a>
 
-  <!-- BLOCCO SINISTRA -->
-  <div class="blocco-sinistra">
-    <a href="homePage.jsp">
-      <img src='img/logo.webp' class='logo' alt="Logo">
-    </a>
+      <a href="catalogo.jsp" class="btn-catalogo">
+        <i class="fa-solid fa-list"></i> Catalogo
+      </a>
 
-    <a href="catalogo.jsp" class="btn-catalogo">
-      <i class="fa-solid fa-list"></i> Catalogo
-    </a>
+      <div class="menuricerca">
+        <form id="formRicerca" class="barra-ricerca" onsubmit="eseguiRicerca(event)">
+          <input type="text" id="textboxRicerca" name="ricerca" placeholder="Cerca un prodotto..." required>
+          <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+      </div>
+    </div>
 
-    <div class="menuricerca">
-      <form id="formRicerca" class="barra-ricerca" onsubmit="eseguiRicerca(event)">
-        <input type="text" id="textboxRicerca" name="ricerca" placeholder="Cerca un prodotto..." required>
-        <button type="submit"><i class="fa fa-search"></i></button>
-      </form>
+    <!-- BLOCCO DESTRA -->
+
+      <a href="faq.jsp" class="account-link">
+        <img src="img/faq.png" class="iconaAccount" alt="Account">
+        <div class="testo-account">
+          Aiuto<br><strong>Domande Frequenti</strong>
+        </div>
+      </a>
+
+    <div class="icone-destra">
+      <a href="home.jsp" class="account-link">
+        <img src="img/user.png" class="iconaAccount" alt="Account">
+        <div class="testo-account">
+          Il mio account<br><strong>Accedi</strong>
+        </div>
+      </a>
+
+      <a href="carrello.jsp" class="carrello-link">
+        <img src="img/cart.png" alt="Carrello" width="28">
+        <span id="carrello-badge" class="badge-carrello" style="display:none;">0</span>
+      </a>
     </div>
   </div>
-
-  <!-- BLOCCO DESTRA -->
-  <div class="icone-destra">
-    <a href="home.jsp" class="account-link">
-      <img src="img/user.png" class="iconaAccount" alt="Account">
-      <div class="testo-account">
-        Il mio account<br><strong>Accedi</strong>
-      </div>
-    </a>
-
-    <a href="carrello.jsp" class="carrello-link">
-      <img src="img/cart.png" alt="Carrello" width="28">
-      <span id="carrello-badge" class="badge-carrello" style="display:none;">0</span>
-    </a>
-  </div>
-
-
-  </div>
+</div>
 
 <img src="img/menu.png" class="iconaMenu" onclick="mostraMenu()" id="hamburgerMenu" alt="Menu"> <!-- dispositivi mobili -->
 
 <!-- Modale risultati ricerca -->
 <div id="modalRisultati" class="modal-ricerca">
   <div class="modal-content-ricerca">
-    <span class="close-ricerca" onclick="chiudiModal()">&times;</span> <!-- times indica la x nel browser, per chiudere la modale -->
+    <span class="close-ricerca" onclick="chiudiModal()">&times;</span>
     <h3>Risultati della ricerca</h3>
     <ul id="listaProdottiModale"></ul>
   </div>
@@ -98,7 +107,6 @@
           Il mio account<br><strong>Accedi</strong>
         </div>
       </a>
-
     </div>
   </div>
 </div>
@@ -115,6 +123,7 @@
     }
   %>
 </nav>
+
 
 <script>
   function mostraMenu() {
@@ -147,12 +156,12 @@
           } else {
             prodotti.forEach(p => {   //per ogni prodotto ricevuto crea un li con un link alla pagina dell articolo, e informazioni
               const li = document.createElement("li");
-                li.innerHTML =
-                    '<a href="DettaglioArticoloServlet?codice=' + p.codice + '" style="display: flex; align-items: center; gap: 10px;">' +
-                    '<img src="' + p.immagine + '" alt="' + p.nome + '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">' +
-                    '<strong>' + p.nome + '</strong>' +
-                    '</a> - €' + parseFloat(p.prezzo).toFixed(2);
-                ul.appendChild(li);
+              li.innerHTML =
+                      '<a href="DettaglioArticoloServlet?codice=' + p.codice + '" style="display: flex; align-items: center; gap: 10px;">' +
+                      '<img src="' + p.immagine + '" alt="' + p.nome + '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">' +
+                      '<strong>' + p.nome + '</strong>' +
+                      '</a> - €' + parseFloat(p.prezzo).toFixed(2);
+              ul.appendChild(li);
 
             });
           }
@@ -172,4 +181,3 @@
 </script>
 </body>
 </html>
-

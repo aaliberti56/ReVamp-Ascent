@@ -1,18 +1,18 @@
 /* Base Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
-    background: #f5f7fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;  /* impostiamo piu nomi di stili come fallback */
+    background: #f5f7fa;  /* colore in formato hex */
     margin: 0;
     padding: 0;
-    color: #333;
-    line-height: 1.6;
+    color: #333;   /* formato hex ridotto */
+    line-height: 1.6;  /* regola l altezza della linea di testo */
 }
 
 /* Header Styles */
 .logo {
     width: 100px;
-    display: block;
-    margin: 40px auto 20px;
+    display: block;  /*occupa tutta la larghezza disponibile del contenitore */
+    margin: 40px auto 20px; /* top 40px  destra e sinistra auto(lo calcola il browser) sotto 20px*/
     background: transparent;
     border: none;
 }
@@ -21,7 +21,7 @@ body {
 /* User Area Specific Styles */
 h2 {
     text-align: center;
-    color: #2c3e50;
+    color: #2c3e50;   /*formato hex*/
     margin: 30px 0;
     font-size: 2rem;
 }
@@ -37,13 +37,13 @@ h2 {
     margin: 10px 0;
 }
 
-/* Main container for the user area boxes */
 .contenitoreAreaUtente {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 25px;
+    display: grid;/* imposta il layout come griglia css, permettendo di disporre gli elem figli in righe e colonne */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* definisce il numero e la larghezza delle colonne*/
+                                /*repeat auto-fit cerca di riempire lo spazio disponibile con quante più colonne possibili.*/
+    gap: 25px;  /* spazio tra righe e colonne */
     max-width: 900px;
-    margin: 0 auto;
+    margin: 0 auto;  /* centra orizzontalmente il contenitore nel suo genitore*/
     padding: 20px;
 }
 
@@ -59,7 +59,7 @@ h2 {
 }
 
 .user-header h2 {
-    color: #2c3e50;
+    color: #2c3e50;   /* formato hex */
     font-size: 2rem;
     margin-bottom: 10px;
 }
@@ -78,17 +78,17 @@ h2 {
 
 .menu-card {
     background: white;
-    border-radius: 10px;
+    border-radius: 10px;   /* bordi arrotondati */
     padding: 25px 15px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);    /* ombratura */
+    transition: all 0.3s ease;  /* anima i cambiamenti delle proprieta css di un elemento, ease indica velocita */
     text-decoration: none;
     color: #333;
 }
 
 .menu-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px);  /* viene spostato verso l alto di 5px quando si passa sopra */
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
@@ -96,7 +96,7 @@ h2 {
     width: 60px;
     height: 60px;
     margin: 0 auto 15px;
-    object-fit: contain;
+    object-fit: contain;  /* fa in modo che il contenuto sia visibile */
 }
 
 .newsletter-section {
@@ -118,25 +118,24 @@ h2 {
     border: none;
     padding: 12px 25px;
     border-radius: 8px;
-    cursor: pointer;
+    cursor: pointer; /* quando il mouse passa il cursore cambia diventando una mano */
     font-size: 1rem;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease; /*fa animare il cambio di colore di sfondo dinamicamente*/
 }
 
 .logout-btn:hover {
     background: #c0392b;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px) { /*se la larghezza dello schermo è 600px o meno la classe menu verra strutturata in 2 colonne*/
     .menu-grid {
         grid-template-columns: 1fr 1fr;
     }
 }
 
-/* Style for each box/link */
 .boxAreaUtenteLink {
     text-decoration: none;
-    color: inherit;
+    color: inherit; /* eredita quello del suo genitore */
     display: block;
     height: 100%;
 }
@@ -147,9 +146,9 @@ h2 {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: flex;  /* Trasforma l’elemento in un contenitore flessibile*/
+    flex-direction: column; /* definisce la direzione dei figli, in verticale */
+    justify-content: center;  /* allinea gli elementi nella direzione principale*/
     align-items: center;
     transition: all 0.3s ease;
     padding: 15px;
@@ -163,11 +162,10 @@ h2 {
     background-color: #f8f9fa;
 }
 
-/* Image styling */
 .imgBoxAreaUtente {
     width: 70px;
     height: 70px;
-    object-fit: contain;
+    object-fit: contain;  /*rende visibile il contenuto*/
     margin-bottom: 20px;
 }
 
@@ -180,8 +178,8 @@ h2 {
 
 .contenitoreProdotto {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: wrap;  /*Se lo spazio finisce, vai a capo e continua su una nuova riga */
+    justify-content: center; /* centra orizzontalmente tutti gli elementi figli*/
     gap: 20px;
     padding: 20px;
 }
@@ -198,13 +196,13 @@ h2 {
 }
 
 .articolo:hover {
-    transform: scale(1.03);
+    transform: scale(1.03); /* quando l utente passa con il mouse  aumenta la dimensione*/
 }
 
 .fotoArticolo {
     width: 100%;
     height: 180px;
-    object-fit: cover;
+    object-fit: cover; /* ridimensiona l immagine per coprire l intero spazio*/
     border-radius: 10px;
 }
 
@@ -260,13 +258,11 @@ h2 {
 .bott1:hover {
     background-color: #c0392b;
 }
-
-/* Form Styles (preserved from original) */
 #contenitoreForm {
     background: white;
     max-width: 400px;
     margin: auto;
-    padding: 40px;
+    padding: 20px 35px;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
@@ -294,7 +290,6 @@ h2 {
     transition: background-color 0.3s ease;
 }
 
-/* Error Styles (preserved from original) */
 .formError {
     color: red;
     font-size: 12px;
@@ -327,7 +322,6 @@ h2 {
     }
 }
 
-/* All other existing styles preserved exactly as they were */
 .contnuovopag {
     margin-left:2%;
 }

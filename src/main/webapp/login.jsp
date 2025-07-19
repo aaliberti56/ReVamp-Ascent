@@ -61,7 +61,7 @@
     <div class="header-section">
         <a href="homePage.jsp">
         <img src="<%= request.getContextPath() %>/img/logo.webp" alt="Logo"
-             style="width: 200px; display: block; margin: 0 auto 20px;">
+             style="width: 110px; display: block; margin: 0 auto 10px;">
         </a>
         <h2>Accedi</h2>
     </div>

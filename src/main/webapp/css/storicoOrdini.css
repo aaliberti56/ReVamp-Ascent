@@ -32,12 +32,12 @@ body {
 
 .table-wrapper {
     margin-top: 30px;
-    overflow-x: auto;
+    overflow-x: auto;  /*aggiunge la barra di scorrimento solo quando necessario*/
 }
 
 table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse; /*i bordi sono compressi in un unico bordo*/
 }
 
 thead th {
@@ -62,7 +62,7 @@ tr:hover:not(.detail-row) {
 }
 
 .detail-content {
-    display: grid;
+    display: grid;  /*mostra la tabella*/
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     padding: 20px;
@@ -79,7 +79,7 @@ tr:hover:not(.detail-row) {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.articolo-riga:hover {
+.articolo-riga:hover {  /*quando si passa con il cursore sopra*/
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }

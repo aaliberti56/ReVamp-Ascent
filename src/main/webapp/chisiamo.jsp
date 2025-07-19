@@ -109,8 +109,8 @@
             color: #555;
             font-size: 0.95rem;
         }
-
-        @keyframes fadeUp {
+        /*@keyframes permettono di dire al browser come un elemento deve cambiare nel tempo.*/
+        @keyframes fadeUp {  /* permette all elemento di apparirre gradualmente */
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }

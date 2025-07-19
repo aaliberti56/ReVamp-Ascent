@@ -54,16 +54,43 @@ public class CarrelloDAO {
         }
     }
 
-    public void rimuoviArticoloCarrello(String nome_utente,int codiceArticolo){
-        try(Connection con=ConPool.getConnection()){
-            PreparedStatement ps=con.prepareStatement("DELETE FROM Carrello WHERE nome_utente = ? AND codice_articolo = ?");
-            ps.setString(1, nome_utente);
-            ps.setInt(2, codiceArticolo);
-            ps.executeUpdate();
-        }catch(SQLException e){
+    public void rimuoviArticoloCarrello(String nome_utente, int codiceArticolo) {
+        try (Connection con = ConPool.getConnection()) {
+            // 1. Controlla la quantità attuale
+            PreparedStatement check = con.prepareStatement(
+                    "SELECT quantita FROM Carrello WHERE nome_utente = ? AND codice_articolo = ?"
+            );
+            check.setString(1, nome_utente);
+            check.setInt(2, codiceArticolo);
+            ResultSet rs = check.executeQuery();
+
+            if (rs.next()) {
+                int quantita = rs.getInt("quantita");
+
+                if (quantita > 1) {
+                    // 2a. Decrementa quantità di 1
+                    PreparedStatement update = con.prepareStatement(
+                            "UPDATE Carrello SET quantita = quantita - 1 WHERE nome_utente = ? AND codice_articolo = ?"
+                    );
+                    update.setString(1, nome_utente);
+                    update.setInt(2, codiceArticolo);
+                    update.executeUpdate();
+                } else {
+                    // 2b. Elimina l'articolo (quantità = 1)
+                    PreparedStatement delete = con.prepareStatement(
+                            "DELETE FROM Carrello WHERE nome_utente = ? AND codice_articolo = ?"
+                    );
+                    delete.setString(1, nome_utente);
+                    delete.setInt(2, codiceArticolo);
+                    delete.executeUpdate();
+                }
+            }
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public void pulisciCarrello(String nome_utente){
         try(Connection con=ConPool.getConnection()){

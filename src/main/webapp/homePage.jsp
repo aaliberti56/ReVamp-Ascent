@@ -20,6 +20,9 @@
     <style>
         .hero-promo {
             background: url("<%= request.getContextPath() %>/img/heroPromo.png") no-repeat center center/cover;
+            /*usiamo request.getcontextpath per assicurarsi che il path funzioni correttamente
+            da qualsiasi pagina del sito, anche se non si trova nella root.*/
+
             color: white;
             padding: 100px 20px;
             text-align: center;
@@ -131,7 +134,8 @@
             List<Articolo> tutti=articoloDAO.doRetriveByAll();
             Collections.shuffle(tutti);
 
-            int max=Math.min(8,tutti.size());
+            int max=Math.min(8,tutti.size());  //prendi il numero piu piccolo tra 8 e tutti.size().
+                                                //viene fatto questo controllo nel caso in cui non ci fossero almeno 8 articoli
             for(int i=0; i<max;i++){
                 Articolo articolo=tutti.get(i);
                 List<ImmagineArticolo> immagini=imgDAO.doRetrieveByArticolo(articolo.getCodice());
@@ -154,10 +158,10 @@
 <script>
         function scrollCarousel(direction) {
         const carousel = document.getElementById('carousel');
-        const scrollAmount = 300;
-        carousel.scrollBy({
-        left: scrollAmount * direction,
-        behavior: 'smooth'
+        const scrollAmount = 300;  //Imposta la quantità di pixel da scorrere orizzontalmente//
+             carousel.scrollBy({  //Usa il metodo scrollBy() per spostare orizzontalmente il contenuto
+        left: scrollAmount * direction,  //Se direction è 1, scorre verso destra di 300px.Se direction è -1, scorre verso sinistra di 300px.
+        behavior: 'smooth' //lo rende animato
     });
     }
 

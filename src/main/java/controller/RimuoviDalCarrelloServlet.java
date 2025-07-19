@@ -31,16 +31,25 @@ public class RimuoviDalCarrelloServlet extends HttpServlet {
             CarrelloDAO carrelloDAO=new CarrelloDAO();
             carrelloDAO.rimuoviArticoloCarrello(utente.getNomeUtente(),codiceArticolo);
         }
-        else{
-            List<Carrello> carrello=(List<Carrello>) session.getAttribute("carrelloAnonimo");
-            for(int i=0;i<carrello.size();i++){
-                if(carrello.get(i).getCodiceArticolo() == codiceArticolo){
-                    carrello.remove(i);
-                    break;
+        else {
+            List<Carrello> carrello = (List<Carrello>) session.getAttribute("carrelloAnonimo");
+            if (carrello != null) {
+                for (int i = 0; i < carrello.size(); i++) {
+                    Carrello item = carrello.get(i);
+                    if (item.getCodiceArticolo() == codiceArticolo) {
+                        int nuovaQuantita = item.getQuantita() - 1;
+                        if (nuovaQuantita > 0) {
+                            item.setQuantita(nuovaQuantita); // aggiorna quantità
+                        } else {
+                            carrello.remove(i); // rimuovi completamente
+                        }
+                        break;
+                    }
                 }
-                session.setAttribute("carrelloAnonimo",carrello);
+                session.setAttribute("carrelloAnonimo", carrello); // aggiorna sessione una sola volta
             }
         }
+
 
         response.sendRedirect("carrello.jsp");
 

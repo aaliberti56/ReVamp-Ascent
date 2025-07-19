@@ -1,54 +1,103 @@
+/* RESET BASE: toglie margini e padding predefiniti del browser e imposta il box-model standard */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Imposta font, colore di sfondo, colore del testo, altezza righe e nasconde eventuali scroll orizzontali */
 body {
     font-family: 'Raleway', sans-serif;
     background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
     color: #2c3e50;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
+/* CONTENITORE FAQ: limita larghezza, centra, aggiunge padding, sfondo bianco e un'ombra leggera */
 .container-faq {
     max-width: 900px;
-    margin: 50px auto;
-    padding: 20px;
+    margin: 40px auto 20px auto;         /* 40px sopra, 20px sotto, auto ai lati = centrato */
+    padding: 20px 25px;
     background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
+    border-radius: 12px;                 /* angoli arrotondati */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); /* ombra leggera */
 }
 
-h1 {
+/* TITOLO PRINCIPALE */
+.container-faq h1 {
     text-align: center;
-    margin-bottom: 40px;
-    font-size: 2.2rem;
+    font-size: 2rem;
+    margin-bottom: 30px;
     color: #34495e;
 }
 
-h2 {
-    color: #2c3e50;
-    font-size: 1.5rem;
-    margin-top: 30px;
+/* OGNI SEZIONE DELLE FAQ (es. spedizione, pagamenti) ha margine sotto */
+.container-faq section {
+    margin-bottom: 30px;
+}
+
+/* SOTTOTITOLI DELLE SEZIONI */
+.container-faq h2 {
+    font-size: 1.4rem;
     border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
+    padding-bottom: 6px;
+    margin-bottom: 20px;
+    color: #2c3e50;
 }
 
+/* BOX DELLA SINGOLA DOMANDA */
 .faq-item {
-    margin-top: 25px;
+    margin-bottom: 20px;
 }
 
-.faq-item strong {
-    display: block;
+/* DOMANDA (es. "In quanto tempo arrivano i mobili?") */
+.faq-item h3 {
     font-size: 1.1rem;
-    color: #2980b9;
-    margin-bottom: 5px;
+    color: #00796b;                      /* verde scuro */
+    margin-bottom: 8px;
 }
 
-.contact-info {
-    margin-top: 50px;
-    padding-top: 20px;
-    border-top: 1px solid #ccc;
-    text-align: center;
+/* RISPOSTA (es. "2-5 giorni lavorativi...") */
+.faq-item p {
+    margin-left: 10px;                   /* leggera indentazione per chiarezza */
+    font-size: 0.98rem;
+    color: #444;
 }
 
-.contact-info p {
-    margin: 10px 0;
-    font-size: 1rem;
+/* LISTA CONTATTI (email, telefono) */
+.container-faq ul {
+    list-style: none;                    /* rimuove pallini dalla lista */
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+.container-faq ul li {
+    margin-bottom: 10px;
+    font-size: 0.98rem;
+}
+
+/* VERSIONE RESPONSIVE PER TABLET E CELLULARI */
+@media screen and (max-width: 768px) {
+    .container-faq {
+        padding: 15px;
+        margin: 20px 10px;
+    }
+
+    .container-faq h1 {
+        font-size: 1.5rem;
+    }
+
+    .container-faq h2 {
+        font-size: 1.2rem;
+    }
+
+    .faq-item h3 {
+        font-size: 1rem;
+    }
+
+    .faq-item p,
+    .container-faq ul li {
+        font-size: 0.95rem;
+    }
 }

@@ -130,14 +130,14 @@ tbody tr:nth-child(even) {
 td:nth-child(6) {
     font-weight: bold;
 }
-td:nth-child(6):not(:contains("0,00 €")) {
+td:nth-child(6):not(:contains("0,00 €")) {  /* Verde: se il contenuto NON è "0,00 €" */
     color: #28a745;
 }
-td:nth-child(6):contains("0,00 €") {
+td:nth-child(6):contains("0,00 €") { /* grigio se è 0.00*/
     color: #6c757d;
 }
 
-td:nth-child(7)::before {
+td:nth-child(7)::before {  /* settima cella*/
     content: attr(data-sesso);
     display: inline-block;
     background-color: #007bff;

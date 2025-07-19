@@ -9,14 +9,14 @@ body{
 .hero-promo::before{
     content: "";
     position: relative;
-    inset: 0;
+    inset: 0; /* top right left bottom:0*/
     background: rgba(0,0,0,0.45);
     z-index: 1;
 }
 
 .hero-promo-content{
     position: relative;
-    z-index: 1;
+    z-index: 1;  /* si sovrappongono davanti*/
     max-width: 700px;
     margin-left: 50px;
 }
@@ -73,7 +73,7 @@ body{
 .presentazione {
     text-align: center;
     padding: 80px 20px;
-    background: linear-gradient(135deg, #fdfdfd 0%, #f1f3f5 100%);
+    background: linear-gradient(135deg, #fdfdfd 0%, #f1f3f5 100%); /* crea sfumatura lineare tra due colori*/
     position: relative;
     overflow: hidden;
 }
@@ -154,7 +154,7 @@ body{
     text-align: center;
     text-decoration: none;
     color: inherit;
-    scroll-snap-align: start;
+    scroll-snap-align: start; /* dice al browser quando si effettua lo scroll, questo elemento deve allinearsi con l’inizio del contenitore scrollabile*/
     height: auto;
     transform: scale(1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -277,7 +277,7 @@ body{
 }
 
 
-.carousel::-webkit-scrollbar {
+.carousel::-webkit-scrollbar {  /* rende lo scrollbar non visibile solo su chrome e edge*/
     display: none;
 }
 
