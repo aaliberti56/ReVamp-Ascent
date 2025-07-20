@@ -85,7 +85,7 @@
     }
 
     function validaNumeroCarta(numero) {
-        const numeroPulito = numero.replace(/\s+/g, '');
+        const numeroPulito = numero.replace(/\s+/g, ''); //rimuove tutti gli spazi
         const soloNumeri = /^\d{16}$/;
         return soloNumeri.test(numeroPulito);
     }
@@ -131,7 +131,7 @@
     }
 
     function aggiornaListaMetodiPagamento() {
-        fetch('ListaMetodiPagamentoAjax?nome_utente=' + encodeURIComponent(nomeUtente))
+        fetch('ListaMetodiPagamentoAjax?nome_utente=' + encodeURIComponent(nomeUtente)) //richiesa get, quindi parametri passati nell url con query string
         .then(response => response.text())
         .then(html => {
             document.getElementById('listaMetodiPagamento').innerHTML = html;  //inserisce il codice html ricevuto nel form con quel id. aggiorna i metodi

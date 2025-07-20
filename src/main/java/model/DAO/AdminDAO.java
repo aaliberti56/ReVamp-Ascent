@@ -10,7 +10,7 @@ public class AdminDAO{
 
     private String hashPassword(String password){
         try{
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] hashedBytes = md.digest(password.getBytes());
 
             StringBuilder sb = new StringBuilder();

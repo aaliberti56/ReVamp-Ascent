@@ -3,8 +3,8 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.DAO.MetodiPagamentoDAO;
-import model.JavaBeans.MetodiPagamento;
+import model.DAO.*;
+import model.JavaBeans.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -151,7 +151,7 @@
         <p class="prezzo">
             € <%= String.format(Locale.ITALY, "%.2f", prezzoScontato) %>
             <% if (articolo.getSconto() > 0) { %>
-            <del>€ <%= String.format(Locale.ITALY, "%.2f", articolo.getPrezzo()) %></del>
+            <del>€ <%= String.format(Locale.ITALY, "%.2f", articolo.getPrezzo()) %></del> <!--imposta barra su prezzo -->
             <% } %>
         </p>
 
@@ -251,8 +251,8 @@
         const modal = document.getElementById("modalZoom");
         const zoomImg = document.getElementById("imgZoom");
         const imgPrincipale = document.getElementById("imgPrincipale");
-        zoomImg.src = imgPrincipale.src;
-        modal.style.display = "block";
+        zoomImg.src = imgPrincipale.src;  //copia l immagine principale nella modale
+        modal.style.display = "block";  //la mostra
     }
 
     function chiudiZoom() {
