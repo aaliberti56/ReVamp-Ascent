@@ -25,9 +25,9 @@
 <div id="contenitoreForm">
     <h2 class="titoloLogin">I tuoi indirizzi</h2>
 
-    <c:if test="${not empty listaIndirizzi}">
-        <div class="lista-indirizzi">
-            <c:forEach var="indirizzo" items="${listaIndirizzi}">
+    <c:if test="${not empty listaIndirizzi}"><!-- In questo caso non serve recuperare request.getAttribute()-->
+        <div class="lista-indirizzi">         <!--le expression language cercano listaIndirizzi negli scope disponibili,  -->
+            <c:forEach var="indirizzo" items="${listaIndirizzi}"> <!-- pageScope, requestScope, sessionScope, application -->
                 <div class="indirizzo-card">
                     <p>
                         <strong>Via: </strong> ${indirizzo.via}<br>

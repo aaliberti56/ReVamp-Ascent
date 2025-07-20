@@ -36,6 +36,8 @@
 </div>
 <% } %>
 
+
+<!--
 <% if (request.getAttribute("msg") != null) { %>
 <div class="containerMessaggio" style="justify-content:center; margin-bottom: 15px;">
     <div id="messaggioConferma">
@@ -44,6 +46,8 @@
     </div>
 </div>
 <% } %>
+-->
+
 
 <% if (request.getAttribute("erroreLogin") != null) { %>
 <div class="containerMessaggio" style="justify-content:center; margin-bottom: 15px;">

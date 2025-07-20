@@ -272,3 +272,36 @@ body::before {
     display: block;
     height: 100px; /* Adatta all’altezza reale del tuo header */
 }
+@media screen and (max-width: 768px) {
+    .header-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .blocco-sinistra, .icone-destra {
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+    }
+
+    .menuricerca {
+        width: 90%;
+    }
+}
+#menuTelefono {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 30px 20px;
+}
+
+.closeBtn {
+    width: 32px;
+    float: right;
+}

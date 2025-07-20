@@ -7,9 +7,13 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="model.JavaBeans.Categoria, model.DAO.CategoriaDAO, java.util.List" %>
+<%
+    model.JavaBeans.Cliente cliente = (model.JavaBeans.Cliente) session.getAttribute("utenteLoggato");
+%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>ReVamp Ascent</title>
   <link rel="stylesheet" href="css/header.css">
@@ -51,18 +55,31 @@
       </a>
 
     <div class="icone-destra">
-      <a href="home.jsp" class="account-link">
-        <img src="img/user.png" class="iconaAccount" alt="Account">
-        <div class="testo-account">
-          Il mio account<br><strong>Accedi</strong>
-        </div>
-      </a>
+        <% if (cliente == null) { %>
+        <!-- Utente NON loggato -->
+        <a href="login.jsp" class="account-link">
+            <img src="img/user.png" class="iconaAccount" alt="Account">
+            <div class="testo-account">
+                Il mio account<br><strong>Accedi</strong>
+            </div>
+        </a>
+        <% } else { %>
+        <!-- Utente loggato -->
+        <a href="home.jsp" class="account-link">
+            <img src="img/home.png" class="iconaAccount" alt="Account">
+            <div class="testo-account">
+                Ciao <%=cliente.getNome()%><br><strong>La Tua Area Personale</strong>
+            </div>
+        </a>
 
-      <a href="carrello.jsp" class="carrello-link">
-        <img src="img/cart.png" alt="Carrello" width="28">
-        <span id="carrello-badge" class="badge-carrello" style="display:none;">0</span>
-      </a>
+        <% } %>
+
+
     </div>
+    <a href="carrello.jsp" class="carrello-link">
+      <img src="img/cart.png" alt="Carrello" width="28">
+      <span id="carrello-badge" class="badge-carrello" style="display:none;">0</span>
+    </a>
   </div>
 </div>
 

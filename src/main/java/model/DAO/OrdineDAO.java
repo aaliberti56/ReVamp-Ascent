@@ -1,7 +1,7 @@
 package model.DAO;
 
 import model.ConPool;
-import model.JavaBeans.Ordine;
+import model.JavaBeans.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -190,15 +190,15 @@ public class OrdineDAO {
                 while (rs.next()) {
                     int idOrdine = rs.getInt("id_ordine");
 
-                    List<Map<String, Object>> lista;
-                    if (storico.containsKey(idOrdine)) {
+                    List<Map<String, Object>> lista; //per ogni riga nel risultato controlla se quell ordine è gia nella mappa
+                    if (storico.containsKey(idOrdine)) {  //se si prende la lista esistente
                         lista = storico.get(idOrdine);
                     } else {
                         lista = new ArrayList<>();
-                        storico.put(idOrdine, lista);
+                        storico.put(idOrdine, lista); //altrimenti crea una nuova e la aggiunge
                     }
 
-                    Map<String, Object> mappa = new HashMap<>();
+                    Map<String, Object> mappa = new HashMap<>(); //crea una mappa per un singolo prodotto dell ordine
                     mappa.put("nome_articolo", rs.getString("nome_articolo"));
                     mappa.put("codice", rs.getInt("codice"));
                     mappa.put("quantita", rs.getInt("quantita"));
@@ -206,13 +206,13 @@ public class OrdineDAO {
                     mappa.put("sconto", rs.getDouble("sconto"));
                     mappa.put("immagine", rs.getString("immagine") != null ? rs.getString("immagine") : "assets/img/default.jpg");
 
-                    if (lista.isEmpty()) {
+                    if (lista.isEmpty()) { //questi sono attributi comuni a tutti gli articoli di quell ordine, quindi vengono inseriti una sola volta
                         mappa.put("data", rs.getDate("data"));
                         mappa.put("num_articoli", rs.getInt("num_articoli"));
                         mappa.put("importo_totale", rs.getDouble("importo_totale"));
                     }
 
-                    lista.add(mappa);
+                    lista.add(mappa);  //aggiunge il prodotto alla lista
                 }
             }
         } catch (SQLException e) {
