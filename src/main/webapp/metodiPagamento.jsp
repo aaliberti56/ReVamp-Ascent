@@ -142,6 +142,8 @@
         });
     }
 
+
+
     document.getElementById("formAggiungiPagamento").addEventListener('submit', function(event) {
         event.preventDefault();
 

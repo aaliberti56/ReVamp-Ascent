@@ -129,4 +129,19 @@ public class MetodiPagamentoDAO {
         }
         return lista;
     }
+
+    public boolean esisteMetodoPagamento(String numCarta, String nomeUtente) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement( //se esiste almeno una riga
+                    "SELECT 1 FROM Metodi_pagamento WHERE num_carta = ? AND nome_utente = ?");
+            ps.setString(1, numCarta);
+            ps.setString(2, nomeUtente);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();  // true se esiste almeno una riga
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

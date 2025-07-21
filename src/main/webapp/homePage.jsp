@@ -11,6 +11,7 @@
 <%@ page import="java.util.*, java.math.BigDecimal" %>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/homePage.css">
     <link rel="icon" type="image/x-icon" href="img/logo.webp">
     <title>ReVamp Ascent - Home</title>

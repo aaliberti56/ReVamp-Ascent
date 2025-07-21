@@ -62,7 +62,6 @@
           if (filtroCategoria != null && !filtroCategoria.trim().isEmpty()) {
             if (categoria == null || !categoria.getTipologia().equalsIgnoreCase(filtroCategoria)) { //Se l’articolo non ha una categori// a associata oppure se la tipologia della categoria dell’articolo non corrisponde al filtro selezionato
               //permette di filtrare gli articoli
-
                 mostra = false;
             }
           }

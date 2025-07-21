@@ -17,6 +17,8 @@ public class InserisciMetodoPagamentoAjax extends HttpServlet {
 
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
+        MetodiPagamentoDAO dao = new MetodiPagamentoDAO();
+
 
         try {
             // Recupera parametri
@@ -30,6 +32,12 @@ public class InserisciMetodoPagamentoAjax extends HttpServlet {
                 out.print("{\"success\":false, \"message\":\"Parametri mancanti\"}");
                 return;
             }
+
+            if (dao.esisteMetodoPagamento(numCarta, nomeUtente)) {
+                out.print("{\"success\":false, \"message\":\"Hai già registrato questa carta\"}");
+                return;
+            }
+
 
             // Parsing scadenza (MM/YY)
             String[] parts = scadenza.split("/");
@@ -50,7 +58,6 @@ public class InserisciMetodoPagamentoAjax extends HttpServlet {
             GregorianCalendar dataScadenza = new GregorianCalendar(anno, mese, 1);
 
             MetodiPagamento metodo = new MetodiPagamento(numCarta, intestatario, dataScadenza, nomeUtente);
-            MetodiPagamentoDAO dao = new MetodiPagamentoDAO();
             boolean success = dao.doSave(metodo);
 
             if (success) {
