@@ -18,7 +18,7 @@
     MetodiPagamentoDAO metodiPagamentoDAO = new MetodiPagamentoDAO();
     Cliente u = (Cliente) session.getAttribute("utenteLoggato");
     if (u != null) {
-      carte = metodiPagamentoDAO.doRetrieveByUser(u.getNomeUtente());
+      carte = metodiPagamentoDAO.doRetrieveByUser(u.getNomeUtente()); //doppio controllo per sicurezza,poiche la servlet viene richiamata da piu pagine
     }
   }
 %>

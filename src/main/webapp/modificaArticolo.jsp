@@ -89,14 +89,14 @@
 </div>
 <% } %>
 
-<form action="SalvaModificaArticoloServlet" method="post">
+<form action="SalvaModificaArticoloServlet" method="post" id="formId">
     <label>Codice (non modificabile) </label>
     <input type="hidden" name="codice" value="<%= articolo.getCodice() %>">
     <input type="text" value="<%= articolo.getCodice() %>" disabled>
 
     <label>Nome</label>
     <small>Attuale: <%=articolo.getNome() %> </small>
-    <input type="text" name="nome" value="<%=articolo.getNome()%>">
+    <input type="text" name="nome" id="nome" value="<%=articolo.getNome()%>">
 
     <label>Descrizione</label>
     <small>Attuale: <%= articolo.getDescrizione() %></small>
@@ -104,23 +104,23 @@
 
     <label>Colore</label>
     <small>Attuale: <%= articolo.getColore() %></small>
-    <input type="text" name="colore" value="<%= articolo.getColore() %>">
+    <input type="text" name="colore" id="colore" value="<%= articolo.getColore() %>">
 
     <label>Sconto (%)</label>
     <small>Attuale: <%= articolo.getSconto() %></small>
-    <input type="number" step="0.01" name="sconto" value="<%= articolo.getSconto() %>">
+    <input type="number" step="0.01" name="sconto" id="sconto" value="<%= articolo.getSconto() %>">
 
     <label>Prezzo (€)</label>
     <small>Attuale: <%= articolo.getPrezzo() %></small>
-    <input type="number" step="0.01" name="prezzo" value="<%= articolo.getPrezzo() %>">
+    <input type="number" step="0.01" name="prezzo" id="prezzo" value="<%= articolo.getPrezzo() %>">
 
     <label>Peso (kg)</label>
     <small>Attuale: <%= articolo.getPeso() %></small>
-    <input type="number" step="0.01" name="peso" value="<%= articolo.getPeso() %>">
+    <input type="number" step="0.01" name="peso" id="peso" value="<%= articolo.getPeso() %>">
 
     <label>Dimensione</label>
     <small>Attuale: <%= articolo.getDimensione() %></small>
-    <input type="text" name="dimensione" value="<%= articolo.getDimensione() %>">
+    <input type="text" name="dimensione" id="dimensione" value="<%= articolo.getDimensione() %>">
 
     <label>Categoria</label>
     <select name="id_categoria">
@@ -140,6 +140,56 @@
 
 <% } %>
 
+<script>
+    const form=document.getElementById("formId");
+
+    if(form){
+        form.addEventListener("submit",function (e){
+            if(!validaCampi()){
+                e.preventDefault();
+            }
+        });
+    }
+
+    function validaCampi(){
+        const nome=document.getElementById("nome");
+        const descrizione=document.querySelector('textarea[name="descrizione"]');
+        const colore=document.getElementById("colore");
+        const prezzo=document.getElementById("prezzo");
+        const sconto=document.getElementById("sconto");
+        const peso=document.getElementById("peso");
+        const dimensione=document.getElementById("dimensione");
+
+
+        if (nome.value.trim() === "") {
+            return false;
+        }
+        if (descrizione.value.trim() === "") {
+            return false;
+        }
+        if (colore.value.trim() === "") {
+            return false;
+        }
+        if (prezzo.value === "" || isNaN(prezzo.value) || parseFloat(prezzo.value) < 0) {
+            return false;
+        }
+        if (sconto.value === "" || isNaN(sconto.value) || parseFloat(sconto.value) < 0) {
+            return false;
+        }
+        if (peso.value === "" || isNaN(peso.value) || parseFloat(peso.value) < 0) {
+            return false;
+        }
+        if (dimensione.value.trim() === "") {
+           return false;
+        }
+
+
+        return true;
+    }
+</script>
 
 </body>
 </html>
+
+
+

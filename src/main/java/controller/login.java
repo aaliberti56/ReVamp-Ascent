@@ -32,14 +32,14 @@ public class login extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("utenteLoggato", cliente);
 
-            // 🔁 Trasferisci carrello anonimo nel DB
+            // Trasferisci carrello anonimo nel DB
             List<Carrello> carrelloAnonimo = (List<Carrello>) session.getAttribute("carrelloAnonimo");
             if (carrelloAnonimo != null && !carrelloAnonimo.isEmpty()) {
                 CarrelloDAO carrelloDAO = new CarrelloDAO();
                 for (Carrello item : carrelloAnonimo) {
                     carrelloDAO.aggiungiAlCarrello(cliente.getNomeUtente(), item.getCodiceArticolo(), item.getQuantita());
                 }
-                session.removeAttribute("carrelloAnonimo"); // ✅ lo pulisci
+                session.removeAttribute("carrelloAnonimo"); //  lo pulisci
             }
 
             response.sendRedirect("home.jsp");

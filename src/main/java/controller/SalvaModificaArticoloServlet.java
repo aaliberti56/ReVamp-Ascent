@@ -3,7 +3,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.DAO.ArticoloDAO;
-import model.JavaBeans.Articolo;
+import model.JavaBeans.*;
 
 import java.io.IOException;
 

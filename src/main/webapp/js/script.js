@@ -1,11 +1,230 @@
 //serve per eseguire queste funzioni solo dopo che il DOM è stato caricato
 document.addEventListener("DOMContentLoaded", () => {
+    // Inizializza tutte le sezioni
     inizializzaLoginForm();
     inizializzaFormModificaCredenziali();
     inizialiizaFormRegistrazione();
-    aggiornaListaMetodiPagamento();
+    inizializzaFormNuovoIndirizzo();
+    inizializzaGestionePagamenti(); // Nuova funzione wrapper per i pagamenti
+
+    // Se siamo nella pagina dei pagamenti, carichiamo la lista
+    if (typeof aggiornaListaMetodiPagamento === "function") {
+        aggiornaListaMetodiPagamento();
+    }
 });
-// === VALIDAZIONE FORM LOGIN ===
+
+// ==========================================
+// 1. GESTIONE METODI DI PAGAMENTO (Ajax & Validazione)
+// ==========================================
+
+const nomeUtente = "<%= u.getNomeUtente() %>"; // Assicurati che questo sia renderizzato dalla JSP se è in un file .jsp, altrimenti va gestito diversamente in un file .js esterno.
+
+function mostraMessaggio(msg, tipo) {
+    const messaggio = document.getElementById('messaggio');
+    if(messaggio) {
+        messaggio.innerText = msg;
+        messaggio.className = 'messaggio ' + tipo;
+        messaggio.style.display = 'block';
+        setTimeout(() => messaggio.style.display = 'none', 4000);
+    } else {
+        alert(msg); // Fallback se non c'è il div messaggio
+    }
+}
+
+function validaNumeroCarta(numero) {
+    const numeroPulito = numero.replace(/\s+/g, '');
+    const soloNumeri = /^\d{16}$/;
+    return soloNumeri.test(numeroPulito);
+}
+
+function validaCVV(cvv) {
+    return /^\d{3}$/.test(cvv);
+}
+
+function validaScadenza(scadenza) {
+    const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    if (!regex.test(scadenza)) return false;
+
+    const [mese, anno] = scadenza.split('/').map(Number);
+    const oggi = new Date();
+    const annoCorrente = oggi.getFullYear() % 100;
+    const meseCorrente = oggi.getMonth() + 1;
+
+    return (anno > annoCorrente) || (anno === annoCorrente && mese >= meseCorrente);
+}
+
+function eliminaMetodoPagamento(numCarta) {
+    if (!confirm('Sei sicuro di voler eliminare questo metodo di pagamento?')) return;
+
+    fetch('RimuoviMetodoPagamentoAjax', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'numcarta=' + encodeURIComponent(numCarta) + '&nome_utente=' + encodeURIComponent(nomeUtente)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostraMessaggio('Metodo di pagamento eliminato!', 'successo');
+                aggiornaListaMetodiPagamento();
+            } else {
+                mostraMessaggio('Errore: ' + (data.message || 'Impossibile eliminare il metodo'), 'errore');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostraMessaggio('Errore di comunicazione col server', 'errore');
+        });
+}
+
+function aggiornaListaMetodiPagamento() {
+    const container = document.getElementById('listaMetodiPagamento');
+    if(!container) return; // Se non siamo nella pagina giusta, usciamo
+
+    fetch('ListaMetodiPagamentoAjax?nome_utente=' + encodeURIComponent(nomeUtente))
+        .then(response => response.text())
+        .then(html => {
+            container.innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostraMessaggio('Errore nel caricamento dei metodi di pagamento', 'errore');
+        });
+}
+
+function inizializzaGestionePagamenti() {
+    // Form Aggiunta Pagamento
+    const formPagamento = document.getElementById("formAggiungiPagamento");
+    if (formPagamento) {
+        formPagamento.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const numCarta = this.numcarta.value.trim();
+            const scadenza = this.scadenza.value.trim();
+            const cvv = this.CVV.value.trim();
+            // Nota: validazione proprietario opzionale (può essere vuoto o diverso dall'utente)
+
+            if (!validaNumeroCarta(numCarta)) {
+                mostraMessaggio('Numero di carta non valido: devono essere 16 cifre.', 'errore');
+                return;
+            }
+
+            if (!validaScadenza(scadenza)) {
+                mostraMessaggio('Data di scadenza non valida o già passata.', 'errore');
+                return;
+            }
+
+            if (!validaCVV(cvv)) {
+                mostraMessaggio('Il CVV deve essere composto da 3 cifre.', 'errore');
+                return;
+            }
+
+            const data = {
+                numcarta: numCarta,
+                scadenza: scadenza,
+                proprietario: this.proprietario.value.trim(),
+                nome_utente: nomeUtente
+            };
+
+            fetch('InserisciMetodoPagamentoAjax', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(data).toString()
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Errore nella risposta del server');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        mostraMessaggio('Metodo di pagamento aggiunto con successo!', 'successo');
+                        aggiornaListaMetodiPagamento();
+                        this.reset();
+                    } else {
+                        mostraMessaggio('Errore: ' + (data.message || 'Impossibile aggiungere il metodo'), 'errore');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    mostraMessaggio('Errore nel server: ' + error.message, 'errore');
+                });
+        });
+    }
+
+    // Input Mask Carta
+    const inputCarta = document.getElementById("numcarta");
+    if(inputCarta) {
+        inputCarta.addEventListener("input", function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 16) value = value.slice(0, 16);
+            let formatted = value.match(/.{1,4}/g);
+            e.target.value = formatted ? formatted.join(' ') : '';
+        });
+    }
+
+    // Input Mask CVV
+    const inputCVV = document.getElementById("numcvv"); // O "CVV" controlla l'ID nel tuo HTML
+    if(inputCVV) {
+        inputCVV.addEventListener("input", function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 3) value = value.slice(0, 3);
+            e.target.value = value;
+        });
+    }
+}
+
+// ==========================================
+// 2. NUOVA SEZIONE: VALIDAZIONE INDIRIZZI
+// ==========================================
+function inizializzaFormNuovoIndirizzo() {
+    const form = document.getElementById('formNuovoIndirizzo');
+    if (!form) return;
+
+    const inputVia = document.getElementById('via');
+    const inputCitta = document.getElementById('citta');
+    const inputCap = document.getElementById('cap');
+    const inputProvincia = document.getElementById('provincia');
+    const inputPaese = document.getElementById('paese');
+
+    // Funzioni helper interne
+    const bloccaNumeri = (e) => { e.target.value = e.target.value.replace(/[0-9]/g, ''); };
+    const bloccaLettere = (e) => {
+        let val = e.target.value.replace(/\D/g, '');
+        if (val.length > 5) val = val.slice(0, 5);
+        e.target.value = val;
+    };
+    const formattaProvincia = (e) => {
+        let val = e.target.value.replace(/[0-9]/g, '').toUpperCase();
+        if (val.length > 2) val = val.slice(0, 2);
+        e.target.value = val;
+    };
+
+    // Assegnazione Eventi "Live"
+    if(inputCitta) inputCitta.addEventListener('input', bloccaNumeri);
+    if(inputPaese) inputPaese.addEventListener('input', bloccaNumeri);
+    if(inputCap) inputCap.addEventListener('input', bloccaLettere);
+    if(inputProvincia) inputProvincia.addEventListener('input', formattaProvincia);
+
+    // Validazione al Submit
+    form.addEventListener('submit', function(event) {
+        let errori = [];
+
+        if (inputCap && inputCap.value.length !== 5) {
+            errori.push("Il CAP deve essere composto da 5 cifre esatte.");
+        }
+        if (inputProvincia && inputProvincia.value.length !== 2) {
+            errori.push("La provincia deve essere di 2 lettere (es. RM).");
+        }
+
+        if (errori.length > 0) {
+            event.preventDefault();
+            alert("Attenzione:\n- " + errori.join("\n- "));
+        }
+    });
+}
+
+// ==========================================
+// 3. VALIDAZIONE FORM LOGIN
+// ==========================================
 function inizializzaLoginForm() {
     const form = document.getElementById('formLogin');
     if (form) {
@@ -40,7 +259,9 @@ function nascondiErroreLogin() {
     }
 }
 
-// === VALIDAZIONE FORM MODIFICA CREDENZIALI ===
+// ==========================================
+// 4. VALIDAZIONE FORM MODIFICA CREDENZIALI
+// ==========================================
 function inizializzaFormModificaCredenziali() {
     const formModifica = document.getElementById('formModificaCredenziali');
     if (formModifica) {
@@ -51,9 +272,16 @@ function inizializzaFormModificaCredenziali() {
         });
     }
 }
+
 function validazioneModificaCredenziali() {
-    const username = document.getElementById('username').value.trim();
-    const oldpass = document.getElementById('oldpass').value.trim();
+    const usernameInput = document.getElementById('username');
+    const oldpassInput = document.getElementById('oldpass');
+
+    // Controllo esistenza elementi per evitare errori
+    if(!usernameInput || !oldpassInput) return true;
+
+    const username = usernameInput.value.trim();
+    const oldpass = oldpassInput.value.trim();
     const newpass = document.getElementById('newpass').value.trim();
     const confpass = document.getElementById('confpass').value.trim();
 
@@ -66,7 +294,6 @@ function validazioneModificaCredenziali() {
         return false;
     }
 
-    // Se l'utente ha inserito una nuova password, allora validiamola
     if (newpass !== '') {
         if (newpass.length < 3 || !(/[a-zA-Z]/.test(newpass)) || !(/\d/.test(newpass))) {
             alert('La password deve contenere almeno 3 caratteri, inclusa almeno una lettera e un numero');
@@ -77,13 +304,12 @@ function validazioneModificaCredenziali() {
             return false;
         }
     }
-
     return true;
 }
 
-
-
-// === CHIUSURA MESSAGGIO SERVER ===
+// ==========================================
+// 5. UTILITY GENERICHE
+// ==========================================
 function nascondiMessaggio() {
     const container = document.querySelector('.containerMessaggio');
     if (container) {
@@ -95,14 +321,15 @@ function confermaCambioPreferito() {
     return confirm("Sei sicuro di voler cambiare l'indirizzo preferito?");
 }
 
-
-
+// ==========================================
+// 6. VALIDAZIONE REGISTRAZIONE
+// ==========================================
 function inizialiizaFormRegistrazione(){
-    const form=document.getElementById('formRegistrazione');
+    const form = document.getElementById('formRegistrazione');
     if(form){
         form.addEventListener("submit",function (event){
             if(!validazioneFormRegistrazione()){
-                event.preventDefault();  //blocca l invio del form
+                event.preventDefault();
             }
         });
     }
@@ -138,7 +365,6 @@ function validazioneFormRegistrazione() {
 
     return true;
 }
-
 
 
 
