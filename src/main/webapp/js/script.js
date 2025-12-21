@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inizializzaFormModificaCredenziali();
     inizialiizaFormRegistrazione();
     inizializzaFormNuovoIndirizzo();
-    inizializzaGestionePagamenti(); // Nuova funzione wrapper per i pagamenti
+    inizializzaGestionePagamenti();
 
     // Se siamo nella pagina dei pagamenti, carichiamo la lista
     if (typeof aggiornaListaMetodiPagamento === "function") {
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // 1. GESTIONE METODI DI PAGAMENTO (Ajax & Validazione)
 // ==========================================
 
-const nomeUtente = "<%= u.getNomeUtente() %>"; // Assicurati che questo sia renderizzato dalla JSP se è in un file .jsp, altrimenti va gestito diversamente in un file .js esterno.
+const nomeUtente = "<%= u.getNomeUtente() %>";
 
 function mostraMessaggio(msg, tipo) {
     const messaggio = document.getElementById('messaggio');
@@ -27,7 +27,7 @@ function mostraMessaggio(msg, tipo) {
         messaggio.style.display = 'block';
         setTimeout(() => messaggio.style.display = 'none', 4000);
     } else {
-        alert(msg); // Fallback se non c'è il div messaggio
+        alert(msg);
     }
 }
 
@@ -78,7 +78,7 @@ function eliminaMetodoPagamento(numCarta) {
 
 function aggiornaListaMetodiPagamento() {
     const container = document.getElementById('listaMetodiPagamento');
-    if(!container) return; // Se non siamo nella pagina giusta, usciamo
+    if(!container) return;
 
     fetch('ListaMetodiPagamentoAjax?nome_utente=' + encodeURIComponent(nomeUtente))
         .then(response => response.text())
@@ -92,7 +92,6 @@ function aggiornaListaMetodiPagamento() {
 }
 
 function inizializzaGestionePagamenti() {
-    // Form Aggiunta Pagamento
     const formPagamento = document.getElementById("formAggiungiPagamento");
     if (formPagamento) {
         formPagamento.addEventListener('submit', function(event) {
@@ -101,7 +100,6 @@ function inizializzaGestionePagamenti() {
             const numCarta = this.numcarta.value.trim();
             const scadenza = this.scadenza.value.trim();
             const cvv = this.CVV.value.trim();
-            // Nota: validazione proprietario opzionale (può essere vuoto o diverso dall'utente)
 
             if (!validaNumeroCarta(numCarta)) {
                 mostraMessaggio('Numero di carta non valido: devono essere 16 cifre.', 'errore');
@@ -150,7 +148,6 @@ function inizializzaGestionePagamenti() {
         });
     }
 
-    // Input Mask Carta
     const inputCarta = document.getElementById("numcarta");
     if(inputCarta) {
         inputCarta.addEventListener("input", function (e) {
@@ -161,8 +158,7 @@ function inizializzaGestionePagamenti() {
         });
     }
 
-    // Input Mask CVV
-    const inputCVV = document.getElementById("numcvv"); // O "CVV" controlla l'ID nel tuo HTML
+    const inputCVV = document.getElementById("numcvv");
     if(inputCVV) {
         inputCVV.addEventListener("input", function (e) {
             let value = e.target.value.replace(/\D/g, '');
@@ -187,15 +183,15 @@ function inizializzaFormNuovoIndirizzo() {
 
     // Funzioni helper interne
     const bloccaNumeri = (e) => { e.target.value = e.target.value.replace(/[0-9]/g, ''); };
+
+    // Non taglia più la stringa, pulisce solo i caratteri non validi
     const bloccaLettere = (e) => {
-        let val = e.target.value.replace(/\D/g, '');
-        if (val.length > 5) val = val.slice(0, 5);
-        e.target.value = val;
+        e.target.value = e.target.value.replace(/\D/g, '');
     };
+
     const formattaProvincia = (e) => {
-        let val = e.target.value.replace(/[0-9]/g, '').toUpperCase();
-        if (val.length > 2) val = val.slice(0, 2);
-        e.target.value = val;
+        // UpperCase automatico
+        e.target.value = e.target.value.replace(/[0-9]/g, '').toUpperCase();
     };
 
     // Assegnazione Eventi "Live"
@@ -208,6 +204,18 @@ function inizializzaFormNuovoIndirizzo() {
     form.addEventListener('submit', function(event) {
         let errori = [];
 
+        // Controlli lunghezza massima (AGGIORNATI)
+        if (inputVia && inputVia.value.length > 30) {  // VIA a 30
+            errori.push("La via inserita è troppo lunga (massimo 30 caratteri).");
+        }
+        if (inputCitta && inputCitta.value.length > 30) {
+            errori.push("Il nome della città è troppo lungo (massimo 30 caratteri).");
+        }
+        if (inputPaese && inputPaese.value.length > 30) {
+            errori.push("Il nome del paese è troppo lungo (massimo 30 caratteri).");
+        }
+
+        // Controlli lunghezza esatta
         if (inputCap && inputCap.value.length !== 5) {
             errori.push("Il CAP deve essere composto da 5 cifre esatte.");
         }
@@ -277,13 +285,24 @@ function validazioneModificaCredenziali() {
     const usernameInput = document.getElementById('username');
     const oldpassInput = document.getElementById('oldpass');
 
-    // Controllo esistenza elementi per evitare errori
     if(!usernameInput || !oldpassInput) return true;
 
     const username = usernameInput.value.trim();
     const oldpass = oldpassInput.value.trim();
     const newpass = document.getElementById('newpass').value.trim();
     const confpass = document.getElementById('confpass').value.trim();
+
+    // *** NUOVO CONTROLLO LUNGHEZZA USERNAME (ANCHE QUI) ***
+    if (username.length > 30) {
+        alert("L'username è troppo lungo (massimo 30 caratteri).");
+        return false;
+    }
+
+    if (newpass.length > 30) {
+        alert("La nuova password è troppo lungo (massimo 30 caratteri).");
+        return false;
+    }
+
 
     if (username === '') {
         alert('Username non può essere vuoto');
@@ -336,12 +355,43 @@ function inizialiizaFormRegistrazione(){
 }
 
 function validazioneFormRegistrazione() {
+    // Recupero valori (ho aggiunto nome e cognome)
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
     const email = document.getElementById('email').value.trim();
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
     const confpass = document.getElementById('confpass').value.trim();
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // --- CONTROLLI LUNGHEZZA MASSIMA ---
+
+    // NUOVO: Controllo Nome e Cognome
+    if (nome.length > 30) {
+        alert("Il nome è troppo lungo (massimo 30 caratteri).");
+        return false;
+    }
+    if (cognome.length > 30) {
+        alert("Il cognome è troppo lungo (massimo 30 caratteri).");
+        return false;
+    }
+
+    if (username.length > 30) { // Username a 20
+        alert("L'username è troppo lungo (massimo 30 caratteri).");
+        return false;
+    }
+
+    if (email.length > 30) { // Email a 25
+        alert("L'email è troppo lunga (massimo 30 caratteri).");
+        return false;
+    }
+
+    if (password.length > 30) {
+        alert("La password è troppo lunga (massimo 30 caratteri).");
+        return false;
+    }
+    // ------------------------------------------
 
     if (username === '') {
         alert('Username obbligatorio');
@@ -365,8 +415,5 @@ function validazioneFormRegistrazione() {
 
     return true;
 }
-
-
-
 
 

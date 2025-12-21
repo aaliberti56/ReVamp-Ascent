@@ -1,87 +1,43 @@
-<%@ page import="model.DAO.ArticoloDAO" %><%--
-  Created by IntelliJ IDEA.
-  User: aless
-  Date: 29/06/2025
-  Time: 11:14
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
-         import="model.JavaBeans.Articolo, model.JavaBeans.Categoria, model.DAO.ArticoloDAO, model.DAO.CategoriaDAO, java.util.*"
+         import="model.JavaBeans.Articolo, model.JavaBeans.Categoria, java.util.*"
 %>
 
 <%
+    // Recupero attributi dalla Servlet
     Articolo articolo = (Articolo) request.getAttribute("articolo");
     List<Categoria> categorie = (List<Categoria>) request.getAttribute("categorie");
+
+    // Controllo Sessione
+    if(session.getAttribute("admin") == null){
+        response.sendRedirect("login.jsp");
+        return;
+    }
 %>
+
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="icon" type="image/x-icon" href="img/logo.webp">
     <meta charset="UTF-8">
     <title>Modifica Articolo</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            background-color: #f9f9f9;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        form {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 650px;
-            margin: auto;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-        }
-
-        small {
-            color: #666;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 2px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 15px;
-        }
-
-        input[type="submit"] {
-            background-color: #0066cc;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #004b99;
-        }
+        body { font-family: Arial, sans-serif; padding: 40px; background-color: #f9f9f9; }
+        h2 { color: #333; }
+        form { background-color: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 650px; margin: auto; }
+        label { font-weight: bold; display: block; margin-top: 15px; }
+        small { color: #666; display: block; margin-bottom: 5px; font-size: 0.9em; }
+        input, textarea, select { width: 100%; padding: 10px; margin-top: 2px; border-radius: 6px; border: 1px solid #ccc; font-size: 15px; }
+        input[type="submit"] { background-color: #0066cc; color: white; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        input[type="submit"]:hover { background-color: #004b99; }
     </style>
 </head>
 <body>
 
 <jsp:include page="headerAdmin.jsp"></jsp:include>
 
-<%
-
-    if(session.getAttribute("admin")!=null){
-        %>
 <% if (articolo != null) { %>
 <h2>Modifica Articolo</h2>
+
 <% String urlImg = (String) request.getAttribute("urlImmaginePrincipale"); %>
 <% if (urlImg != null) { %>
 <div style="text-align:center; margin-bottom:20px;">
@@ -90,17 +46,18 @@
 <% } %>
 
 <form action="SalvaModificaArticoloServlet" method="post" id="formId">
-    <label>Codice (non modificabile) </label>
     <input type="hidden" name="codice" value="<%= articolo.getCodice() %>">
-    <input type="text" value="<%= articolo.getCodice() %>" disabled>
+
+    <label>Codice (non modificabile)</label>
+    <input type="text" value="<%= articolo.getCodice() %>" disabled style="background-color: #e9ecef;">
 
     <label>Nome</label>
     <small>Attuale: <%=articolo.getNome() %> </small>
-    <input type="text" name="nome" id="nome" value="<%=articolo.getNome()%>">
+    <input type="text" name="nome" id="nome" required value="<%=articolo.getNome()%>">
 
     <label>Descrizione</label>
     <small>Attuale: <%= articolo.getDescrizione() %></small>
-    <textarea name="descrizione"><%= articolo.getDescrizione() %></textarea>
+    <textarea name="descrizione" id="descrizione" rows="4" required><%= articolo.getDescrizione() %></textarea>
 
     <label>Colore</label>
     <small>Attuale: <%= articolo.getColore() %></small>
@@ -108,11 +65,18 @@
 
     <label>Sconto (%)</label>
     <small>Attuale: <%= articolo.getSconto() %></small>
-    <input type="number" step="0.01" name="sconto" id="sconto" value="<%= articolo.getSconto() %>">
+    <%
+        // Calcolo sconto visivo: Se DB ha 0.10, qui diventa 10.0
+        double scontoVisivo = articolo.getSconto();
+        if(scontoVisivo < 1.0 && scontoVisivo > 0) {
+            scontoVisivo = scontoVisivo * 100;
+        }
+    %>
+    <input type="number" step="0.01" name="sconto" id="sconto" value="<%= scontoVisivo %>">
 
     <label>Prezzo (€)</label>
     <small>Attuale: <%= articolo.getPrezzo() %></small>
-    <input type="number" step="0.01" name="prezzo" id="prezzo" value="<%= articolo.getPrezzo() %>">
+    <input type="number" step="0.01" name="prezzo" id="prezzo" required value="<%= articolo.getPrezzo() %>">
 
     <label>Peso (kg)</label>
     <small>Attuale: <%= articolo.getPeso() %></small>
@@ -135,54 +99,65 @@
     <input type="submit" value="Salva Modifiche">
 </form>
 <% } else { %>
-<h2>Errore: nessun articolo trovato per la modifica.</h2>
+<div style="text-align: center; margin-top: 50px;">
+    <h2>Errore: Nessun articolo trovato per la modifica.</h2>
+    <a href="catalogoAdmin.jsp">Torna al Catalogo</a>
+</div>
 <% } %>
 
-<% } %>
 
 <script>
-    const form=document.getElementById("formId");
+    const form = document.getElementById("formId");
 
     if(form){
-        form.addEventListener("submit",function (e){
+        form.addEventListener("submit", function (e){
             if(!validaCampi()){
-                e.preventDefault();
+                e.preventDefault(); // Blocca l'invio se ci sono errori
             }
         });
     }
 
-    function validaCampi(){
-        const nome=document.getElementById("nome");
-        const descrizione=document.querySelector('textarea[name="descrizione"]');
-        const colore=document.getElementById("colore");
-        const prezzo=document.getElementById("prezzo");
-        const sconto=document.getElementById("sconto");
-        const peso=document.getElementById("peso");
-        const dimensione=document.getElementById("dimensione");
+    function validaCampi() {
+        const nome = document.getElementById("nome").value.trim();
+        // Ora funziona perché abbiamo aggiunto l'id="descrizione" nell'HTML
+        const descrizione = document.getElementById("descrizione").value.trim();
+        const prezzo = document.getElementById("prezzo").value.trim();
+        const sconto = document.getElementById("sconto").value.trim();
+        const peso = document.getElementById("peso").value.trim();
 
-
-        if (nome.value.trim() === "") {
+        // 1. Controllo Nome
+        if (nome.length < 3) {
+            alert("Il nome deve contenere almeno 3 caratteri.");
             return false;
-        }
-        if (descrizione.value.trim() === "") {
-            return false;
-        }
-        if (colore.value.trim() === "") {
-            return false;
-        }
-        if (prezzo.value === "" || isNaN(prezzo.value) || parseFloat(prezzo.value) < 0) {
-            return false;
-        }
-        if (sconto.value === "" || isNaN(sconto.value) || parseFloat(sconto.value) < 0) {
-            return false;
-        }
-        if (peso.value === "" || isNaN(peso.value) || parseFloat(peso.value) < 0) {
-            return false;
-        }
-        if (dimensione.value.trim() === "") {
-           return false;
         }
 
+        // 2. Controllo Descrizione
+        if (descrizione === "") {
+            alert("La descrizione è obbligatoria.");
+            return false;
+        }
+
+        // 3. Controllo Prezzo
+        if (prezzo === "" || isNaN(prezzo) || Number(prezzo) <= 0) {
+            alert("Il prezzo deve essere un numero positivo valido.");
+            return false;
+        }
+
+        // 4. Controllo Sconto (0 - 100)
+        if (sconto !== "") {
+            if (isNaN(sconto) || Number(sconto) < 0 || Number(sconto) > 100) {
+                alert("Lo sconto deve essere un numero compreso tra 0 e 100.");
+                return false;
+            }
+        }
+
+        // 5. Controllo Peso (non negativo)
+        if (peso !== "") {
+            if (isNaN(peso) || Number(peso) < 0) {
+                alert("Il peso non può essere negativo.");
+                return false;
+            }
+        }
 
         return true;
     }
@@ -190,6 +165,3 @@
 
 </body>
 </html>
-
-
-

@@ -96,6 +96,17 @@
             font-size: 16px;
             animation: fadeinout 3s;
         }
+        /* AGGIUNGI QUESTO */
+        .messaggio-errore {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
 
         @keyframes fadeinout {
             0% {opacity: 0;}
@@ -215,14 +226,32 @@
 <% if (utenteLoggato != null) { %>
 <div class="scrivi-recensione">
     <h3>Lascia una recensione</h3>
+    <%
+        String error = request.getParameter("error");
+        if(error != null) {
+    %>
+    <div class="messaggio-errore">
+        <%
+            if(error.equals("datiMancanti")) {
+                out.print("Errore: Devi compilare Titolo, Testo e selezionare le Stelle!");
+            } else if(error.equals("titoloTroppoLungo")) {
+                out.print("Errore: Il titolo è troppo lungo (Max 50 caratteri).");
+            } else if(error.equals("testoTroppoLungo")) {
+                out.print("Errore: Il testo è troppo lungo (Max 500 caratteri).");
+            } else if(error.equals("generico")) {
+                out.print("Errore generico durante il salvataggio.");
+            }
+        %>
+    </div>
+    <% } %>
     <form action="RecensioneServlet" method="post">
         <input type="hidden" name="idArticolo" value="<%= articolo.getCodice() %>">
         <div class="stelle" title="Vota con le stelle">
-            <input type="radio" id="stella5" name="valutazione" value="5"><label for="stella5">&#9733;</label>
-            <input type="radio" id="stella4" name="valutazione" value="4"><label for="stella4">&#9733;</label>
-            <input type="radio" id="stella3" name="valutazione" value="3"><label for="stella3">&#9733;</label>
-            <input type="radio" id="stella2" name="valutazione" value="2"><label for="stella2">&#9733;</label>
-            <input type="radio" id="stella1" name="valutazione" value="1"><label for="stella1">&#9733;</label>
+            <input type="radio" id="stella5" name="valutazione" value="5" ><label for="stella5">&#9733;</label>
+            <input type="radio" id="stella4" name="valutazione" value="4" ><label for="stella4">&#9733;</label>
+            <input type="radio" id="stella3" name="valutazione" value="3" ><label for="stella3">&#9733;</label>
+            <input type="radio" id="stella2" name="valutazione" value="2" ><label for="stella2">&#9733;</label>
+            <input type="radio" id="stella1" name="valutazione" value="1" ><label for="stella1">&#9733;</label>
         </div>
         <input type="text" name="titolo" placeholder="Scrivi un titolo..." required>
         <textarea name="testo" rows="5" placeholder="Racconta la tua esperienza con questo prodotto..." required></textarea>
@@ -281,25 +310,25 @@
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //tipo di un contenuto
 
         xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) { //se la risposta è completamente ricevuta e il server ha risposto con successo
-        mostraNotifica();
-        mostraBadge();
-    }
-    };
+            if (xhr.readyState === 4 && xhr.status === 200) { //se la risposta è completamente ricevuta e il server ha risposto con successo
+                mostraNotifica();
+                mostraBadge();
+            }
+        };
         xhr.send("idArticolo=" + encodeURIComponent(idArticolo) + "&quantita=" + encodeURIComponent(quantita));  //invia i dati al server
     });
 
-        function mostraNotifica() {
+    function mostraNotifica() {
         const notifica = document.getElementById("notifica-aggiunta");
         notifica.style.display = "block";
         notifica.style.opacity = "1";  //lo rende visibile
 
         setTimeout(() => {
-        notifica.style.opacity = "0";
-        setTimeout(() => {
-        notifica.style.display = "none";
-    }, 500); //Dopo altri 500 ms, lo nasconde completamente con display: none
-    }, 3000);  //Dopo 3 secondi (3000 ms) imposta opacity: 0 (effetto dissolvenza)
+            notifica.style.opacity = "0";
+            setTimeout(() => {
+                notifica.style.display = "none";
+            }, 500); //Dopo altri 500 ms, lo nasconde completamente con display: none
+        }, 3000);  //Dopo 3 secondi (3000 ms) imposta opacity: 0 (effetto dissolvenza)
     }
 
 
@@ -317,6 +346,5 @@
 <jsp:include page="footerAreaUtente.jsp"></jsp:include>
 </body>
 </html>
-
 
 
