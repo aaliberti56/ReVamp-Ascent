@@ -3,22 +3,34 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import java.io.IOException;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.*;
+import java.sql.Connection;
+import java.util.UUID;
+import org.json.JSONObject;
+
+
 import model.DAO.*;
 import model.JavaBeans.*;
+import model.ConPool;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 2 * 1024 * 1024,
+        maxRequestSize = 3 * 1024 * 1024
+)
 @WebServlet(name = "AggiungiArticoloServlet", value = "/AggiungiArticoloServlet")
 public class AggiungiArticoloServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Le operazioni di modifica/inserimento dati dovrebbero passare sempre per POST
-        doPost(request, response);
-    }
+    private static final long MAX_FILE_SIZE = 2L * 1024 * 1024;
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Controllo sessione Admin (Sicurezza base)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
             response.sendRedirect("login.jsp");
@@ -26,95 +38,168 @@ public class AggiungiArticoloServlet extends HttpServlet {
         }
 
         try {
-            // 1. RECUPERO PARAMETRI (Tutti come Stringa inizialmente)
-            String codiceStr = request.getParameter("codice");
-            String nome = request.getParameter("nome");
-            String descrizione = request.getParameter("descrizione");
-            String colore = request.getParameter("colore");
-            String scontoStr = request.getParameter("sconto");
-            String prezzoStr = request.getParameter("prezzo");
-            String pesoStr = request.getParameter("peso");
-            String dimensione = request.getParameter("dimensione");
-            String idCatStr = request.getParameter("id_categoria");
+            // ===== PARAMETRI =====
+            int codice = Integer.parseInt(request.getParameter("codice"));
+            String nome = sanitize(request.getParameter("nome"));
+            String descrizione = sanitize(request.getParameter("descrizione"));
+            String colore = sanitize(request.getParameter("colore"));
+            String dimensione = sanitize(request.getParameter("dimensione"));
 
-            // 2. PARSING E GESTIONE TIPI (Conversione sicura)
-            int codice = Integer.parseInt(codiceStr);
-            double prezzo = Double.parseDouble(prezzoStr);
-            int id_categoria = Integer.parseInt(idCatStr);
+            double prezzo = Double.parseDouble(request.getParameter("prezzo"));
+            double peso = parseDoubleOrZero(request.getParameter("peso"));
+            double sconto = parseSconto(request.getParameter("sconto"));
 
-            // Gestione campi opzionali (se vuoti, metto valori di default o 0)
-            double peso = (pesoStr == null || pesoStr.trim().isEmpty()) ? 0.0 : Double.parseDouble(pesoStr);
+            // ===== VALIDAZIONE =====
+            if (codice <= 0 || prezzo <= 0 || peso < 0 || sconto < 0 || sconto >= 1)
+                throw new Exception("Dati numerici non validi");
 
-            // LOGICA SPECIALE PER LO SCONTO (Per risolvere il problema del DECIMAL(5,4))
-            double sconto = 0.0;
-            if (scontoStr != null && !scontoStr.trim().isEmpty()) {
-                double inputSconto = Double.parseDouble(scontoStr);
-                // Se l'utente scrive un numero > 1 (es. "10" o "50"), lo convertiamo in decimale (0.10 o 0.50)
-                // Se scrive già in decimale (es. "0.1"), lo lasciamo così.
-                if (inputSconto > 1.0) {
-                    sconto = inputSconto / 100.0;
-                } else {
-                    sconto = inputSconto;
-                }
-            }
-
-            // 3. SANITIZZAZIONE INPUT (Protezione XSS)
-            // Impediamo l'inserimento di script malevoli nel nome e descrizione
-            if (nome != null) nome = nome.replace("<", "&lt;").replace(">", "&gt;");
-            if (descrizione != null) descrizione = descrizione.replace("<", "&lt;").replace(">", "&gt;");
-            if (colore != null) colore = colore.replace("<", "&lt;").replace(">", "&gt;");
-            if (dimensione != null) dimensione = dimensione.replace("<", "&lt;").replace(">", "&gt;");
-
-            // 4. VALIDAZIONE LOGICA LATO SERVER (Mirror Validation)
-            // Se qualcuno disattiva il JS, questi controlli salvano il DB
-            if (codice <= 0) {
-                lanciaErrore(request, response, "Il codice articolo deve essere positivo.");
-                return;
-            }
-            if (nome == null || nome.trim().length() < 3) {
-                lanciaErrore(request, response, "Il nome deve avere almeno 3 caratteri.");
-                return;
-            }
-            if (prezzo <= 0) {
-                lanciaErrore(request, response, "Il prezzo deve essere maggiore di zero.");
-                return;
-            }
-            // Controllo che lo sconto convertito non sia fuori scala (max 0.9999 cioè 99.99%)
-            if (sconto < 0 || sconto >= 1.0) {
-                lanciaErrore(request, response, "Lo sconto non è valido (Deve essere tra 0% e 99%).");
-                return;
-            }
-
-            // 5. CONTROLLO DUPLICATI (Integrità DB)
             ArticoloDAO articoloDAO = new ArticoloDAO();
-            if(articoloDAO.doRetrieveById(codice) != null){
-                lanciaErrore(request, response, "Errore: Esiste già un articolo con il codice " + codice);
-                return;
+            if (articoloDAO.doRetrieveById(codice) != null)
+                throw new Exception("Articolo già esistente");
+
+            // ===== UPLOAD IMMAGINE =====
+            Part imgPart = request.getPart("immagine");
+            if (imgPart == null || imgPart.getSize() == 0 || imgPart.getSize() > MAX_FILE_SIZE)
+                throw new Exception("Immagine non valida");
+
+            if (!"image/jpeg".equals(imgPart.getContentType()))
+                throw new Exception("Solo JPG consentiti");
+
+            if (!isJpegMagic(imgPart))
+                throw new Exception("File non JPG valido");
+
+            // ===== SALVATAGGIO FILE =====
+            String dirAbs = getServletContext().getRealPath("/img/articoli/" + codice);
+            File dir = new File(dirAbs);
+            if (!dir.exists()) dir.mkdirs();
+
+            String fileName = UUID.randomUUID() + ".jpg";
+            Path fileAbs = Paths.get(dirAbs, fileName);
+
+            try (InputStream in = imgPart.getInputStream()) {
+                Files.copy(in, fileAbs, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            // 6. CREAZIONE BEAN E SALVATAGGIO
-            // Nota: Assicurati che il costruttore del Bean Articolo rispetti quest'ordine
-            Articolo articolo = new Articolo(codice, nome, descrizione, colore, sconto, prezzo, peso, dimensione, id_categoria);
+            // ===== CHIAMATA AI =====
+            String categoriaAI = chiamaFlask(fileAbs.toFile());
+            int idCategoria = mappaCategoriaItaliana(categoriaAI);
 
-            articoloDAO.doSave(articolo);
+            // ===== SALVATAGGIO DB =====
+            Articolo articolo = new Articolo(
+                    codice, nome, descrizione, colore,
+                    sconto, prezzo, peso, dimensione, idCategoria
+            );
 
-            // 7. SUCCESSO
+            ImmagineArticolo img = new ImmagineArticolo();
+            img.setCodice_articolo(codice);
+            img.setUrl("img/articoli/" + codice + "/" + fileName);
+            img.setIs_principale(true);
+            img.setDescrizione("Immagine principale");
+
+            try (Connection con = ConPool.getConnection()) {
+                con.setAutoCommit(false);
+                articoloDAO.doSave(con, articolo);
+                new ImmagineArticoloDAO().doSave(con, img);
+                con.commit();
+            }
+
             response.sendRedirect("confermaInserimento.jsp");
 
-        } catch (NumberFormatException e) {
-            // Gestione errore se l'utente scrive testo al posto dei numeri
-            lanciaErrore(request, response, "Errore nel formato dei dati numerici (Prezzo, Codice o Sconto).");
         } catch (Exception e) {
-            // Gestione errore generico database
             e.printStackTrace();
-            lanciaErrore(request, response, "Errore di sistema: " + e.getMessage());
+            lanciaErrore(request, response, e.getMessage());
         }
     }
 
-    // Metodo helper privato per gestire i messaggi di errore senza duplicare codice
-    private void lanciaErrore(HttpServletRequest request, HttpServletResponse response, String messaggio) throws ServletException, IOException {
-        request.setAttribute("errore", messaggio);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("erroreInserimento.jsp");
-        dispatcher.forward(request, response);
+    // ================= AI =================
+
+    private String chiamaFlask(File imageFile) throws Exception {
+
+        String boundary = "----WebKitFormBoundary" + System.currentTimeMillis();
+        URL url = new URL("http://127.0.0.1:5000/predict");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+        conn.setRequestProperty("Accept", "application/json");
+
+        try (OutputStream out = conn.getOutputStream();
+             DataOutputStream writer = new DataOutputStream(out)) {
+
+            writer.writeBytes("--" + boundary + "\r\n");
+            writer.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n");
+            writer.writeBytes("Content-Type: image/jpeg\r\n\r\n");
+
+            Files.copy(imageFile.toPath(), writer);
+            writer.writeBytes("\r\n--" + boundary + "--\r\n");
+            writer.flush();
+        }
+
+        int status = conn.getResponseCode();
+        InputStream is = (status == 200)
+                ? conn.getInputStream()
+                : conn.getErrorStream();
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+
+        String json = sb.toString().trim();
+        System.out.println("FLASK RESPONSE: " + json);
+
+
+        JSONObject obj = new JSONObject(json);
+
+        if (status != 200) {
+            throw new RuntimeException("Errore AI: " + obj.getString("error"));
+        }
+
+        return obj.getString("category");
+    }
+
+
+
+    private int mappaCategoriaItaliana(String ai) {
+        return switch (ai) {
+            case "bed" -> 1;    // Letti
+            case "chair" -> 2;  // Sedie
+            case "sofa" -> 3;   // Divani
+            case "table" -> 4;  // Tavoli
+            default -> 2;
+        };
+    }
+
+    // ================= UTILS =================
+
+    private boolean isJpegMagic(Part part) throws IOException {
+        try (InputStream in = part.getInputStream()) {
+            return in.read() == 0xFF && in.read() == 0xD8;
+        }
+    }
+
+    private String sanitize(String s) {
+        return s == null ? null : s.replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    private double parseDoubleOrZero(String s) {
+        return (s == null || s.isEmpty()) ? 0.0 : Double.parseDouble(s);
+    }
+
+    private double parseSconto(String s) {
+        if (s == null || s.isEmpty()) return 0.0;
+        double v = Double.parseDouble(s);
+        return v > 1 ? v / 100 : v;
+    }
+
+    private void lanciaErrore(HttpServletRequest req, HttpServletResponse res, String msg)
+            throws ServletException, IOException {
+        req.setAttribute("errore", msg);
+        req.getRequestDispatcher("erroreInserimento.jsp").forward(req, res);
     }
 }
+

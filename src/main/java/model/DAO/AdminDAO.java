@@ -25,7 +25,10 @@ public class AdminDAO{
             throw new RuntimeException("Errore nell'hashing della password", e);
         }
     }
+public int somma(int a,int b){
+        return a+b;
 
+    }
 
     public Admin doLogin(String username,String password) throws SQLException{
         String query= "SELECT * FROM Admin WHERE username = ? AND password = ?";
@@ -47,6 +50,10 @@ public class AdminDAO{
             }
         }
         return null;
+    }
+
+    public int differenza(int a,int b){
+        return a-b;
     }
 
     public Admin doRetrieveByUsername(String username) throws SQLException{

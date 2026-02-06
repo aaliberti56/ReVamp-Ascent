@@ -100,7 +100,7 @@
         <h4>Area riservata amministratore</h4>
     </div>
     <div class="menu-grid">
-        <a href="FormAggiungiArticoloServlet" class="menu-card">
+        <a href="scegliTipoAggiunta.jsp" class="menu-card">
             <img src="img/aggiunta.png" alt="Aggiungi Articolo" class="menu-icon">
             <p>Aggiungi Articolo</p>
         </a>

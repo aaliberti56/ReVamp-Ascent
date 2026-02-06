@@ -62,10 +62,12 @@ public class ArticoloDAO {
     }
 
 
-    public void doSave(Articolo a){
-        try(Connection con=ConPool.getConnection()){
-            PreparedStatement ps = con.prepareStatement("INSERT INTO articolo (codice, nome, descrizione, colore, sconto, prezzo, peso, dimensione, id_categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setInt(1,a.getCodice());
+    public void doSave(Connection con, Articolo a) throws SQLException {
+        String sql = "INSERT INTO articolo (codice, nome, descrizione, colore, sconto, prezzo, peso, dimensione, id_categoria) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, a.getCodice());
             ps.setString(2, a.getNome());
             ps.setString(3, a.getDescrizione());
             ps.setString(4, a.getColore());
@@ -76,10 +78,8 @@ public class ArticoloDAO {
             ps.setInt(9, a.getId_categoria());
             ps.executeUpdate();
         }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
+
 
 
     public void doUpdate(Articolo a) {

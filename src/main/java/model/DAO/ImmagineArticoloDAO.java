@@ -7,20 +7,18 @@ import java.util.*;
 
 public class ImmagineArticoloDAO {
 
-    public void doSave(ImmagineArticolo img){
+    public void doSave(Connection con, ImmagineArticolo img) throws SQLException {
         String sql = "INSERT INTO ImmagineArticolo (codice_articolo, url, is_principale, descrizione) VALUES (?, ?, ?, ?)";
-        try(Connection con=ConPool.getConnection()){
-            PreparedStatement ps=con.prepareStatement(sql);
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, img.getCodice_articolo());
             ps.setString(2, img.getUrl());
             ps.setBoolean(3, img.isIs_principale());
             ps.setString(4, img.getDescrizione());
-
             ps.executeUpdate();
-        }catch (SQLException e){
-            throw new RuntimeException(e);
         }
     }
+
 
     public List<ImmagineArticolo> doRetrieveByArticolo(int codiceArticolo){
         List<ImmagineArticolo> immagini=new ArrayList<>();
