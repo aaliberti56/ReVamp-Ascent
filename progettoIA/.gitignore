@@ -17,3 +17,15 @@ static/
 *.pkl
 *.pt
 *.h5
+
+dataset/
+static/
+__pycache__/
+*.pyc
+*.pkl
+*.pt
+*.h5
+*.jpg
+*.jpeg
+*.png
+*.gif

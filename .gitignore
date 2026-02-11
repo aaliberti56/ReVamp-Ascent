@@ -36,3 +36,16 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# --- progettoIA (python) ---
+progettoIA/dataset/
+progettoIA/static/
+progettoIA/**/__pycache__/
+progettoIA/**/*.pyc
+progettoIA/**/*.pkl
+progettoIA/**/*.pt
+progettoIA/**/*.h5
+progettoIA/**/*.jpg
+progettoIA/**/*.jpeg
+progettoIA/**/*.png
+progettoIA/**/*.gif
