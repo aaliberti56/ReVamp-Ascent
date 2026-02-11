@@ -1,0 +1,19 @@
+# Nel file .gitignore
+# Escludi cartelle pesanti
+dataset/
+__pycache__/
+static/
+
+# Escludi file segreti
+.env
+
+# Escludi tutte le immagini (ovunque siano)
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# Escludi i modelli pesanti (se superano i 100MB, GitHub li blocca)
+*.pkl
+*.pt
+*.h5
