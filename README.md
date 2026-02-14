@@ -93,6 +93,16 @@ Le prestazioni sono state valutate sul **Test Set** utilizzando metriche standar
 
 ---
 
+## 🚀 Riproducibilità del Progetto
+Per replicare il progetto localmente:
+1. **Clonare** il repository GitHub.
+2. **Configurare il database** MySQL con lo script fornito.
+3. **Avviare il server Tomcat** per il backend Java.
+4. **Installare le dipendenze** e avviare il servizio Flask in `progettoIA`.
+5. **Configurare la API Key** di Roboflow nel modulo AI.
+
+---
+
 ## 👥 Membri del Team
 * Antonio Aliberti
 * Raffaella Di Pasquale
