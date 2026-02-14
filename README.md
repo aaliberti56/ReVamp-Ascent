@@ -84,10 +84,12 @@ Le prestazioni sono state valutate sul **Test Set** utilizzando metriche standar
 ---
 
 ## 📂 Struttura del Repository
-* **Codice Java:** Logica di backend e gestione ordini.
-* **Pagine JSP:** Risorse e interfaccia frontend.
-* **Microservizio Python:** Servizio dedicato alle inferenze AI.
-* **Configurazione:** File necessari al deploy del sistema.
+* **`src/main`**: Il nucleo dell'applicazione Java, contenente la logica di business (**Servlet**, **DAO**) e le risorse del frontend (**JSP**, **HTML**, **CSS**, **JS**).
+* **`progettoIA`**: La cartella dedicata al **microservizio Python**, contenente l'API **Flask** e l'integrazione con i modelli di **Object Detection**.
+* **`pom.xml`**: File di configurazione **Maven** fondamentale per la gestione automatizzata delle dipendenze del backend Java.
+* **`logo.webp`**: L'asset grafico utilizzato per l'identità visiva della piattaforma nella documentazione.
+* **`mvnw` / `.mvn`**: File del **Maven Wrapper** che permettono di compilare ed eseguire il progetto senza dover installare Maven manualmente sul sistema locale.
+* **`.gitignore`**: File di configurazione per Git, utilizzato per escludere dal versionamento file temporanei e artefatti pesanti della parte Python.
 
 ---
 
