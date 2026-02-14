@@ -1,4 +1,9 @@
-# 🛋️ ReVampAscent
+<h1 align="left">
+  <img src="logo.webp" alt="ReVampAscent Logo" width="50" vertical-align="middle">
+  ReVampAscent
+</h1>
+
+
 > **Piattaforma e-commerce smart per l'arredamento con integrazione di Intelligenza Artificiale.**
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
