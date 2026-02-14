@@ -1,202 +1,97 @@
-ReVampAscent è una piattaforma web di e-commerce dedicata alla vendita e all’acquisto di articoli di arredamento come sedie, tavoli, letti, divani, armadi e complementi d’arredo.
-Il sistema è stato progettato per offrire una gestione completa del catalogo prodotti, degli utenti e degli ordini, integrando funzionalità avanzate di Intelligenza Artificiale per l’automazione dell’inserimento degli articoli tramite immagini.
+# 🛋️ ReVampAscent
+> **Piattaforma e-commerce smart per l'arredamento con integrazione di Intelligenza Artificiale.**
 
-L’obiettivo principale del progetto è dimostrare come le tecniche di Machine Learning e Computer Vision possano essere integrate in un sistema informativo reale, combinando aspetti teorici e pratici trattati durante il corso.
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
 
-Obiettivo del Progetto
+**ReVampAscent** è una piattaforma web di e-commerce dedicata alla vendita e all’acquisto di articoli di arredamento come **sedie, tavoli, letti, divani, armadi e complementi d’arredo**. 
 
-L’obiettivo del progetto è realizzare un’applicazione web completa che permetta:
+Il sistema è progettato per offrire una gestione completa del catalogo, degli utenti e degli ordini, integrando funzionalità avanzate di **Intelligenza Artificiale** per l’automazione dell’inserimento degli articoli tramite immagini.
 
-la consultazione di un catalogo di prodotti di arredamento;
+---
 
-la gestione degli acquisti da parte degli utenti;
-
-l’amministrazione del catalogo da parte di un utente amministratore;
-
-l’integrazione di funzionalità di Intelligenza Artificiale per il riconoscimento automatico degli articoli a partire da immagini.
+## 🎯 Obiettivo del Progetto
+L’obiettivo principale è dimostrare l’integrazione di tecniche di **Machine Learning** e **Computer Vision** in un sistema informativo reale, combinando aspetti teorici e pratici.
 
 Il progetto mette in pratica concetti fondamentali quali:
+* **Classificazione supervisionata** e **Object Detection**.
+* Valutazione delle prestazioni di un modello.
+* **Architettura client-server** e separazione dei livelli applicativi.
 
-classificazione supervisionata;
+---
 
-object detection;
+## ✨ Funzionalità Principali
 
-valutazione delle prestazioni di un modello;
+### 👤 Lato Utente (Registrato)
+* **Catalogo:** Visualizzazione, filtraggio e consultazione dei prodotti.
+* **Shopping:** Aggiunta articoli al carrello e completamento dell'acquisto.
 
-architettura client-server;
+### 🔑 Lato Amministratore
+* **Gestione Catalogo:** Inserimento (manuale o automatico), modifica e rimozione articoli.
+* **Validazione AI:** Sistema **Human-in-the-loop** per validare le informazioni proposte dal sistema di visione artificiale.
 
-separazione dei livelli applicativi.
+---
 
-Funzionalità Principali del Sito
+## 🧠 Funzionalità di Intelligenza Artificiale
 
-Il sito consente agli utenti registrati di:
+### 1️⃣ Classificazione Automatica di un Oggetto
+L'amministratore carica un'immagine con un singolo articolo. Il sistema utilizza un modello di **Machine Learning supervisionato** per suggerire la categoria (es. sedia, letto).
+* **Teoria:** Coinvolge estrazione delle caratteristiche e l'uso di una **Confidence Score** per stimare l'affidabilità della predizione.
 
-visualizzare il catalogo degli articoli;
+### 2️⃣ Object Detection Multi-Oggetto (YOLO)
+Evoluzione basata su **YOLO (You Only Look Once)** per caricare immagini contenenti più articoli contemporaneamente. Per ogni oggetto rilevato il sistema genera:
+* Una **Bounding Box**, una categoria e una **Confidence** associata.
+* Un **Ritaglio (crop)** automatico dell'immagine originale per ogni singolo oggetto.
+* **Flessibilità:** La soglia di confidence è configurabile per massimizzare il **Recall**.
 
-filtrare e consultare i prodotti;
+---
 
-aggiungere articoli al carrello;
+## 🏗️ Architettura del Sistema
+Il sistema segue un'architettura a livelli separati:
 
-completare un acquisto.
+* **Frontend:** Realizzato in **JSP, HTML, CSS e JavaScript**.
+* **Backend Applicativo:** Sviluppato in **Java (Servlet e JDBC)** con pattern **DAO**.
+* **Modulo AI:** Implementato come microservizio in **Python (Flask)**. Espone **API REST** e comunica con il backend Java tramite chiamate **HTTP REST**.
+* **Persistenza:** Database **MySQL** (memorizza i percorsi) e **Filesystem** (memorizza i file binari delle immagini) per garantire scalabilità.
 
-L’amministratore del sistema può:
+---
 
-inserire articoli manualmente;
+## 📊 Dataset e Valutazione
+Il dataset è stato creato e gestito tramite **Roboflow**, suddiviso in **Training, Validation e Test set**. 
+Le prestazioni sono state valutate sul **Test Set** utilizzando metriche standard:
+* **Precision & Recall**
+* **Confusion Matrix**
+* **mean Average Precision (mAP)**
 
-inserire articoli automaticamente tramite immagini;
+---
 
-modificare e rimuovere articoli esistenti;
+## 🛠️ Tecnologie Utilizzate
 
-validare le informazioni proposte dal sistema AI.
+| Settore | Tecnologie |
+| :--- | :--- |
+| **Backend** | Java, Servlet, JDBC, Apache Tomcat |
+| **Frontend** | JSP, HTML5, CSS3, JavaScript |
+| **AI** | Python, Flask, Roboflow API, YOLO, Pillow (PIL) |
+| **Database** | MySQL |
 
-Funzionalità di Intelligenza Artificiale
+---
 
-Nel progetto sono state implementate due funzionalità basate su Intelligenza Artificiale.
+## 📂 Struttura del Repository
+* **Codice Java:** Logica di backend e gestione ordini.
+* **Pagine JSP:** Risorse e interfaccia frontend.
+* **Microservizio Python:** Servizio dedicato alle inferenze AI.
+* **Configurazione:** File necessari al deploy del sistema.
 
-Prima Funzionalità – Classificazione Automatica di un Oggetto
+---
 
-La prima funzionalità permette all’amministratore di caricare un’immagine contenente un singolo articolo di arredamento.
-Il sistema utilizza un modello di Machine Learning supervisionato per classificare l’oggetto e suggerire automaticamente la categoria di appartenenza (ad esempio: sedia, letto, tavolo).
+## 👥 Membri del Team
+* Antonio Aliberti
+* Raffaella Di Pasquale
+* Vincenzo Martucci
 
-Dal punto di vista teorico, questa funzionalità coinvolge:
+---
 
-problemi di classificazione;
-
-apprendimento supervisionato;
-
-estrazione delle caratteristiche;
-
-utilizzo di una confidence score per stimare l’affidabilità della predizione.
-
-Il risultato della classificazione non è vincolante: l’amministratore può confermare o modificare manualmente la categoria proposta.
-
-Seconda Funzionalità – Object Detection Multi-Oggetto (YOLO)
-
-La seconda funzionalità rappresenta l’evoluzione della prima ed è basata sull’Object Detection.
-Il sistema permette di caricare un’immagine contenente più articoli di arredamento contemporaneamente. Il modello AI individua automaticamente tutti gli oggetti presenti nell’immagine, generando per ciascuno:
-
-una bounding box;
-
-una categoria;
-
-una confidence associata;
-
-un ritaglio (crop) dell’immagine originale.
-
-Ogni oggetto individuato viene trattato come un articolo indipendente e mostrato all’amministratore, che può modificarne i dati prima dell’inserimento definitivo nel database.
-
-Dal punto di vista teorico, questa funzionalità coinvolge:
-
-Object Detection;
-
-localizzazione e classificazione simultanea;
-
-bounding box;
-
-confidence threshold;
-
-precision e recall;
-
-mean Average Precision (mAP);
-
-compromesso tra falsi positivi e falsi negativi;
-
-approccio human-in-the-loop.
-
-La soglia di confidence è configurabile per aumentare il recall, accettando predizioni meno sicure che vengono successivamente validate manualmente.
-
-Architettura del Sistema
-
-Il sistema è strutturato secondo un’architettura a livelli.
-
-Il frontend è realizzato utilizzando JSP, HTML, CSS e JavaScript, ed è responsabile dell’interazione con l’utente e della visualizzazione dei dati.
-
-Il backend applicativo è sviluppato in Java utilizzando Servlet e JDBC, con adozione del pattern DAO per l’accesso ai dati e la gestione della persistenza su database relazionale.
-
-Il modulo di Intelligenza Artificiale è implementato come microservizio separato in Python tramite Flask. Questo servizio espone API REST che ricevono immagini, invocano il modello YOLO addestrato e restituiscono i risultati in formato JSON.
-
-La comunicazione tra backend Java e servizio AI avviene tramite chiamate HTTP REST.
-
-Gestione delle Immagini e Persistenza
-
-Le immagini degli articoli vengono salvate in modo persistente nel filesystem del server, all’interno di una cartella dedicata.
-Nel database viene memorizzato esclusivamente il percorso dell’immagine, evitando il salvataggio diretto dei file binari nel database e migliorando le prestazioni e la scalabilità del sistema.
-
-Dataset e Addestramento del Modello
-
-Il dataset utilizzato per l’addestramento del modello di Object Detection è stato creato e gestito tramite Roboflow.
-Il dataset è stato suddiviso in:
-
-training set;
-
-validation set;
-
-test set.
-
-Il modello è stato addestrato utilizzando immagini annotate manualmente, ed è stato possibile estendere il dataset aggiungendo nuove immagini e riaddestrando il modello.
-
-Valutazione delle Prestazioni
-
-Le prestazioni del modello sono state valutate utilizzando:
-
-Precision;
-
-Recall;
-
-Confusion Matrix;
-
-mean Average Precision (mAP).
-
-Le metriche sono state calcolate sul test set, mai utilizzato durante la fase di addestramento, garantendo una valutazione corretta delle prestazioni del modello.
-
-Tecnologie Utilizzate
-
-Backend:
-
-Java
-
-Servlet
-
-JDBC
-
-Apache Tomcat
-
-Frontend:
-
-JSP
-
-HTML5
-
-CSS3
-
-JavaScript
-
-Intelligenza Artificiale:
-
-Python
-
-Flask
-
-Roboflow API
-
-YOLO
-
-Pillow (PIL)
-
-Database:
-
-MySQL
-
-Struttura del Repository
-
-Il repository GitHub contiene:
-
-il codice sorgente Java del backend;
-
-le pagine JSP e le risorse frontend;
-
-il microservizio Python per l’Intelligenza Artificiale;
-
-i file di configurazione;
-
-il presente file README con la descrizione completa del progetto.
+## 📝 Considerazioni Finali
+Il progetto **ReVampAscent** dimostra come l'AI possa essere applicata con successo a scenari reali. L’approccio **human-in-the-loop** garantisce che l'automazione non sacrifichi l'affidabilità del catalogo, permettendo all'amministratore il pieno controllo sui dati inseriti.
